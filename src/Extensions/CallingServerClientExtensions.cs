@@ -1,7 +1,6 @@
 ﻿using Azure;
 using Azure.Communication;
 using Azure.Communication.CallingServer;
-using Azure.Messaging.EventGrid.SystemEvents;
 using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Models;
 
 namespace JasonShave.Azure.Communication.Service.CallingServer.Extensions.Extensions;
