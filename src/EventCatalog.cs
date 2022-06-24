@@ -3,9 +3,10 @@ using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Models;
 
 namespace JasonShave.Azure.Communication.Service.CallingServer.Extensions;
 
-public class EventCatalog<TVersion> : IEventCatalog<TVersion> 
+internal class EventCatalog<TVersion> : IEventCatalog<TVersion> 
     where TVersion : EventVersion
 {
+    private const string _eventPrefix = "Microsoft.Communication.";
     private readonly Dictionary<string, Type> _eventCatalog = new();
 
     public IEventCatalog<TVersion> Register<TEvent>()
@@ -16,7 +17,7 @@ public class EventCatalog<TVersion> : IEventCatalog<TVersion>
 
     public Type? Get(string eventName)
     {
-        _eventCatalog.TryGetValue(eventName, out var eventType);
+        _eventCatalog.TryGetValue(eventName.Replace(_eventPrefix, ""), out var eventType);
         return eventType;
     }
 }

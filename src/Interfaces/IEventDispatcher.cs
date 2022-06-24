@@ -2,7 +2,7 @@
 
 namespace JasonShave.Azure.Communication.Service.CallingServer.Extensions.Interfaces;
 
-public interface IEventDispatcher<TVersion>
+internal interface IEventDispatcher<TVersion>
     where TVersion : EventVersion
 {
     void Dispatch(object @event);

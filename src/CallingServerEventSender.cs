@@ -3,7 +3,7 @@ using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Models;
 
 namespace JasonShave.Azure.Communication.Service.CallingServer.Extensions;
 
-public class CallingServerEventSender<TVersion> : IEventSender
+internal class CallingServerEventSender<TVersion> : ICallingServerEventSender
     where TVersion : EventVersion
 {
     private readonly IEventCatalog<TVersion> _eventCatalog;
@@ -20,12 +20,23 @@ public class CallingServerEventSender<TVersion> : IEventSender
         _eventConverter = eventConverter;
     }
 
-    public void Send(string eventPayload, string eventName)
+    public void Send(string stringPayload, string eventName)
     {
         var eventType = _eventCatalog.Get(eventName);
         if (eventType is null) return;
 
-        var convertedEvent = _eventConverter.Convert(eventPayload, eventType);
+        var convertedEvent = _eventConverter.Convert(stringPayload, eventType);
+
+        if (convertedEvent is null) return;
+        _eventDispatcher.Dispatch(convertedEvent);
+    }
+
+    public void Send(BinaryData binaryPayload, string eventName)
+    {
+        var eventType = _eventCatalog.Get(eventName);
+        if (eventType is null) return;
+
+        var convertedEvent = _eventConverter.Convert(binaryPayload, eventType);
 
         if (convertedEvent is null) return;
         _eventDispatcher.Dispatch(convertedEvent);

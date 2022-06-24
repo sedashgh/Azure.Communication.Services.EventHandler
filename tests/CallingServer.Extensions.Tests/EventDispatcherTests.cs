@@ -1,8 +1,8 @@
 ﻿using AutoFixture;
 using FluentAssertions;
-using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Events;
 using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Version_2022_11_1;
 using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Version_2022_11_1.Dispatcher;
+using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Version_2022_11_1.Events;
 
 namespace CallingServer.Extensions.Tests;
 
@@ -17,7 +17,7 @@ public class EventDispatcherTests
         var callDisconnectedEvent = fixture.Create<CallDisconnectedEvent>();
         var callConnectionStateChangedEvent = fixture.Create<CallConnectionStateChanged>();
 
-        var subject = new EventDispatcher<V2022_11_1>();
+        var subject = new CallingServerEventDispatcher<V2022_11_1>();
 
         subject.OnCallConnected += (sender, args) =>
         {

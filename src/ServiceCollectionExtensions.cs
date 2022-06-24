@@ -19,7 +19,7 @@ namespace JasonShave.Azure.Communication.Service.CallingServer.Extensions
         {
             var callingServerConfiguration = new CallingServerClientSettings();
             configurationDelegate(callingServerConfiguration);
-            
+
             AddServices(callingServerConfiguration.ConnectionString, services);
 
             return services;
@@ -32,8 +32,9 @@ namespace JasonShave.Azure.Communication.Service.CallingServer.Extensions
 
             // version 2022-11-1 services
             services.AddSingleton<IEventCatalog<V2022_11_1>, EventCatalog<V2022_11_1>>();
-            services.AddSingleton<IEventDispatcher<V2022_11_1>, EventDispatcher<V2022_11_1>>();
-            services.AddSingleton<IEventSender, CallingServerEventSender<V2022_11_1>>();
+            services.AddSingleton<IEventDispatcher<V2022_11_1>, CallingServerEventDispatcher<V2022_11_1>>();
+            services.AddSingleton<ICallingServerEventSender, CallingServerEventSender<V2022_11_1>>();
+            services.AddSingleton<ICallingServerEventSubscriber, CallingServerEventDispatcher<V2022_11_1>>();
         }
     }
 }

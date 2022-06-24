@@ -3,7 +3,7 @@ using Azure.Communication;
 using Azure.Communication.CallingServer;
 using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Models;
 
-namespace JasonShave.Azure.Communication.Service.CallingServer.Extensions.Extensions;
+namespace JasonShave.Azure.Communication.Service.CallingServer.Extensions;
 
 public static class CallingServerClientExtensions
 {
