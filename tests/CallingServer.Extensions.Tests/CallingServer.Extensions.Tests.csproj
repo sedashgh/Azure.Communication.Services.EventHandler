@@ -6,6 +6,16 @@
     <Nullable>enable</Nullable>
 
     <IsPackable>false</IsPackable>
+
+    <PackageId>JasonShave.Azure.Communication.Service.$(AssemblyName)</PackageId>
+
+    <Authors>JasonShave.Azure.Communication.Service.$(AssemblyName)</Authors>
+
+    <Company>Jason Shave</Company>
+
+    <Product>JasonShave.Azure.Communication.Service.$(AssemblyName)</Product>
+
+    <Copyright>Jason Shave</Copyright>
   </PropertyGroup>
 
   <ItemGroup>

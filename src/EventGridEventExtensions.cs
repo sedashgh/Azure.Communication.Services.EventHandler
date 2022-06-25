@@ -1,8 +1,7 @@
 ﻿using Azure.Messaging.EventGrid;
-using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Events;
-using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Models;
+using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Version_2022_11_1.Events;
 
-namespace JasonShave.Azure.Communication.Service.CallingServer.Extensions.Extensions;
+namespace JasonShave.Azure.Communication.Service.CallingServer.Extensions;
 
 public static class EventGridEventExtensions
 {

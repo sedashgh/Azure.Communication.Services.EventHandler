@@ -1,6 +1,5 @@
 ﻿using Azure.Communication.CallingServer;
 using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Interfaces;
-using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Version_2022_11_1;
 using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Version_2022_11_1.Dispatcher;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,7 +18,7 @@ namespace JasonShave.Azure.Communication.Service.CallingServer.Extensions
         {
             var callingServerConfiguration = new CallingServerClientSettings();
             configurationDelegate(callingServerConfiguration);
-            
+
             AddServices(callingServerConfiguration.ConnectionString, services);
 
             return services;
@@ -31,9 +30,10 @@ namespace JasonShave.Azure.Communication.Service.CallingServer.Extensions
             services.AddSingleton<IEventConverter, JsonEventConverter>();
 
             // version 2022-11-1 services
-            services.AddSingleton<IEventCatalog<V2022_11_1>, EventCatalog<V2022_11_1>>();
-            services.AddSingleton<IEventDispatcher<V2022_11_1>, EventDispatcher<V2022_11_1>>();
-            services.AddSingleton<IEventSender, CallingServerEventSender<V2022_11_1>>();
+            services.AddSingleton<IEventCatalog, EventCatalog>();
+            services.AddSingleton<IEventDispatcher, CallingServerEventDispatcher>();
+            services.AddSingleton<ICallingServerEventSender, CallingServerEventSender>();
+            services.AddSingleton<ICallingServerEventSubscriber, CallingServerEventDispatcher>();
         }
     }
 }

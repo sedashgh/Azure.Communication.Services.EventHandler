@@ -17,15 +17,15 @@ public class CallingServerEventSenderTests
         var startEvent = fixture.Create<StartEvent>();
         var startEventJson = JsonSerializer.Serialize(startEvent);
 
-        var mockEventCatalog = new Mock<IEventCatalog<V2022_11_1>>();
+        var mockEventCatalog = new Mock<IEventCatalog>();
         var mockEventConverter = new Mock<IEventConverter>();
-        var mockEventDispatcher = new Mock<IEventDispatcher<V2022_11_1>>();
+        var mockEventDispatcher = new Mock<IEventDispatcher>();
         
         mockEventCatalog.Setup(c => c.Get(It.IsAny<string>())).Returns(typeof(StartEvent));
         mockEventConverter.Setup(c => c.Convert(It.IsAny<string>(), It.IsAny<Type>())).Returns(startEvent);
         mockEventDispatcher.Setup(d => d.Dispatch(It.IsAny<object>()));
 
-        var subject = new CallingServerEventSender<V2022_11_1>(mockEventCatalog.Object, mockEventDispatcher.Object,
+        var subject = new CallingServerEventSender(mockEventCatalog.Object, mockEventDispatcher.Object,
             mockEventConverter.Object);
 
         // act
