@@ -17,7 +17,7 @@ public class EventDispatcherTests
         var callDisconnectedEvent = fixture.Create<CallDisconnectedEvent>();
         var callConnectionStateChangedEvent = fixture.Create<CallConnectionStateChanged>();
 
-        var subject = new CallingServerEventDispatcher<V2022_11_1>();
+        var subject = new CallingServerEventDispatcher();
 
         subject.OnCallConnected += (sender, args) =>
         {

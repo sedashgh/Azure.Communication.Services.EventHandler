@@ -1,18 +1,16 @@
 ﻿using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Interfaces;
-using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Models;
 
 namespace JasonShave.Azure.Communication.Service.CallingServer.Extensions;
 
-internal class CallingServerEventSender<TVersion> : ICallingServerEventSender
-    where TVersion : EventVersion
+internal class CallingServerEventSender : ICallingServerEventSender
 {
-    private readonly IEventCatalog<TVersion> _eventCatalog;
-    private readonly IEventDispatcher<TVersion> _eventDispatcher;
+    private readonly IEventCatalog _eventCatalog;
+    private readonly IEventDispatcher _eventDispatcher;
     private readonly IEventConverter _eventConverter;
 
     public CallingServerEventSender(
-        IEventCatalog<TVersion> eventCatalog,
-        IEventDispatcher<TVersion> eventDispatcher,
+        IEventCatalog eventCatalog,
+        IEventDispatcher eventDispatcher,
         IEventConverter eventConverter)
     {
         _eventCatalog = eventCatalog;

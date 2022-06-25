@@ -7,9 +7,9 @@ namespace JasonShave.Azure.Communication.Service.CallingServer.Extensions;
 
 public static class ApplicationBuilderExtensions
 {
-    public static IApplicationBuilder UseAzureCallingServerEventDispatcher<TVersion>(this IApplicationBuilder app)
+    public static IApplicationBuilder UseAzureCallingServerEventDispatcher(this IApplicationBuilder app)
     {
-        var eventCatalog = app.ApplicationServices.GetRequiredService<IEventCatalog<TVersion>>();
+        var eventCatalog = app.ApplicationServices.GetRequiredService<IEventCatalog>();
         eventCatalog
             .Register<CallConnectedEvent>()
             .Register<CallDisconnectedEvent>()

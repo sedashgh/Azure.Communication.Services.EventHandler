@@ -15,7 +15,7 @@ public class EventConverterTests
         var startEvent = fixture.Create<StartEvent>();
         var startEventJson = JsonSerializer.Serialize(startEvent);
 
-        var subject = new JsonEventConverter(new JsonSerializerOptions());
+        var subject = new JsonEventConverter();
 
         // act
         var result = subject.Convert(startEventJson, typeof(StartEvent));
@@ -24,4 +24,6 @@ public class EventConverterTests
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(startEvent);
     }
+
+
 }

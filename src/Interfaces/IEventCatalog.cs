@@ -1,8 +1,8 @@
 ﻿namespace JasonShave.Azure.Communication.Service.CallingServer.Extensions.Interfaces;
 
-internal interface IEventCatalog<TVersion>
+internal interface IEventCatalog
 {
-    IEventCatalog<TVersion> Register<TEvent>();
+    IEventCatalog Register<TEvent>();
 
     Type? Get(string eventName);
 }
