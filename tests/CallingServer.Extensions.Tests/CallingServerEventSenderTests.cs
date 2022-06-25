@@ -1,9 +1,8 @@
-﻿using System.Text.Json;
-using AutoFixture;
+﻿using AutoFixture;
 using JasonShave.Azure.Communication.Service.CallingServer.Extensions;
 using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Interfaces;
-using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Version_2022_11_1;
 using Moq;
+using System.Text.Json;
 
 namespace CallingServer.Extensions.Tests;
 
@@ -20,7 +19,7 @@ public class CallingServerEventSenderTests
         var mockEventCatalog = new Mock<IEventCatalog>();
         var mockEventConverter = new Mock<IEventConverter>();
         var mockEventDispatcher = new Mock<IEventDispatcher>();
-        
+
         mockEventCatalog.Setup(c => c.Get(It.IsAny<string>())).Returns(typeof(StartEvent));
         mockEventConverter.Setup(c => c.Convert(It.IsAny<string>(), It.IsAny<Type>())).Returns(startEvent);
         mockEventDispatcher.Setup(d => d.Dispatch(It.IsAny<object>()));

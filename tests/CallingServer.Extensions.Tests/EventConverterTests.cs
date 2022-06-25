@@ -1,7 +1,7 @@
-﻿using System.Text.Json;
-using AutoFixture;
+﻿using AutoFixture;
 using FluentAssertions;
 using JasonShave.Azure.Communication.Service.CallingServer.Extensions;
+using System.Text.Json;
 
 namespace CallingServer.Extensions.Tests;
 

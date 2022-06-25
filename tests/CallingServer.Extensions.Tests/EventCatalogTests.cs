@@ -1,6 +1,5 @@
 using FluentAssertions;
 using JasonShave.Azure.Communication.Service.CallingServer.Extensions;
-using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Version_2022_11_1;
 
 namespace CallingServer.Extensions.Tests
 {

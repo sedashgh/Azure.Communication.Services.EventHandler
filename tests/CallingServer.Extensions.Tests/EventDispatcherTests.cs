@@ -1,6 +1,5 @@
 ﻿using AutoFixture;
 using FluentAssertions;
-using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Version_2022_11_1;
 using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Version_2022_11_1.Dispatcher;
 using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Version_2022_11_1.Events;
 
