@@ -64,7 +64,8 @@ This needs to be done by every customer for every possible event type which turn
     var builder = WebApplication.CreateBuilder(args);
 
     // add this line to allow DI for the CallingServerClient
-    builder.Services.AddAzureCommunicationServicesCallingServerClient(options => builder.Configuration.Bind(nameof(CallingServerClientSettings), options));
+    builder.Services.AddAzureCommunicationServicesCallingServerClient(options => 
+        builder.Configuration.Bind(nameof(CallingServerClientSettings), options));
     
     var app = builder.Build();
 
@@ -108,7 +109,7 @@ public class CallingServerEventWorkerService : IHostedService
         eventSubscriber.OnCallConnectionStateChanged += HandleOnCallConnectionStateChanged;
     }
 
-    public Task StartAsync(CancellationToken cancellationToken)
+    public async Task StartAsync(CancellationToken cancellationToken)
     {
         while (!cancellationToken.IsCancellationRequested)
         {
@@ -118,9 +119,10 @@ public class CallingServerEventWorkerService : IHostedService
         return Task.CompletedTask;
     }
 
-    private void HandleOnCallConnectionStateChanged(object? sender, CallEventArgs<CallConnected> args)
+    private ValueTask HandleOnCallConnectionStateChanged(CallConnectionStateChanged args)
     {
-        _logger.LogInformation($"Call connection ID: {args.Event.CallConnectionId}");
+        _logger.LogInformation($"Call connection ID: {args.CallConnectionId}");
+        return ValueTask.CompletedTask;
     }
 }
 ```

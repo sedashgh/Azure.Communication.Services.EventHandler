@@ -18,25 +18,22 @@ public class EventDispatcherTests
 
         var subject = new CallingServerEventDispatcher();
 
-        subject.OnCallConnected += (sender, args) =>
+        subject.OnCallConnected += async args =>
         {
-            sender.Should().NotBeNull();
             args.Should().NotBeNull();
-            args.Event.Should().BeOfType<CallConnectedEvent>();
+            args.Should().BeOfType<CallConnectedEvent>();
         };
 
-        subject.OnCallDisconnected += (sender, args) =>
+        subject.OnCallDisconnected += async args =>
         {
-            sender.Should().NotBeNull();
             args.Should().NotBeNull();
-            args.Event.Should().BeOfType<CallDisconnectedEvent>();
+            args.Should().BeOfType<CallDisconnectedEvent>();
         };
 
-        subject.OnCallConnectionStateChanged += (sender, args) =>
+        subject.OnCallConnectionStateChanged += async args =>
         {
-            sender.Should().NotBeNull();
             args.Should().NotBeNull();
-            args.Event.Should().BeOfType<CallConnectionStateChanged>();
+            args.Should().BeOfType<CallConnectionStateChanged>();
         };
 
         // act
