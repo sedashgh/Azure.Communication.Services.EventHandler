@@ -2,7 +2,7 @@
 
 This .NET library provides a set of convenience layer services and extensions to the `Azure.Communication.Service.CallingServer` library currently in Public Preview.
 
-## Overcoming common challenges
+## Common event handling challenges
 
 A common task developers must undertake with an event-driven platform is to deal with a common event payload which wraps a variation of models often denoted with a type identifier. Consider the following event, `CallConnected` which is 'wrapped' in an `Azure.Messaging.CloudEvent` type:
 
@@ -41,12 +41,12 @@ if (cloudEvent[0].Type == "Microsoft.Communication.CallConnected")
 }
 ```
 
-This needs to be done by every customer for every possible event type using the `Azure.Communication.Service.CallingServer` library.
+This needs to be done by every customer for every possible event type which turns the focus of the developer away from the business problem they're solving and concerns them with the non-functional challenges of working with such a platform.
 
-## Configuration
+## Setup & configuration
 
-1. Add the Nuget package `JasonShave.Azure.Communication.Service.CallingServer.Extensions` to your .NET project
-2. Set your `ConnectionString` property in your [.NET User Secrets store](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-6.0&tabs=windows), `appsettings.json`, or anywhere your `IConfiguration` provider can look for the `QueueClientSettings`. For example:
+1. Clone this repository and add it as a reference to your .NET project.
+2. Set your Azure Communication Service `ConnectionString` property in your [.NET User Secrets store](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-6.0&tabs=windows), `appsettings.json`, or anywhere your `IConfiguration` provider can look for the `QueueClientSettings`. For example:
 
     ```json
     {
@@ -125,6 +125,23 @@ public class CallingServerEventWorkerService : IHostedService
 }
 ```
 
+## Injecting the CallingServerClient using DI
+
+Following the guidance in the configuration section above, the `CallingServerClient` is registered as a singleton in .NET's dependency injection container. Simply use it with constructor injection as follows:
+
+```csharp
+public class Worker
+{
+    private readonly CallingServerClient _client;
+
+    public Worker(CallingServerClient client) => _client = client;
+
+    public async Task DoWork()
+    {
+        await _client.CreateCallAsync();
+    }
+}
+```
 
 ## License
 

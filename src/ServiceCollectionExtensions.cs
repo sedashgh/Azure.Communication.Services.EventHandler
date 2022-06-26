@@ -29,15 +29,9 @@ namespace JasonShave.Azure.Communication.Service.CallingServer.Extensions
 
         private static void AddServices(IServiceCollection services, string connectionString, string? pmaEndpoint)
         {
-            if (pmaEndpoint is not null)
-            {
-                services.AddSingleton(new CallingServerClient(new Uri(pmaEndpoint), connectionString));
-            }
-            else
-            {
-                services.AddSingleton(new CallingServerClient(connectionString));
-
-            }
+            services.AddSingleton(pmaEndpoint is not null
+                ? new CallingServerClient(new Uri(pmaEndpoint), connectionString)
+                : new CallingServerClient(connectionString));
 
             services.AddSingleton<IEventConverter, JsonEventConverter>();
 
