@@ -43,7 +43,7 @@ if (cloudEvent[0].Type == "Microsoft.Communication.CallConnectionStateChanged")
 
 > NOTE: The above example shows the callback containing a collection of `CloudEvent` types. At the time of writing the observed behavior is that only a single event is ever contained within the callback which is why the strict assumption to index "0" is made.
 
-This needs to be done by every customer for every possible event type which turns the focus of the developer away from the business problem they're solving and concerns them with the non-functional challenges of working with such a platform.
+Unfortunately this conditional logic handling needs to be done by every customer for every possible event type which turns the focus of the developer away from their business problem and concerns them with the non-functional challenges.
 
 ## Setup & configuration
 
