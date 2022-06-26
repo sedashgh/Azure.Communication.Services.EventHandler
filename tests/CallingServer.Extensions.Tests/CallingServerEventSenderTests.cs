@@ -24,7 +24,7 @@ public class CallingServerEventSenderTests
         mockEventConverter.Setup(c => c.Convert(It.IsAny<string>(), It.IsAny<Type>())).Returns(startEvent);
         mockEventDispatcher.Setup(d => d.Dispatch(It.IsAny<object>()));
 
-        var subject = new CallingServerEventSender(mockEventCatalog.Object, mockEventDispatcher.Object,
+        var subject = new CallingServerEventPublisher(mockEventCatalog.Object, mockEventDispatcher.Object,
             mockEventConverter.Object);
 
         // act

@@ -9,7 +9,7 @@ namespace CallingServer.Extensions.Tests
         public void Register_Type_Returns_Same_Type()
         {
             // arrange
-            var subject = new EventCatalog();
+            var subject = new EventCatalogService();
 
             // act
             subject
