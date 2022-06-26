@@ -2,7 +2,7 @@
 
 This .NET library provides a set of convenience layer services and extensions to the `Azure.Communication.Service.CallingServer` library currently in Public Preview.
 
-## Overcoming common challenges
+## Common event handling challenges
 
 A common task developers must undertake with an event-driven platform is to deal with a common event payload which wraps a variation of models often denoted with a type identifier. Consider the following event, `CallConnected` which is 'wrapped' in an `Azure.Messaging.CloudEvent` type:
 
@@ -125,6 +125,23 @@ public class CallingServerEventWorkerService : IHostedService
 }
 ```
 
+## Injecting the CallingServerClient using DI
+
+Following the guidance in the configuration section above, the `CallingServerClient` is registered as a singleton in .NET's dependency injection container. Simply use it with constructor injection as follows:
+
+```csharp
+public class Worker
+{
+    private readonly CallingServerClient _client;
+
+    public Worker(CallingServerClient client) => _client = client;
+
+    public async Task DoWork()
+    {
+        await _client.CreateCallAsync();
+    }
+}
+```
 
 ## License
 
