@@ -7,32 +7,44 @@ namespace JasonShave.Azure.Communication.Service.CallingServer.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddAzureCommunicationServicesCallingServerClient(this IServiceCollection services, string connectionString)
+        public static IServiceCollection AddAzureCommunicationServicesCallingServerClient(
+            this IServiceCollection services, string connectionString, string? pmaEndpoint = null)
         {
-            AddServices(connectionString, services);
+            AddServices(services, connectionString, pmaEndpoint);
 
             return services;
         }
 
-        public static IServiceCollection AddAzureCommunicationServicesCallingServerClient(this IServiceCollection services, Action<CallingServerClientSettings> configurationDelegate)
+        public static IServiceCollection AddAzureCommunicationServicesCallingServerClient(
+            this IServiceCollection services, Action<CallingServerClientSettings> configurationDelegate,
+            string? pmaEndpoint = null)
         {
             var callingServerConfiguration = new CallingServerClientSettings();
             configurationDelegate(callingServerConfiguration);
 
-            AddServices(callingServerConfiguration.ConnectionString, services);
+            AddServices(services, callingServerConfiguration.ConnectionString, pmaEndpoint);
 
             return services;
         }
 
-        private static void AddServices(string connectionString, IServiceCollection services)
+        private static void AddServices(IServiceCollection services, string connectionString, string? pmaEndpoint)
         {
-            services.AddSingleton(new CallingServerClient(new Uri("https://x-pma-euno-01.plat.skype.com:6448"), connectionString));
+            if (pmaEndpoint is not null)
+            {
+                services.AddSingleton(new CallingServerClient(new Uri(pmaEndpoint), connectionString));
+            }
+            else
+            {
+                services.AddSingleton(new CallingServerClient(connectionString));
+
+            }
+
             services.AddSingleton<IEventConverter, JsonEventConverter>();
 
             // version 2022-11-1 services
-            services.AddSingleton<IEventCatalog, EventCatalog>();
+            services.AddSingleton<IEventCatalog, EventCatalogService>();
             services.AddSingleton<IEventDispatcher, CallingServerEventDispatcher>();
-            services.AddSingleton<ICallingServerEventSender, CallingServerEventSender>();
+            services.AddSingleton<ICallingServerEventSender, CallingServerEventPublisher>();
             services.AddSingleton<ICallingServerEventSubscriber, CallingServerEventDispatcher>();
         }
     }

@@ -2,13 +2,13 @@
 
 namespace JasonShave.Azure.Communication.Service.CallingServer.Extensions;
 
-internal class CallingServerEventSender : ICallingServerEventSender
+internal class CallingServerEventPublisher : ICallingServerEventSender
 {
     private readonly IEventCatalog _eventCatalog;
     private readonly IEventDispatcher _eventDispatcher;
     private readonly IEventConverter _eventConverter;
 
-    public CallingServerEventSender(
+    public CallingServerEventPublisher(
         IEventCatalog eventCatalog,
         IEventDispatcher eventDispatcher,
         IEventConverter eventConverter)

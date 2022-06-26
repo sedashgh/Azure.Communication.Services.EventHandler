@@ -2,7 +2,7 @@
 
 namespace JasonShave.Azure.Communication.Service.CallingServer.Extensions;
 
-internal class EventCatalog : IEventCatalog
+internal class EventCatalogService : IEventCatalog
 {
     private const string _eventPrefix = "Microsoft.Communication.";
     private readonly Dictionary<string, Type> _eventCatalog = new();
