@@ -45,7 +45,7 @@ This needs to be done by every customer for every possible event type using the 
 
 ## Configuration
 
-1. Add the Nuget package `JasonShave.Azure.Communication.Service.CallingServer.Extensions` to your .NET project
+1. Clone this repository and add it as a reference to your .NET project.
 2. Set your `ConnectionString` property in your [.NET User Secrets store](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-6.0&tabs=windows), `appsettings.json`, or anywhere your `IConfiguration` provider can look for the `QueueClientSettings`. For example:
 
     ```json
