@@ -41,12 +41,12 @@ if (cloudEvent[0].Type == "Microsoft.Communication.CallConnected")
 }
 ```
 
-This needs to be done by every customer for every possible event type using the `Azure.Communication.Service.CallingServer` library.
+This needs to be done by every customer for every possible event type which turns the focus of the developer away from the business problem they're solving and concerns them with the non-functional challenges of working with such a platform.
 
-## Configuration
+## Setup & configuration
 
 1. Clone this repository and add it as a reference to your .NET project.
-2. Set your `ConnectionString` property in your [.NET User Secrets store](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-6.0&tabs=windows), `appsettings.json`, or anywhere your `IConfiguration` provider can look for the `QueueClientSettings`. For example:
+2. Set your Azure Communication Service `ConnectionString` property in your [.NET User Secrets store](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-6.0&tabs=windows), `appsettings.json`, or anywhere your `IConfiguration` provider can look for the `QueueClientSettings`. For example:
 
     ```json
     {
