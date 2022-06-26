@@ -34,12 +34,14 @@ CloudEvent[] cloudEvent = JsonSerializer.Deserialize<CloudEvent[]>(requestBody);
 You then need to invoke conditional logic with "magic strings" against the `type` property to understand what payload exists in the `data` object, then deserialize that into something useful as follows:
 
 ```csharp
-if (cloudEvent[0].Type == "Microsoft.Communication.CallConnected")
+if (cloudEvent[0].Type == "Microsoft.Communication.CallConnectionStateChanged")
 {
-    CallConnected callConnectedEvent = JsonSerializer.Deserialize<CallConnected>(cloudEvent[0].Data);
+    CallConnectionStateChanged @event = JsonSerializer.Deserialize<CallConnectionStateChanged>(cloudEvent[0].Data);
     // now you can invoke your action based on this event
 }
 ```
+
+> NOTE: The above example shows the callback containing a collection of `CloudEvent` types. At the time of writing the observed behavior is that only a single event is ever contained within the callback which is why the strict assumption to index "0" is made.
 
 This needs to be done by every customer for every possible event type which turns the focus of the developer away from the business problem they're solving and concerns them with the non-functional challenges of working with such a platform.
 
