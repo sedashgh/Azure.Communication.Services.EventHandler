@@ -96,21 +96,23 @@ public class CloudEventHandler : IEventHandler<CloudEvent>
 }
 ```
 
-## Subscribing to CallingServer events
+## Subscribing to CallingServer callback events
 
-As mentioned above, the `CloudEvent` is pushed and the corresponding C# event is invoked and subscribed to as follows:
+As mentioned above, the `CloudEvent` is pushed and the corresponding C# event is invoked and subscribed to. The example below shows a .NET worker service wiring up the event handler as follows:
 
 ```csharp
 public class CallingServerEventWorkerService : IHostedService
 {
-    public CallingServerEventWorkerService(ICallingServerEventSubscriber eventSubscriber)
-    {        
-        // subscribe to events
-        eventSubscriber.OnCallConnectionStateChanged += HandleOnCallConnectionStateChanged;
-    }
+    private readonly ICallingServerEventSubscriber _eventSubscriber;
+
+    public CallingServerEventWorkerService(ICallingServerEventSubscriber eventSubscriber) => 
+        _eventSubscriber = eventSubscriber;
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
+        // subscribe when the application starts
+        _eventSubscriber.OnCallConnectionStateChanged += HandleOnCallConnectionStateChanged;
+
         while (!cancellationToken.IsCancellationRequested)
         {
             Task.Delay(1000, cancellationToken);
@@ -118,6 +120,10 @@ public class CallingServerEventWorkerService : IHostedService
 
         return Task.CompletedTask;
     }
+
+    // unsubscribe when the application stops
+    public async Task StopAsync(CancellationToken cancellationToken) => 
+        _eventSubscriber -= HandleOnCallConnectionStateChanged;
 
     private ValueTask HandleOnCallConnectionStateChanged(CallConnectionStateChanged args)
     {
