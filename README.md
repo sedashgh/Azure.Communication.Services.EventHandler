@@ -34,14 +34,16 @@ CloudEvent[] cloudEvent = JsonSerializer.Deserialize<CloudEvent[]>(requestBody);
 You then need to invoke conditional logic with "magic strings" against the `type` property to understand what payload exists in the `data` object, then deserialize that into something useful as follows:
 
 ```csharp
-if (cloudEvent[0].Type == "Microsoft.Communication.CallConnected")
+if (cloudEvent[0].Type == "Microsoft.Communication.CallConnectionStateChanged")
 {
-    CallConnected callConnectedEvent = JsonSerializer.Deserialize<CallConnected>(cloudEvent[0].Data);
+    CallConnectionStateChanged @event = JsonSerializer.Deserialize<CallConnectionStateChanged>(cloudEvent[0].Data);
     // now you can invoke your action based on this event
 }
 ```
 
-This needs to be done by every customer for every possible event type which turns the focus of the developer away from the business problem they're solving and concerns them with the non-functional challenges of working with such a platform.
+> NOTE: The above example shows the callback containing a collection of `CloudEvent` types. At the time of writing the observed behavior is that only a single event is ever contained within the callback which is why the strict assumption to index "0" is made.
+
+Unfortunately this conditional logic handling needs to be done by every customer for every possible event type which turns the focus of the developer away from their business problem and concerns them with the non-functional challenges.
 
 ## Setup & configuration
 
@@ -64,7 +66,8 @@ This needs to be done by every customer for every possible event type which turn
     var builder = WebApplication.CreateBuilder(args);
 
     // add this line to allow DI for the CallingServerClient
-    builder.Services.AddAzureCommunicationServicesCallingServerClient(options => builder.Configuration.Bind(nameof(CallingServerClientSettings), options));
+    builder.Services.AddAzureCommunicationServicesCallingServerClient(options => 
+        builder.Configuration.Bind(nameof(CallingServerClientSettings), options));
     
     var app = builder.Build();
 
@@ -95,21 +98,23 @@ public class CloudEventHandler : IEventHandler<CloudEvent>
 }
 ```
 
-## Subscribing to CallingServer events
+## Subscribing to CallingServer callback events
 
-As mentioned above, the `CloudEvent` is pushed and the corresponding C# event is invoked and subscribed to as follows:
+As mentioned above, the `CloudEvent` is pushed and the corresponding C# event is invoked and subscribed to. The example below shows a .NET worker service wiring up the event handler as follows:
 
 ```csharp
 public class CallingServerEventWorkerService : IHostedService
 {
-    public CallingServerEventWorkerService(ICallingServerEventSubscriber eventSubscriber)
-    {        
-        // subscribe to events
-        eventSubscriber.OnCallConnectionStateChanged += HandleOnCallConnectionStateChanged;
-    }
+    private readonly ICallingServerEventSubscriber _eventSubscriber;
 
-    public Task StartAsync(CancellationToken cancellationToken)
+    public CallingServerEventWorkerService(ICallingServerEventSubscriber eventSubscriber) => 
+        _eventSubscriber = eventSubscriber;
+
+    public async Task StartAsync(CancellationToken cancellationToken)
     {
+        // subscribe when the application starts
+        _eventSubscriber.OnCallConnectionStateChanged += HandleOnCallConnectionStateChanged;
+
         while (!cancellationToken.IsCancellationRequested)
         {
             Task.Delay(1000, cancellationToken);
@@ -118,9 +123,14 @@ public class CallingServerEventWorkerService : IHostedService
         return Task.CompletedTask;
     }
 
-    private void HandleOnCallConnectionStateChanged(object? sender, CallEventArgs<CallConnected> args)
+    // unsubscribe when the application stops
+    public async Task StopAsync(CancellationToken cancellationToken) => 
+        _eventSubscriber -= HandleOnCallConnectionStateChanged;
+
+    private ValueTask HandleOnCallConnectionStateChanged(CallConnectionStateChanged args)
     {
-        _logger.LogInformation($"Call connection ID: {args.Event.CallConnectionId}");
+        _logger.LogInformation($"Call connection ID: {args.CallConnectionId}");
+        return ValueTask.CompletedTask;
     }
 }
 ```

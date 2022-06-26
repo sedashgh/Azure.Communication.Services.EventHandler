@@ -6,9 +6,9 @@ namespace JasonShave.Azure.Communication.Service.CallingServer.Extensions.Versio
 public class CallingServerEventDispatcher : IEventDispatcher, ICallingServerEventSubscriber
 {
     // version 2020-11-1 events
-    public event EventHandler<CallEventArgs<CallConnectedEvent>>? OnCallConnected;
-    public event EventHandler<CallEventArgs<CallDisconnectedEvent>>? OnCallDisconnected;
-    public event EventHandler<CallEventArgs<CallConnectionStateChanged>>? OnCallConnectionStateChanged;
+    public event Func<CallConnectedEvent, ValueTask>? OnCallConnected;
+    public event Func<CallDisconnectedEvent, ValueTask>? OnCallDisconnected;
+    public event Func<CallConnectionStateChanged, ValueTask>? OnCallConnectionStateChanged;
 
     private readonly Dictionary<Type, Action<object>> _eventDictionary = new();
 
@@ -16,9 +16,9 @@ public class CallingServerEventDispatcher : IEventDispatcher, ICallingServerEven
     {
         _eventDictionary = new Dictionary<Type, Action<object>>
         {
-            [typeof(CallConnectedEvent)] = evt => OnCallConnected?.Invoke(this, new CallEventArgs<CallConnectedEvent> { Event = (CallConnectedEvent)evt }),
-            [typeof(CallDisconnectedEvent)] = evt => OnCallDisconnected?.Invoke(this, new CallEventArgs<CallDisconnectedEvent> { Event = (CallDisconnectedEvent)evt }),
-            [typeof(CallConnectionStateChanged)] = evt => OnCallConnectionStateChanged?.Invoke(this, new CallEventArgs<CallConnectionStateChanged> { Event = (CallConnectionStateChanged)evt }),
+            [typeof(CallConnectedEvent)] = evt => OnCallConnected?.Invoke((CallConnectedEvent)evt),
+            [typeof(CallDisconnectedEvent)] = evt => OnCallDisconnected?.Invoke((CallDisconnectedEvent)evt),
+            [typeof(CallConnectionStateChanged)] = evt => OnCallConnectionStateChanged?.Invoke((CallConnectionStateChanged)evt),
         };
     }
 

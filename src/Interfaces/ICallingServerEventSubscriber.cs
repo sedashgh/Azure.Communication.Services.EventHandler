@@ -4,7 +4,7 @@ namespace JasonShave.Azure.Communication.Service.CallingServer.Extensions.Interf
 
 public interface ICallingServerEventSubscriber
 {
-    event EventHandler<CallEventArgs<CallConnectedEvent>>? OnCallConnected;
-    event EventHandler<CallEventArgs<CallDisconnectedEvent>>? OnCallDisconnected;
-    event EventHandler<CallEventArgs<CallConnectionStateChanged>>? OnCallConnectionStateChanged;
+    event Func<CallConnectedEvent, ValueTask>? OnCallConnected;
+    event Func<CallDisconnectedEvent, ValueTask>? OnCallDisconnected;
+    event Func<CallConnectionStateChanged, ValueTask>? OnCallConnectionStateChanged;
 }
