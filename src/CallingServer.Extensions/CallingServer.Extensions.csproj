@@ -22,7 +22,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\images\jasonshave.png">
+    <None Include="..\..\images\jasonshave.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
@@ -32,7 +32,6 @@
     <PackageReference Include="Azure.Communication.CallingServer" Version="1.0.0-alpha.20220616.1" />
     <PackageReference Include="Azure.Core" Version="1.24.0" />
     <PackageReference Include="Azure.Messaging.EventGrid" Version="4.10.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
     <InternalsVisibleTo Include="CallingServer.Extensions.Tests" />
   </ItemGroup>
@@ -50,7 +49,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\CallingServer.EventHandler.Abstractions\CallingServer.EventHandler.Abstractions\CallingServer.EventHandler.Abstractions.csproj" />
+	  <ProjectReference Include="..\CallingServer.Contracts\CallingServer.Contracts.csproj" />
+	  <ProjectReference Include="..\CallingServer.EventHandler.Abstractions\CallingServer.EventHandler.Abstractions.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -62,5 +62,9 @@
       <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Interfaces\" />
+	</ItemGroup>
 
 </Project>

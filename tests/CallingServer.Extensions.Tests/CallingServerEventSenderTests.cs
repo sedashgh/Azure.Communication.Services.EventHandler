@@ -1,8 +1,8 @@
 ﻿using AutoFixture;
-using JasonShave.Azure.Communication.Service.CallingServer.EventHandler;
-using JasonShave.Azure.Communication.Service.CallingServer.EventHandler.Abstractions;
 using Moq;
 using System.Text.Json;
+using JasonShave.Azure.Communication.Service.CallingServer.EventHandler;
+using JasonShave.Azure.Communication.Service.CallingServer.EventHandler.Abstractions;
 
 namespace CallingServer.Extensions.Tests;
 

@@ -35,7 +35,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\CallingServer.EventHandler.Abstractions\CallingServer.EventHandler.Abstractions.csproj" />
     <ProjectReference Include="..\..\src\CallingServer.EventHandler.Abstractions\CallingServer.EventHandler.Abstractions\CallingServer.EventHandler.Abstractions.csproj" />
+    <ProjectReference Include="..\..\src\CallingServer.EventHandler\CallingServer.EventHandler.csproj" />
     <ProjectReference Include="..\..\src\CallingServer.EventHandler\CallingServer.EventHandler\CallingServer.EventHandler.csproj" />
   </ItemGroup>
 

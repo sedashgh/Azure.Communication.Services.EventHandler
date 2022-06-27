@@ -1,7 +1,7 @@
 ﻿using AutoFixture;
 using FluentAssertions;
-using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Version_2022_11_1.Dispatcher;
-using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Version_2022_11_1.Events;
+using JasonShave.Azure.Communication.Service.CallingServer.Contracts.V2022_11_1.Events;
+using JasonShave.Azure.Communication.Service.CallingServer.EventHandler.Version_2022_11_1.Dispatcher;
 
 namespace CallingServer.Extensions.Tests;
 

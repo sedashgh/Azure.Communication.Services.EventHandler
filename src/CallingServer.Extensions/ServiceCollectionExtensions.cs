@@ -1,6 +1,4 @@
 ﻿using Azure.Communication.CallingServer;
-using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Interfaces;
-using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Version_2022_11_1.Dispatcher;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JasonShave.Azure.Communication.Service.CallingServer.Extensions

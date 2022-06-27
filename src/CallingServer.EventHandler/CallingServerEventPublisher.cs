@@ -1,9 +1,8 @@
 ﻿using JasonShave.Azure.Communication.Service.CallingServer.EventHandler.Abstractions;
-using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Interfaces;
 
 namespace JasonShave.Azure.Communication.Service.CallingServer.EventHandler;
 
-internal class CallingServerEventPublisher : ICallingServerEventSender
+public class CallingServerEventPublisher : IEventPublisher
 {
     private readonly IEventCatalog _eventCatalog;
     private readonly IEventDispatcher _eventDispatcher;
