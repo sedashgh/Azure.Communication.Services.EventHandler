@@ -1,6 +1,6 @@
 ﻿using AutoFixture;
-using JasonShave.Azure.Communication.Service.CallingServer.Extensions;
-using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Interfaces;
+using JasonShave.Azure.Communication.Service.CallingServer.EventHandler;
+using JasonShave.Azure.Communication.Service.CallingServer.EventHandler.Abstractions;
 using Moq;
 using System.Text.Json;
 

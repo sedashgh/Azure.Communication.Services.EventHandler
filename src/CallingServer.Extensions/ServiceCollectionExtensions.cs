@@ -16,11 +16,11 @@ namespace JasonShave.Azure.Communication.Service.CallingServer.Extensions
         }
 
         public static IServiceCollection AddAzureCommunicationServicesCallingServerClient(
-            this IServiceCollection services, Action<CallingServerClientSettings> configurationDelegate,
+            this IServiceCollection services, Action<CallingServerClientSettings> clientSettingsDelegate,
             string? pmaEndpoint = null)
         {
             var callingServerConfiguration = new CallingServerClientSettings();
-            configurationDelegate(callingServerConfiguration);
+            clientSettingsDelegate(callingServerConfiguration);
 
             AddServices(services, callingServerConfiguration.ConnectionString, pmaEndpoint);
 
@@ -32,14 +32,6 @@ namespace JasonShave.Azure.Communication.Service.CallingServer.Extensions
             services.AddSingleton(pmaEndpoint is not null
                 ? new CallingServerClient(new Uri(pmaEndpoint), connectionString)
                 : new CallingServerClient(connectionString));
-
-            services.AddSingleton<IEventConverter, JsonEventConverter>();
-
-            // version 2022-11-1 services
-            services.AddSingleton<IEventCatalog, EventCatalogService>();
-            services.AddSingleton<IEventDispatcher, CallingServerEventDispatcher>();
-            services.AddSingleton<ICallingServerEventSender, CallingServerEventPublisher>();
-            services.AddSingleton<ICallingServerEventSubscriber, CallingServerEventDispatcher>();
         }
     }
 }

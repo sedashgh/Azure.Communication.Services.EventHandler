@@ -1,6 +1,6 @@
-﻿using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Interfaces;
+﻿using JasonShave.Azure.Communication.Service.CallingServer.EventHandler.Abstractions;
 
-namespace JasonShave.Azure.Communication.Service.CallingServer.Extensions;
+namespace JasonShave.Azure.Communication.Service.CallingServer.EventHandler;
 
 internal class EventCatalogService : IEventCatalog
 {

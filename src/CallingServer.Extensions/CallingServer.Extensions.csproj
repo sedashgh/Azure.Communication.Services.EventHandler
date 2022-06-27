@@ -22,17 +22,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Dispatcher\**" />
-    <EmbeddedResource Remove="Dispatcher\**" />
-    <None Remove="Dispatcher\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="..\images\jasonshave.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-    <None Include="..\README.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
@@ -60,8 +50,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\CallingServer.EventHandler.Abstractions\CallingServer.EventHandler.Abstractions\CallingServer.EventHandler.Abstractions.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
     <None Update="jasonshave.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
 

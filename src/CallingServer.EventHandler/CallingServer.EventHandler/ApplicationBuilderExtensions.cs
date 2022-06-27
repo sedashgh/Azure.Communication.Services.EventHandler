@@ -1,9 +1,9 @@
-﻿using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Interfaces;
+﻿using JasonShave.Azure.Communication.Service.CallingServer.EventHandler.Abstractions;
 using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Version_2022_11_1.Events;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace JasonShave.Azure.Communication.Service.CallingServer.Extensions;
+namespace JasonShave.Azure.Communication.Service.CallingServer.EventHandler;
 
 public static class ApplicationBuilderExtensions
 {

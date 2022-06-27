@@ -1,6 +1,6 @@
 ﻿using AutoFixture;
 using FluentAssertions;
-using JasonShave.Azure.Communication.Service.CallingServer.Extensions;
+using JasonShave.Azure.Communication.Service.CallingServer.EventHandler;
 using System.Text.Json;
 
 namespace CallingServer.Extensions.Tests;
@@ -24,6 +24,4 @@ public class EventConverterTests
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(startEvent);
     }
-
-
 }

@@ -1,6 +1,6 @@
-﻿namespace JasonShave.Azure.Communication.Service.CallingServer.Extensions.Interfaces;
+﻿namespace JasonShave.Azure.Communication.Service.CallingServer.EventHandler.Abstractions;
 
-internal interface IEventConverter
+public interface IEventConverter
 {
     object? Convert(string stringPayload, Type eventType);
 

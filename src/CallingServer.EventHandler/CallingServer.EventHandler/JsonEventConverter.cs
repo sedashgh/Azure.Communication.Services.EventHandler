@@ -1,7 +1,7 @@
-﻿using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Interfaces;
+﻿using JasonShave.Azure.Communication.Service.CallingServer.EventHandler.Abstractions;
 using System.Text.Json;
 
-namespace JasonShave.Azure.Communication.Service.CallingServer.Extensions;
+namespace JasonShave.Azure.Communication.Service.CallingServer.EventHandler;
 
 public class JsonEventConverter : IEventConverter
 {

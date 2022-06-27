@@ -1,7 +1,7 @@
 ﻿using Azure;
 using Azure.Communication;
 using Azure.Communication.CallingServer;
-using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Models;
+using JasonShave.Azure.Communication.Service.CallingServer.Extensions.Version_2022_11_1.Models;
 
 namespace JasonShave.Azure.Communication.Service.CallingServer.Extensions;
 
