@@ -1,10 +1,10 @@
-# Calling Server Client Extensions Library
+# Azure Communication Service Interaction SDK Client Extensions Library
 
 This .NET library provides a set of convenience layer services and extensions to the `Azure.Communication.Service.CallingServer` library currently in Public Preview.
 
 ## Common event handling challenges
 
-A common task developers must undertake with an event-driven platform is to deal with a common event payload which wraps a variation of models often denoted with a type identifier. Consider the following event, `CallConnected` which is 'wrapped' in an `Azure.Messaging.CloudEvent` type:
+A common task developers must undertake with an event-driven platform is to deal with a common event payload which wraps a variation of models often denoted with a type identifier. Consider the following event, `CallConnectionStateChanged` which is 'wrapped' in an `Azure.Messaging.CloudEvent` type:
 
 ### Azure.Messaging.CloudEvent
 
@@ -12,7 +12,7 @@ A common task developers must undertake with an event-driven platform is to deal
 {
     "id": "7dec6eed-129c-43f3-a2bf-134ac1978168",
     "source": "calling/callConnections/441f1200-fd54-422e-9566-a867d187dca7/callState",
-    "type": "Microsoft.Communication.CallConnected",
+    "type": "Microsoft.Communication.CallConnectionStateChanged",
     "data": {
         "callConnectionId": "441f1200-fd54-422e-9566-a867d187dca7",
         "callConnectionState": "connected"
@@ -28,20 +28,21 @@ Since this event is triggered by a web hook callback, the API controller consumi
 
 ```csharp
 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-CloudEvent[] cloudEvent = JsonSerializer.Deserialize<CloudEvent[]>(requestBody);
+CloudEvent[] cloudEvents = JsonSerializer.Deserialize<CloudEvent[]>(requestBody);
 ```
 
 You then need to invoke conditional logic with "magic strings" against the `type` property to understand what payload exists in the `data` object, then deserialize that into something useful as follows:
 
 ```csharp
-if (cloudEvent[0].Type == "Microsoft.Communication.CallConnectionStateChanged")
+foreach(var cloudEvent in cloudEvents)
 {
-    CallConnectionStateChanged @event = JsonSerializer.Deserialize<CallConnectionStateChanged>(cloudEvent[0].Data);
-    // now you can invoke your action based on this event
+    if (cloudEvent.Type == "Microsoft.Communication.CallConnectionStateChanged")
+    {
+        CallConnectionStateChanged @event = JsonSerializer.Deserialize<CallConnectionStateChanged>(cloudEvent.Data);        
+        // now you can invoke your action based on this event    
+    }
 }
 ```
-
-> NOTE: The above example shows the callback containing a collection of `CloudEvent` types. At the time of writing the observed behavior is that only a single event is ever contained within the callback which is why the strict assumption to index "0" is made.
 
 Unfortunately this conditional logic handling needs to be done by every customer for every possible event type which turns the focus of the developer away from their business problem and concerns them with the non-functional challenges.
 
@@ -66,54 +67,55 @@ Unfortunately this conditional logic handling needs to be done by every customer
     var builder = WebApplication.CreateBuilder(args);
 
     // add this line to allow DI for the CallingServerClient
-    builder.Services.AddAzureCommunicationServicesCallingServerClient(options => 
+    builder.Services.AddInteractionClient(options => 
         builder.Configuration.Bind(nameof(CallingServerClientSettings), options));
     
     var app = builder.Build();
 
-    // add this line to populate the Event Catalog
-    app.UseAzureCallingServerEventDispatcher();
+    // add this line to wire up services and populate the event catalog
+    app.AddInteractionControllerServices();
 
     app.Run();
     ```
 
 ## Sending CloudEvents
 
-Using .NET constructor injection, add the `ICallingServerEventSender` to push `Azure.Messaging.CloudEvent` types into the service where their types are automatically determined/deserialized, and the correct event handler is invoked.
+Using .NET constructor injection, add the `IInteractionEventPublisher` to push `Azure.Messaging.CloudEvent` types into the service where their types are automatically determined/deserialized, and the correct event handler is invoked.
 
 ```csharp
 public class CloudEventHandler : IEventHandler<CloudEvent>
 {
-    private readonly ICallingServerEventSender _eventSender;
+    private readonly IInteractionEventPublisher _publisher;
     
-    public CloudEventHandler(ICallingServerEventSender eventSender) => _eventSender = eventSender;
+    public CloudEventHandler(IInteractionEventPublisher publisher) => 
+        _publisher = publisher;
 
-    public async Task Handle(CloudEvent cloudEvent, CancellationToken cancellationToken)
+    public void Handle(CloudEvent cloudEvent, CancellationToken cancellationToken)
     {
         while (!cancellationToken.IsCancellationRequested)
         {
-            _eventSender.Send(cloudEvent.Data, cloudEvent.Type);
+            _publisher.Publish(cloudEvent.Data, cloudEvent.Type, "myContextId");
         }
     }
 }
 ```
 
-## Subscribing to CallingServer callback events
+## Subscribing to Interaction Controller callback events
 
 As mentioned above, the `CloudEvent` is pushed and the corresponding C# event is invoked and subscribed to. The example below shows a .NET worker service wiring up the event handler as follows:
 
 ```csharp
-public class CallingServerEventWorkerService : IHostedService
+public class CallingServerEventWorkerService : BackgroundService
 {
-    private readonly ICallingServerEventSubscriber _eventSubscriber;
+    private readonly IInteractionEventSubscriber _subscriber;
 
-    public CallingServerEventWorkerService(ICallingServerEventSubscriber eventSubscriber) => 
-        _eventSubscriber = eventSubscriber;
+    public CallingServerEventWorkerService(IInteractionEventSubscriber subscriber) => 
+        _subscriber = subscriber;
 
-    public async Task StartAsync(CancellationToken cancellationToken)
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         // subscribe when the application starts
-        _eventSubscriber.OnCallConnectionStateChanged += HandleOnCallConnectionStateChanged;
+        _subscriber.OnCallConnectionStateChanged += HandleOnCallConnectionStateChanged;
 
         while (!cancellationToken.IsCancellationRequested)
         {
@@ -123,14 +125,10 @@ public class CallingServerEventWorkerService : IHostedService
         return Task.CompletedTask;
     }
 
-    // unsubscribe when the application stops
-    public async Task StopAsync(CancellationToken cancellationToken) => 
-        _eventSubscriber -= HandleOnCallConnectionStateChanged;
-
-    private ValueTask HandleOnCallConnectionStateChanged(CallConnectionStateChanged args)
+    private Task HandleOnCallConnectionStateChanged(CallConnectionStateChanged args, string contextId)
     {
-        _logger.LogInformation($"Call connection ID: {args.CallConnectionId}");
-        return ValueTask.CompletedTask;
+        _logger.LogInformation($"Call connection ID: {args.CallConnectionId} | Context: {contextId}");
+        return Task.CompletedTask;
     }
 }
 ```
