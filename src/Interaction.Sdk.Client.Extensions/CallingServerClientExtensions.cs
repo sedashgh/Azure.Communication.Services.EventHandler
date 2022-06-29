@@ -7,27 +7,6 @@ namespace JasonShave.Azure.Communication.Service.Interaction.Sdk.Client.Extensio
 
 public static class CallingServerClientExtensions
 {
-    public static async Task<Response<CallConnection>> CallAsync(this CallingServerClient callingServerClient,
-        Action<CreateCallOptionsExtensions> createCallOptions)
-    {
-        var options = new CreateCallOptionsExtensions();
-        createCallOptions(options);
-
-        List<CommunicationIdentifier> targets = options.To.Select(target => target.ToCommunicationIdentifier()).ToList();
-
-        Uri callbackUri = default;
-        if (options.CallbackUri is not null)
-        {
-            callbackUri = new Uri(options.CallbackUri);
-        }
-
-        return await callingServerClient.CreateCallAsync(
-            source: options.From.ToCommunicationIdentifier(),
-            targets: targets,
-            callbackUri: callbackUri,
-            options: new CreateCallOptions(new PhoneNumberIdentifier(options.AlternativeCallerId), ""));
-    }
-
     public static async Task<Response> PlayAudioAsync(this CallingServerClient callingServerClient,
         string callConnectionId,
         Action<PlayAudioOptionsExtensions> playAudioOptions, CancellationToken cancellationToken)
