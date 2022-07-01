@@ -22,7 +22,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Azure.Communication.CallingServer" Version="1.0.0-alpha.20220628.1" />
+    <PackageReference Include="Azure.Communication.CallingServer" Version="1.0.0-alpha.20220701.1" />
     <PackageReference Include="Azure.Core" Version="1.24.0" />
     <PackageReference Include="Azure.Messaging.EventGrid" Version="4.10.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />

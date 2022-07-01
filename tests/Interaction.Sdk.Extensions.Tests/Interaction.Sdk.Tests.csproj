@@ -35,6 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\EventHandler.Abstractions\EventHandler.Abstractions.csproj" />
     <ProjectReference Include="..\..\src\Interaction.Sdk.EventHandler\Interaction.Sdk.EventHandler.csproj" />
   </ItemGroup>
 

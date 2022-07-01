@@ -14,7 +14,6 @@
 
   <ItemGroup>
 	  <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
-	  <PackageReference Include="System.Memory.Data" Version="1.0.2" />
   </ItemGroup>
 	<ItemGroup>
 		<!-- Make assembly visible to test assembly -->
@@ -30,6 +29,7 @@
 
 	<ItemGroup>
 		<InternalsVisibleTo Include="Interaction.Sdk.Tests" />
+		<ProjectReference Include="..\EventHandler.Abstractions\EventHandler.Abstractions.csproj" />
 		<ProjectReference Include="..\Interaction.Sdk.Contracts\Interaction.Sdk.Contracts.csproj" />
 	</ItemGroup>
 </Project>

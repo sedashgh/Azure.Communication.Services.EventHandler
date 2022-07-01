@@ -1,7 +1,7 @@
-﻿using System.Text.Json;
-using AutoFixture;
+﻿using AutoFixture;
 using FluentAssertions;
-using JasonShave.Azure.Communication.Service.Interaction.Sdk.EventHandler;
+using JasonShave.Azure.Communication.Service.EventHandler.Abstractions;
+using System.Text.Json;
 
 namespace Interaction.Sdk.Tests;
 
@@ -15,7 +15,7 @@ public class EventConverterTests
         var startEvent = fixture.Create<StartEvent>();
         var startEventJson = JsonSerializer.Serialize(startEvent);
 
-        var subject = new JsonEventConverter();
+        var subject = new JsonEventConverter(new JsonSerializerOptions());
 
         // act
         var result = subject.Convert(startEventJson, typeof(StartEvent));

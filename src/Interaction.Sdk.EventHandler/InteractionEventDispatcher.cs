@@ -1,11 +1,10 @@
-﻿using JasonShave.Azure.Communication.Service.Interaction.Sdk.Contracts.V2022_11_1.Events;
-using JasonShave.Azure.Communication.Service.Interaction.Sdk.EventHandler.Interfaces;
+﻿using JasonShave.Azure.Communication.Service.EventHandler.Abstractions.Interfaces;
+using JasonShave.Azure.Communication.Service.Interaction.Sdk.Contracts.V2022_11_1_preview.Events;
 
 namespace JasonShave.Azure.Communication.Service.Interaction.Sdk.EventHandler;
 
-public class InteractionEventDispatcher : IEventDispatcher, IInteractionEventSubscriber
+internal class InteractionEventDispatcher : IEventDispatcher<Interaction>, IInteractionEventSubscriber
 {
-    // version 2020-11-1 events
     public event Func<IncomingCall, string, Task>? OnIncomingCall;
     public event Func<CallConnectedEvent, string, Task>? OnCallConnected;
     public event Func<CallDisconnectedEvent, string, Task>? OnCallDisconnected;
@@ -18,9 +17,9 @@ public class InteractionEventDispatcher : IEventDispatcher, IInteractionEventSub
         _eventDictionary = new Dictionary<Type, Func<object, string, Task>>
         {
             [typeof(IncomingCall)] = async (@event, contextId) => await OnIncomingCall?.Invoke((IncomingCall)@event, contextId),
-            [typeof(CallConnectedEvent)] = (@event, contextId) => OnCallConnected?.Invoke((CallConnectedEvent)@event, contextId),
-            [typeof(CallDisconnectedEvent)] = (@event, contextId) => OnCallDisconnected?.Invoke((CallDisconnectedEvent)@event, contextId),
-            [typeof(CallConnectionStateChanged)] = (@event, contextId) => OnCallConnectionStateChanged?.Invoke((CallConnectionStateChanged)@event, contextId),
+            [typeof(CallConnectedEvent)] = async (@event, contextId) => await OnCallConnected?.Invoke((CallConnectedEvent)@event, contextId),
+            [typeof(CallDisconnectedEvent)] = async (@event, contextId) => await OnCallDisconnected?.Invoke((CallDisconnectedEvent)@event, contextId),
+            [typeof(CallConnectionStateChanged)] = async (@event, contextId) => await OnCallConnectionStateChanged?.Invoke((CallConnectionStateChanged)@event, contextId),
         };
     }
 
