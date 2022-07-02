@@ -1,8 +1,8 @@
-# Azure Communication Service Interaction SDK Client Extensions Library
+# Azure Communication Service Event Handler Library
 
-This .NET library provides a set of convenience layer services and extensions to the `Azure.Communication.Service.CallingServer` library currently in Public Preview.
+This .NET library provides a set of convenience layer services and extensions to the `Azure.Communication.Service.CallingServer` and `Azure.Communication.Service.JobRouter` libraries currently in Public/Private preview.
 
-## Common event handling challenges
+## Common event handling and orchestration challenges
 
 A common task developers must undertake with an event-driven platform is to deal with a common event payload which wraps a variation of models often denoted with a type identifier. Consider the following event, `CallConnectionStateChanged` which is 'wrapped' in an `Azure.Messaging.CloudEvent` type:
 
@@ -46,7 +46,7 @@ foreach(var cloudEvent in cloudEvents)
 
 Unfortunately this conditional logic handling needs to be done by every customer for every possible event type which turns the focus of the developer away from their business problem and concerns them with the non-functional challenges.
 
-## Setup & configuration
+## CallingServerClient configuration
 
 1. Clone this repository and add it as a reference to your .NET project.
 2. Set your Azure Communication Service `ConnectionString` property in your [.NET User Secrets store](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-6.0&tabs=windows), `appsettings.json`, or anywhere your `IConfiguration` provider can look for the `QueueClientSettings`. For example:
@@ -59,7 +59,7 @@ Unfortunately this conditional logic handling needs to be done by every customer
     }
     ```
 
-## Setting up dependency injection
+## CallingServerClient dependency injection configuration
 
 1. Add the following to your .NET 6 or higher `Program.cs` file:
 
@@ -72,45 +72,71 @@ Unfortunately this conditional logic handling needs to be done by every customer
     
     var app = builder.Build();
 
-    // add this line to wire up services and populate the event catalog
-    app.AddInteractionControllerServices();
+    app.Run();
+    ```
+
+## Event handling dependency injection configuration
+
+1. Add the following to your .NET 6 or higher `Program.cs` file:
+
+    ```csharp
+    var builder = WebApplication.CreateBuilder(args);
+
+    builder.Services.AddEventHandlerServices() //<--adds common event handling services
+        .AddInteractionEventHandling() //<--adds support for Interaction SDK events
+        .AddJobRouterEventHandling(); //<--adds support for Job Router events
+    
+    var app = builder.Build();
 
     app.Run();
     ```
 
-## Sending CloudEvents
+## Publishing CloudEvents and EventGridEvents
 
-Using .NET constructor injection, add the `IInteractionEventPublisher` to push `Azure.Messaging.CloudEvent` types into the service where their types are automatically determined/deserialized, and the correct event handler is invoked.
+Using .NET constructor injection, add the `IEventPublisher<Interaction>` or `IEventPublisher<JobRouter>` to push `Azure.Messaging.CloudEvent` and `Azure.Messaging.EventGrid` messages into the services where their types are automatically cast, deserialized, and the correct event handler is invoked.
 
 ```csharp
-public class CloudEventHandler : IEventHandler<CloudEvent>
+public class SomeEventHandler : 
+    IEventHandler<CloudEvent>, 
+    IEventHandler<EventGridEvent>
 {
-    private readonly IInteractionEventPublisher _publisher;
+    private readonly IEventPublisher<Interaction> _interactionPublisher;
+    private readonly IEventPublisher<JobRouter> _jobRouterPublisher;
     
-    public CloudEventHandler(IInteractionEventPublisher publisher) => 
-        _publisher = publisher;
-
-    public void Handle(CloudEvent cloudEvent, CancellationToken cancellationToken)
+    public SomeEventHandler(
+        IEventPublisher<Interaction> interactionPublisher,
+        IEventPublisher<JobRouter> jobRouterPublisher)
     {
-        while (!cancellationToken.IsCancellationRequested)
-        {
-            _publisher.Publish(cloudEvent.Data, cloudEvent.Type, "myContextId");
-        }
+        _interactionPublisher = interactionPublisher;
+        _jobRouterPublisher = jobRouterPublisher;
     }
+
+    public void Handle(CloudEvent cloudEvent) =>
+        _interactionPublisher.Publish(cloudEvent.Data, cloudEvent.Type, "myContextId");
+
+    public void Handle(EventGridEvent eventGridEvent) =>
+        _jobRouterPublisher.Publish(eventGridEvent.Data, eventGridEvent.EventType);
 }
 ```
 
-## Subscribing to Interaction Controller callback events
+## Subscribing to Interaction and Job Router events
 
-As mentioned above, the `CloudEvent` is pushed and the corresponding C# event is invoked and subscribed to. The example below shows a .NET worker service wiring up the event handler as follows:
+As mentioned above, the `CloudEvent` or `EventGridEvent` is pushed and the corresponding C# event is invoked and subscribed to. For the Interaction SDK, incoming calls are delivered using Event Grid and mid-call events are delivered through web hook callbacks. Job Router uses Event Grid to deliver all events. The example below shows a .NET background service wiring up the event handler as follows:
 
 ```csharp
-public class CallingServerEventWorkerService : BackgroundService
+public class MyService : BackgroundService
 {
-    private readonly IInteractionEventSubscriber _subscriber;
+    private readonly IInteractionEventSubscriber _interactionSubscriber;
+    private readonly IJobRouterEventSubscriber _jobRouterSubscriber;
 
-    public CallingServerEventWorkerService(IInteractionEventSubscriber subscriber) => 
-        _subscriber = subscriber;
+    public MyService(
+        IInteractionEventSubscriber interationSubscriber,
+        IJobRouterEventSubscriber jobRouterSubscriber)
+    {
+        _interactionSubscriber = interactionSubscriber;
+        _jobRouterSubscriber = jobRouterSubscriber
+    }
+    
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
