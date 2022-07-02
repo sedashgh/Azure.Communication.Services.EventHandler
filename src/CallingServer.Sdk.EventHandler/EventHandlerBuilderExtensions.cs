@@ -23,7 +23,7 @@ public static class EventHandlerBuilderExtensions
 
         var dispatcher = new CallingServerEventDispatcher();
         eventHandlerBuilder.Services.AddSingleton<IEventDispatcher<CallingServer>>(dispatcher);
-        eventHandlerBuilder.Services.AddSingleton<ICallingServerEventDispatcher>(dispatcher);
+        eventHandlerBuilder.Services.AddSingleton<ICallingServerEventSubscriber>(dispatcher);
 
         return eventHandlerBuilder;
     }

@@ -1,13 +1,14 @@
-﻿using AutoFixture;
+﻿using System.Text.Json;
+using AutoFixture;
+using JasonShave.Azure.Communication.Service.CallingServer.Sdk.EventHandler;
 using JasonShave.Azure.Communication.Service.EventHandler.Abstractions;
 using JasonShave.Azure.Communication.Service.EventHandler.Abstractions.Interfaces;
 using Microsoft.Extensions.Logging;
 using Moq;
-using System.Text.Json;
 
-namespace Interaction.Sdk.Tests;
+namespace Azure.Communication.Service.Tests;
 
-public class InteractionEventPublisherTests
+public class CallingServerEventPublisherTests
 {
     [Fact(DisplayName = "Interaction publisher works")]
     public void Should_Send()
@@ -17,16 +18,16 @@ public class InteractionEventPublisherTests
         var startEvent = fixture.Create<StartEvent>();
         var startEventJson = JsonSerializer.Serialize(startEvent);
 
-        var mockEventCatalog = new Mock<IEventCatalog<JasonShave.Azure.Communication.Service.Interaction.Sdk.EventHandler.Interaction>>();
+        var mockEventCatalog = new Mock<IEventCatalog<CallingServer>>();
         var mockEventConverter = new Mock<IEventConverter>();
-        var mockEventDispatcher = new Mock<IEventDispatcher<JasonShave.Azure.Communication.Service.Interaction.Sdk.EventHandler.Interaction>>();
-        var mockLogger = new Mock<ILogger<EventPublisher<JasonShave.Azure.Communication.Service.Interaction.Sdk.EventHandler.Interaction>>>();
+        var mockEventDispatcher = new Mock<IEventDispatcher<CallingServer>>();
+        var mockLogger = new Mock<ILogger<EventPublisher<CallingServer>>>();
 
         mockEventCatalog.Setup(c => c.Get(It.IsAny<string>())).Returns(typeof(StartEvent));
         mockEventConverter.Setup(c => c.Convert(It.IsAny<BinaryData>(), It.IsAny<Type>())).Returns(startEvent);
         mockEventDispatcher.Setup(d => d.Dispatch(It.IsAny<object>(), It.IsAny<Type>(), It.IsAny<string>()));
 
-        var subject = new EventPublisher<JasonShave.Azure.Communication.Service.Interaction.Sdk.EventHandler.Interaction>(
+        var subject = new EventPublisher<CallingServer>(
             mockLogger.Object,
             mockEventCatalog.Object,
             mockEventDispatcher.Object,

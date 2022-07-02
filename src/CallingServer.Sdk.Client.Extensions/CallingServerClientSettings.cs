@@ -1,4 +1,4 @@
-﻿namespace JasonShave.Azure.Communication.Service.Interaction.Sdk.Client.Extensions;
+﻿namespace JasonShave.Azure.Communication.Service.CallingServer.Sdk.Client.Extensions;
 
 public class CallingServerClientSettings
 {

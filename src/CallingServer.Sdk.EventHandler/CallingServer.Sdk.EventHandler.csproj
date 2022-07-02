@@ -28,7 +28,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<InternalsVisibleTo Include="Interaction.Sdk.Tests" />
+		<InternalsVisibleTo Include="Azure.Communication.Service.Tests" />
 		<ProjectReference Include="..\EventHandler.Abstractions\EventHandler.Abstractions.csproj" />
 		<ProjectReference Include="..\CallingServer.Sdk.Contracts\CallingServer.Sdk.Contracts.csproj" />
 	</ItemGroup>

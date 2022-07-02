@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace JasonShave.Azure.Communication.Service.Interaction.Sdk.Contracts.V2022_11_1_preview.Events;
+namespace JasonShave.Azure.Communication.Service.CallingServer.Sdk.Contracts.V2022_11_1_preview.Events;
 
 [Serializable]
 public class IncomingCall
