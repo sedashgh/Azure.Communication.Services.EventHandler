@@ -10,7 +10,7 @@
 
 	<ItemGroup>
 		<InternalsVisibleTo Include="JobRouter.Sdk.EventHandler" />
-		<InternalsVisibleTo Include="Interaction.Sdk.EventHandler" />
+		<InternalsVisibleTo Include="CallingServer.Sdk.EventHandler" />
 	</ItemGroup>
 
 	<ItemGroup>

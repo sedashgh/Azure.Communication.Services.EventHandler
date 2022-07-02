@@ -46,35 +46,6 @@ foreach(var cloudEvent in cloudEvents)
 
 Unfortunately this conditional logic handling needs to be done by every customer for every possible event type which turns the focus of the developer away from their business problem and concerns them with the non-functional challenges.
 
-## CallingServerClient configuration
-
-1. Clone this repository and add it as a reference to your .NET project.
-2. Set your Azure Communication Service `ConnectionString` property in your [.NET User Secrets store](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-6.0&tabs=windows), `appsettings.json`, or anywhere your `IConfiguration` provider can look for the `QueueClientSettings`. For example:
-
-    ```json
-    {
-        "CallingServerClientSettings" : {
-            "ConnectionString": "[your_connection_string]"
-        }
-    }
-    ```
-
-## CallingServerClient dependency injection configuration
-
-1. Add the following to your .NET 6 or higher `Program.cs` file:
-
-    ```csharp
-    var builder = WebApplication.CreateBuilder(args);
-
-    // add this line to allow DI for the CallingServerClient
-    builder.Services.AddInteractionClient(options => 
-        builder.Configuration.Bind(nameof(CallingServerClientSettings), options));
-    
-    var app = builder.Build();
-
-    app.Run();
-    ```
-
 ## Event handling dependency injection configuration
 
 1. Add the following to your .NET 6 or higher `Program.cs` file:
@@ -83,7 +54,7 @@ Unfortunately this conditional logic handling needs to be done by every customer
     var builder = WebApplication.CreateBuilder(args);
 
     builder.Services.AddEventHandlerServices() //<--adds common event handling services
-        .AddInteractionEventHandling() //<--adds support for Interaction SDK events
+        .AddCallingServerEventHandling() //<--adds support for CallingServer SDK events
         .AddJobRouterEventHandling(); //<--adds support for Job Router events
     
     var app = builder.Build();
@@ -93,55 +64,55 @@ Unfortunately this conditional logic handling needs to be done by every customer
 
 ## Publishing CloudEvents and EventGridEvents
 
-Using .NET constructor injection, add the `IEventPublisher<Interaction>` or `IEventPublisher<JobRouter>` to push `Azure.Messaging.CloudEvent` and `Azure.Messaging.EventGrid` messages into the services where their types are automatically cast, deserialized, and the correct event handler is invoked.
+Using .NET constructor injection, add the `IEventPublisher<CallingServer>` or `IEventPublisher<JobRouter>` to push `Azure.Messaging.CloudEvent` and `Azure.Messaging.EventGrid` messages into the services where their types are automatically cast, deserialized, and the correct event handler is invoked.
 
 ```csharp
 public class SomeEventHandler : 
     IEventHandler<CloudEvent>, 
     IEventHandler<EventGridEvent>
 {
-    private readonly IEventPublisher<Interaction> _interactionPublisher;
+    private readonly IEventPublisher<CallingServer> _callingServerPublisher;
     private readonly IEventPublisher<JobRouter> _jobRouterPublisher;
     
     public SomeEventHandler(
-        IEventPublisher<Interaction> interactionPublisher,
+        IEventPublisher<CallingServer> callingServerPublisher,
         IEventPublisher<JobRouter> jobRouterPublisher)
     {
-        _interactionPublisher = interactionPublisher;
+        _callingServerPublisher = callingServerPublisher;
         _jobRouterPublisher = jobRouterPublisher;
     }
 
     public void Handle(CloudEvent cloudEvent) =>
-        _interactionPublisher.Publish(cloudEvent.Data, cloudEvent.Type, "myContextId");
+        _callingServerPublisher.Publish(cloudEvent.Data, cloudEvent.Type, "myContextId");
 
     public void Handle(EventGridEvent eventGridEvent) =>
         _jobRouterPublisher.Publish(eventGridEvent.Data, eventGridEvent.EventType);
 }
 ```
 
-## Subscribing to Interaction and Job Router events
+## Subscribing to Calling Server and Job Router events
 
-As mentioned above, the `CloudEvent` or `EventGridEvent` is pushed and the corresponding C# event is invoked and subscribed to. For the Interaction SDK, incoming calls are delivered using Event Grid and mid-call events are delivered through web hook callbacks. Job Router uses Event Grid to deliver all events. The example below shows a .NET background service wiring up the event handler as follows:
+As mentioned above, the `CloudEvent` or `EventGridEvent` is pushed and the corresponding C# event is invoked and subscribed to. For the Calling Server SDK, incoming calls are delivered using Event Grid and mid-call events are delivered through web hook callbacks. Job Router uses Event Grid to deliver all events. The example below shows a .NET background service wiring up the event handler as follows:
 
 ```csharp
 public class MyService : BackgroundService
 {
-    private readonly IInteractionEventSubscriber _interactionSubscriber;
+    private readonly ICallingServerEventSubscriber _callingServerSubscriber;
     private readonly IJobRouterEventSubscriber _jobRouterSubscriber;
 
     public MyService(
-        IInteractionEventSubscriber interactionSubscriber,
+        ICallingServerEventSubscriber callingServerSubscriber,
         IJobRouterEventSubscriber jobRouterSubscriber)
     {
-        _interactionSubscriber = interactionSubscriber;
+        _callingServerSubscriber = callingServerSubscriber;
         _jobRouterSubscriber = jobRouterSubscriber
     }
     
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        // subscribe to Interaction and Job Router events
-        _interactionSubscriber.OnCallConnectionStateChanged += HandleOnCallConnectionStateChanged;
+        // subscribe to Calling Server and Job Router events
+        _callingServerSubscriber.OnCallConnectionStateChanged += HandleOnCallConnectionStateChanged;
 
         _jobRouterSubscriber.OnJobQueued += HandleOnJobQueued;
 
@@ -166,6 +137,35 @@ public class MyService : BackgroundService
     }
 }
 ```
+
+## CallingServerClient configuration
+
+1. Clone this repository and add it as a reference to your .NET project.
+2. Set your Azure Communication Service `ConnectionString` property in your [.NET User Secrets store](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-6.0&tabs=windows), `appsettings.json`, or anywhere your `IConfiguration` provider can look for the `QueueClientSettings`. For example:
+
+    ```json
+    {
+        "CallingServerClientSettings" : {
+            "ConnectionString": "[your_connection_string]"
+        }
+    }
+    ```
+
+## CallingServerClient dependency injection configuration
+
+1. Add the following to your .NET 6 or higher `Program.cs` file:
+
+    ```csharp
+    var builder = WebApplication.CreateBuilder(args);
+
+    // add this line to allow DI for the CallingServerClient
+    builder.Services.AddCallingServerClient(options => 
+        builder.Configuration.Bind(nameof(CallingServerClientSettings), options));
+    
+    var app = builder.Build();
+
+    app.Run();
+    ```
 
 ## Injecting the CallingServerClient using DI
 

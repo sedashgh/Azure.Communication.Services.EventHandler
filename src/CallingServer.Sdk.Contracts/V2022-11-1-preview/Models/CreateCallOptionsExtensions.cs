@@ -1,4 +1,4 @@
-﻿namespace JasonShave.Azure.Communication.Service.Interaction.Sdk.Contracts.V2022_11_1_preview.Models;
+﻿namespace JasonShave.Azure.Communication.Service.CallingServer.Sdk.Contracts.V2022_11_1_preview.Models;
 
 public class CreateCallOptionsExtensions
 {

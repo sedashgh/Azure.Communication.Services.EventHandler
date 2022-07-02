@@ -1,9 +1,9 @@
 ﻿using AutoFixture;
 using FluentAssertions;
-using JasonShave.Azure.Communication.Service.Interaction.Sdk.Contracts.V2022_11_1_preview.Events;
-using JasonShave.Azure.Communication.Service.Interaction.Sdk.EventHandler;
+using JasonShave.Azure.Communication.Service.CallingServer.Sdk.Contracts.V2022_11_1_preview.Events;
+using JasonShave.Azure.Communication.Service.CallingServer.Sdk.EventHandler;
 
-namespace Interaction.Sdk.Tests;
+namespace Azure.Communication.Service.Tests;
 
 public class EventDispatcherTests
 {
@@ -18,7 +18,7 @@ public class EventDispatcherTests
         var callConnectionStateChangedEvent = fixture.Create<CallConnectionStateChanged>();
         var incomingCall = fixture.Create<IncomingCall>();
 
-        var subject = new InteractionEventDispatcher();
+        var subject = new CallingServerEventDispatcher();
 
         subject.OnCallConnected += async (@event, contextId) =>
         {

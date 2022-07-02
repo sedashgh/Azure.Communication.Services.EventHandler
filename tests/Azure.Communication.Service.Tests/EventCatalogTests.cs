@@ -1,7 +1,8 @@
 using FluentAssertions;
+using JasonShave.Azure.Communication.Service.CallingServer.Sdk.EventHandler;
 using JasonShave.Azure.Communication.Service.EventHandler.Abstractions;
 
-namespace Interaction.Sdk.Tests
+namespace Azure.Communication.Service.Tests
 {
     public class EventCatalogTests
     {
@@ -9,7 +10,7 @@ namespace Interaction.Sdk.Tests
         public void Register_Type_Returns_Same_Type()
         {
             // arrange
-            var subject = new EventCatalogService<JasonShave.Azure.Communication.Service.Interaction.Sdk.EventHandler.Interaction>();
+            var subject = new EventCatalogService<CallingServer>();
 
             // act
             subject
