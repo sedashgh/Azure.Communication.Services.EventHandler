@@ -2,7 +2,6 @@
 
 namespace JasonShave.Azure.Communication.Service.Interaction.Sdk.EventHandler;
 
-public struct Interaction : IPrimitive
+public struct CallingServer : IPrimitive
 {
-
 }

@@ -42,7 +42,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Interaction.Sdk.Contracts\Interaction.Sdk.Contracts.csproj" />
+	  <ProjectReference Include="..\CallingServer.Sdk.Contracts\CallingServer.Sdk.Contracts.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

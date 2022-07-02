@@ -9,7 +9,7 @@ namespace Interaction.Sdk.Tests
         public void Register_Type_Returns_Same_Type()
         {
             // arrange
-            var subject = new EventCatalogService<JasonShave.Azure.Communication.Service.Interaction.Sdk.EventHandler.Interaction>();
+            var subject = new EventCatalogService<JasonShave.Azure.Communication.Service.CallingServer.Sdk.EventHandler.Interaction>();
 
             // act
             subject

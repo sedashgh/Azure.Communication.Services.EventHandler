@@ -1,11 +1,11 @@
 ﻿using Azure.Communication.CallingServer;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace JasonShave.Azure.Communication.Service.Interaction.Sdk.Client.Extensions
+namespace JasonShave.Azure.Communication.Service.CallingServer.Sdk.Client.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddInteractionClient(
+        public static IServiceCollection AddCallingServerClient(
             this IServiceCollection services, string connectionString, string? pmaEndpoint = null)
         {
             AddServices(services, connectionString, pmaEndpoint);
@@ -13,7 +13,7 @@ namespace JasonShave.Azure.Communication.Service.Interaction.Sdk.Client.Extensio
             return services;
         }
 
-        public static IServiceCollection AddInteractionClient(
+        public static IServiceCollection AddCallingServerClient(
             this IServiceCollection services, Action<CallingServerClientSettings> clientSettingsDelegate,
             string? pmaEndpoint = null)
         {

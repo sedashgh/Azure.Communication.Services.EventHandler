@@ -2,7 +2,7 @@
 
 namespace JasonShave.Azure.Communication.Service.Interaction.Sdk.EventHandler;
 
-public interface IInteractionEventSubscriber
+public interface ICallingServerEventSubscriber
 {
     event Func<IncomingCall, string, Task>? OnIncomingCall;
     event Func<CallConnectedEvent, string, Task>? OnCallConnected;
