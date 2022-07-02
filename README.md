@@ -130,7 +130,7 @@ public class MyService : BackgroundService
     private readonly IJobRouterEventSubscriber _jobRouterSubscriber;
 
     public MyService(
-        IInteractionEventSubscriber interationSubscriber,
+        IInteractionEventSubscriber interactionSubscriber,
         IJobRouterEventSubscriber jobRouterSubscriber)
     {
         _interactionSubscriber = interactionSubscriber;
@@ -140,8 +140,10 @@ public class MyService : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        // subscribe when the application starts
-        _subscriber.OnCallConnectionStateChanged += HandleOnCallConnectionStateChanged;
+        // subscribe to Interaction and Job Router events
+        _interactionSubscriber.OnCallConnectionStateChanged += HandleOnCallConnectionStateChanged;
+
+        _jobRouterSubscriber.OnJobQueued += HandleOnJobQueued;
 
         while (!cancellationToken.IsCancellationRequested)
         {
@@ -154,6 +156,12 @@ public class MyService : BackgroundService
     private Task HandleOnCallConnectionStateChanged(CallConnectionStateChanged args, string contextId)
     {
         _logger.LogInformation($"Call connection ID: {args.CallConnectionId} | Context: {contextId}");
+        return Task.CompletedTask;
+    }
+
+    private Task HandleOnJobQueued(RouterJobQueued jobQueued, string contextId)
+    {
+        _logger.LogInformation($"Job {jobQueued.JobId} in queue {jobQueued.QueueId}")
         return Task.CompletedTask;
     }
 }
