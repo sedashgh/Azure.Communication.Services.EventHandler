@@ -5,11 +5,17 @@ VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interaction.Sdk.Client.Extensions", "src\Interaction.Sdk.Client.Extensions\Interaction.Sdk.Client.Extensions.csproj", "{168EAB16-1AFF-4E80-9309-12636913CC9D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interaction.Sdk.Extensions.Tests", "tests\Interaction.Sdk.Extensions.Tests\Interaction.Sdk.Tests.csproj", "{0043CCB7-8326-4089-8951-A5C467BFCE07}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interaction.Sdk.Tests", "tests\Interaction.Sdk.Extensions.Tests\Interaction.Sdk.Tests.csproj", "{0043CCB7-8326-4089-8951-A5C467BFCE07}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interaction.Sdk.EventHandler", "src\Interaction.Sdk.EventHandler\Interaction.Sdk.EventHandler.csproj", "{E840FCCE-0028-4247-B219-514A438DBC1B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interaction.Sdk.Contracts", "src\Interaction.Sdk.Contracts\Interaction.Sdk.Contracts.csproj", "{B258BD4A-2BF0-45D9-8756-D3315E8026F2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobRouter.Sdk.Contracts", "src\JobRouter.Sdk.Contracts\JobRouter.Sdk.Contracts.csproj", "{4DC6A9D5-D969-4747-BB64-7A8FA2FFFCE8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobRouter.Sdk.EventHandler", "src\JobRouter.Sdk.EventHandler\JobRouter.Sdk.EventHandler.csproj", "{4EADBE12-B7FF-4D6F-99EA-460CC8A6F881}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventHandler.Abstractions", "src\EventHandler.Abstractions\EventHandler.Abstractions.csproj", "{9380D76C-5F66-44DC-8501-AC6128D7CA29}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +39,18 @@ Global
 		{B258BD4A-2BF0-45D9-8756-D3315E8026F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B258BD4A-2BF0-45D9-8756-D3315E8026F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B258BD4A-2BF0-45D9-8756-D3315E8026F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DC6A9D5-D969-4747-BB64-7A8FA2FFFCE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DC6A9D5-D969-4747-BB64-7A8FA2FFFCE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DC6A9D5-D969-4747-BB64-7A8FA2FFFCE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DC6A9D5-D969-4747-BB64-7A8FA2FFFCE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EADBE12-B7FF-4D6F-99EA-460CC8A6F881}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EADBE12-B7FF-4D6F-99EA-460CC8A6F881}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EADBE12-B7FF-4D6F-99EA-460CC8A6F881}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EADBE12-B7FF-4D6F-99EA-460CC8A6F881}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9380D76C-5F66-44DC-8501-AC6128D7CA29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9380D76C-5F66-44DC-8501-AC6128D7CA29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9380D76C-5F66-44DC-8501-AC6128D7CA29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9380D76C-5F66-44DC-8501-AC6128D7CA29}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,6 +1,6 @@
 ﻿using AutoFixture;
 using FluentAssertions;
-using JasonShave.Azure.Communication.Service.Interaction.Sdk.Contracts.V2022_11_1.Events;
+using JasonShave.Azure.Communication.Service.Interaction.Sdk.Contracts.V2022_11_1_preview.Events;
 using JasonShave.Azure.Communication.Service.Interaction.Sdk.EventHandler;
 
 namespace Interaction.Sdk.Tests;
