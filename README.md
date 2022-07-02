@@ -46,35 +46,6 @@ foreach(var cloudEvent in cloudEvents)
 
 Unfortunately this conditional logic handling needs to be done by every customer for every possible event type which turns the focus of the developer away from their business problem and concerns them with the non-functional challenges.
 
-## Calling ServerClient configuration
-
-1. Clone this repository and add it as a reference to your .NET project.
-2. Set your Azure Communication Service `ConnectionString` property in your [.NET User Secrets store](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-6.0&tabs=windows), `appsettings.json`, or anywhere your `IConfiguration` provider can look for the `QueueClientSettings`. For example:
-
-    ```json
-    {
-        "CallingServerClientSettings" : {
-            "ConnectionString": "[your_connection_string]"
-        }
-    }
-    ```
-
-## CallingServerClient dependency injection configuration
-
-1. Add the following to your .NET 6 or higher `Program.cs` file:
-
-    ```csharp
-    var builder = WebApplication.CreateBuilder(args);
-
-    // add this line to allow DI for the CallingServerClient
-    builder.Services.AddCallingServerClient(options => 
-        builder.Configuration.Bind(nameof(CallingServerClientSettings), options));
-    
-    var app = builder.Build();
-
-    app.Run();
-    ```
-
 ## Event handling dependency injection configuration
 
 1. Add the following to your .NET 6 or higher `Program.cs` file:
@@ -166,6 +137,35 @@ public class MyService : BackgroundService
     }
 }
 ```
+
+## CallingServerClient configuration
+
+1. Clone this repository and add it as a reference to your .NET project.
+2. Set your Azure Communication Service `ConnectionString` property in your [.NET User Secrets store](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-6.0&tabs=windows), `appsettings.json`, or anywhere your `IConfiguration` provider can look for the `QueueClientSettings`. For example:
+
+    ```json
+    {
+        "CallingServerClientSettings" : {
+            "ConnectionString": "[your_connection_string]"
+        }
+    }
+    ```
+
+## CallingServerClient dependency injection configuration
+
+1. Add the following to your .NET 6 or higher `Program.cs` file:
+
+    ```csharp
+    var builder = WebApplication.CreateBuilder(args);
+
+    // add this line to allow DI for the CallingServerClient
+    builder.Services.AddCallingServerClient(options => 
+        builder.Configuration.Bind(nameof(CallingServerClientSettings), options));
+    
+    var app = builder.Build();
+
+    app.Run();
+    ```
 
 ## Injecting the CallingServerClient using DI
 
