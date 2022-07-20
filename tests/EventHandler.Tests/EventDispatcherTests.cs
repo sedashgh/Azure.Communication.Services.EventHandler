@@ -25,7 +25,7 @@ public class EventDispatcherTests
         var callTransferFailedEvent = fixture.Create<CallTransferFailed>();
         var removeParticipantSucceededEvent = fixture.Create<RemoveParticipantSucceeded>();
         var removeParticipantFailedEvent = fixture.Create<RemoveParticipantFailed>();
-        var participantUpdatedEvent = fixture.Create<ParticipantUpdated>();
+        var participantUpdatedEvent = fixture.Create<ParticipantsUpdated>();
 
         var incomingCall = fixture.Create<IncomingCall>();
 
@@ -117,10 +117,10 @@ public class EventDispatcherTests
             return ValueTask.CompletedTask;
         };
 
-        subject.OnParticipantUpdated += (@event, contextId) =>
+        subject.OnParticipantsUpdated += (@event, contextId) =>
         {
             @event.Should().NotBeNull();
-            @event.Should().BeOfType<ParticipantUpdated>();
+            @event.Should().BeOfType<ParticipantsUpdated>();
             contextId.Should().BeNullOrEmpty();
             return ValueTask.CompletedTask;
         };
@@ -136,7 +136,7 @@ public class EventDispatcherTests
         subject.Dispatch(removeParticipantFailedEvent, typeof(RemoveParticipantFailed));
         subject.Dispatch(callTransferAcceptedEvent, typeof(CallTransferAccepted));
         subject.Dispatch(callTransferFailedEvent, typeof(CallTransferFailed));
-        subject.Dispatch(participantUpdatedEvent, typeof(ParticipantUpdated));
+        subject.Dispatch(participantUpdatedEvent, typeof(ParticipantsUpdated));
     }
 
     [Fact(DisplayName = "Null context should invoke")]

@@ -24,7 +24,7 @@ public static class EventHandlerBuilderExtensions
             .Register<AddParticipantFailed>()
             .Register<RemoveParticipantSucceeded>()
             .Register<RemoveParticipantFailed>()
-            .Register<ParticipantUpdated>()
+            .Register<ParticipantsUpdated>()
             .Register<CallConnectionStateChanged>();
 
         eventHandlerBuilder.Services.AddSingleton<IEventCatalog<Calling>>(catalog);

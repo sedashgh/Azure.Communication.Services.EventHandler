@@ -5,5 +5,5 @@ namespace JasonShave.Azure.Communication.Service.CallingServer.Sdk.Contracts.Com
 
 public class PhoneNumberIdentifier
 {
-    public string Value { get; set; }
+    public string Value { get; set; } = string.Empty;
 }

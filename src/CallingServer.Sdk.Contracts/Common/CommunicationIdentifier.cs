@@ -8,6 +8,8 @@ public class CommunicationIdentifier
 {
     public string RawId { get; set; }
 
+    public CommunicationIdentifierKind Kind { get; set; }
+
     public CommunicationUserIdentifier CommunicationUser { get; set; }
 
     public PhoneNumberIdentifier PhoneNumber { get; set; }

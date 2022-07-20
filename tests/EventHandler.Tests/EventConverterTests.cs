@@ -40,7 +40,6 @@ public class EventConverterTests
     public void EventConverter_Should_DeserializeIncomingCall()
     {
         // arrange
-        var from = "4:\u002B14255551212\"";
         var incomingCall =
             "{\"to\": {\"rawId\": \"4:\u002B18005551212\",\"phoneNumber\": {\"value\": \"\u002B18005551212\"}},\"from\": {\"rawId\": \"4:\u002B14255551212\",\"phoneNumber\": {\"value\": \"\u002B14255551212\"}},\"hasIncomingVideo\": false,\"callerDisplayName\": \"\",\"incomingCallContext\": \"some_really_long_string\",\"correlationId\": \"94ec3b97-a505-491b-9576-e3bb3d9cd084\"}";
         var subject = new JsonEventConverter(new JsonSerializerOptions()
@@ -49,7 +48,7 @@ public class EventConverterTests
         });
 
         // act
-        var result = subject.Convert(incomingCall, typeof(IncomingCall)) as IncomingCall;
+        var result = (IncomingCall)subject.Convert(incomingCall, typeof(IncomingCall));
 
         // assert
         result.Should().NotBeNull();

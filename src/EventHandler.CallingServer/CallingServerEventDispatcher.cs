@@ -16,7 +16,7 @@ internal class CallingServerEventDispatcher : IEventDispatcher<Calling>, ICallin
     public event Func<CallTransferFailed, string?, ValueTask>? OnCallTransferFailed;
     public event Func<RemoveParticipantSucceeded, string?, ValueTask>? OnRemoveParticipantSucceeded;
     public event Func<RemoveParticipantFailed, string?, ValueTask>? OnRemoveParticipantFailed;
-    public event Func<ParticipantUpdated, string?, ValueTask>? OnParticipantUpdated;
+    public event Func<ParticipantsUpdated, string?, ValueTask>? OnParticipantsUpdated;
     public event Func<CallConnectionStateChanged, string?, ValueTask>? OnCallConnectionStateChanged;
 
     private readonly Dictionary<Type, Func<object, string?, ValueTask>> _eventDictionary;
@@ -75,10 +75,10 @@ internal class CallingServerEventDispatcher : IEventDispatcher<Calling>, ICallin
                 if (OnRemoveParticipantFailed is null) return;
                 await OnRemoveParticipantFailed.Invoke((RemoveParticipantFailed)@event, contextId);
             },
-            [typeof(ParticipantUpdated)] = async (@event, contextId) =>
+            [typeof(ParticipantsUpdated)] = async (@event, contextId) =>
             {
-                if (OnParticipantUpdated is null) return;
-                await OnParticipantUpdated.Invoke((ParticipantUpdated)@event, contextId);
+                if (OnParticipantsUpdated is null) return;
+                await OnParticipantsUpdated.Invoke((ParticipantsUpdated)@event, contextId);
             }
         };
     }
