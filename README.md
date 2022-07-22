@@ -6,7 +6,7 @@ This repository contains libraries which act as a set of convenience layer servi
 
 ## Problem statement
 
-A common task developers must undertake with an event-driven platform is to deal with a common event payload which wraps a variation of models often denoted with a type identifier. Consider the following event, `CallConnectionStateChanged` which is 'wrapped' in an `Azure.Messaging.CloudEvent` type:
+A common task developers must undertake with an event-driven platform is to deal with a common event payload which wraps a variation of models often denoted with a type identifier. Consider the following event, `CallConnected` which is 'wrapped' in an `Azure.Messaging.CloudEvent` type:
 
 ### Azure.Messaging.CloudEvent
 
@@ -14,10 +14,11 @@ A common task developers must undertake with an event-driven platform is to deal
 {
     "id": "7dec6eed-129c-43f3-a2bf-134ac1978168",
     "source": "calling/callConnections/441f1200-fd54-422e-9566-a867d187dca7/callState",
-    "type": "Microsoft.Communication.CallConnectionStateChanged",
+    "type": "Microsoft.Communication.CallConnected",
     "data": {
         "callConnectionId": "441f1200-fd54-422e-9566-a867d187dca7",
-        "callConnectionState": "connected"
+        "serverCallId": "e42f9a50-c36d-493a-9cc0-2fc1cdc7b708",
+        "correlationId": "7a659f41-bd0f-4bae-8ac0-6af79283e1bc"
     },
     "time": "2022-06-24T15:12:41.5556858+00:00",
     "specversion": "1.0",
@@ -38,15 +39,15 @@ CloudEvent[] cloudEvents = JsonSerializer.Deserialize<CloudEvent[]>(requestBody)
 foreach(var cloudEvent in cloudEvents)
 {
     // conditional logic for every possible event type
-    if (cloudEvent.Type == "Microsoft.Communication.CallConnectionStateChanged")
+    if (cloudEvent.Type == "Microsoft.Communication.CallConnected")
     {
-        CallConnectionStateChanged @event = JsonSerializer.Deserialize<CallConnectionStateChanged>(cloudEvent.Data);        
+        var @event = JsonSerializer.Deserialize<CallConnected>(cloudEvent.Data);
         // now you can invoke your action based on this event    
     }
 }
 ```
 
-Unfortunately this conditional logic handling needs to be done by every customer for every possible event type which turns the focus of the developer away from their business problem and concerns them with the non-functional challenges.
+This conditional logic handling needs to be done by every customer for every possible event type which turns the focus of the developer away from their business problem and concerns them with the non-functional challenges.
 
 ## CallingServer and/or JobRouter Configuration
 
@@ -117,8 +118,8 @@ public class MyService : BackgroundService
         IJobRouterEventSubscriber jobRouterSubscriber)
     {
         // subscribe to Calling Server and Job Router events
-        callingServerSubscriber.OnCallConnectionStateChanged += HandleOnCallConnectionStateChanged;
-        jobRouterSubscriber.OnJobQueued += HandleOnJobQueued;
+        callingServerSubscriber.OnCallConnected += HandleCallConnected;
+        jobRouterSubscriber.OnJobQueued += HandleJobQueued;
     }
     
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -129,10 +130,10 @@ public class MyService : BackgroundService
         }
     }
 
-    private async Task HandleOnCallConnectionStateChanged(CallConnectionStateChanged args, string contextId) =>
-        _logger.LogInformation($"Call connection ID: {args.CallConnectionId} | Context: {contextId}");
+    private async Task HandleCallConnected(CallConnected callConnected, string contextId) =>
+        _logger.LogInformation($"Call connection ID: {callConnected.CallConnectionId} | Context: {contextId}");
 
-    private Task HandleOnJobQueued(RouterJobQueued jobQueued, string contextId) =>
+    private Task HandleJobQueued(RouterJobQueued jobQueued, string contextId) =>
         _logger.LogInformation($"Job {jobQueued.JobId} in queue {jobQueued.QueueId}")
 }
 ```

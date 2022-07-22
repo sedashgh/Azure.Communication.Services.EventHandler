@@ -16,9 +16,8 @@ public class EventDispatcherTests
         // arrange
         var testId = Guid.NewGuid().ToString();
         var fixture = new Fixture();
-        var callConnectedEvent = fixture.Create<CallConnectedEvent>();
-        var callDisconnectedEvent = fixture.Create<CallDisconnectedEvent>();
-        var callConnectionStateChangedEvent = fixture.Create<CallConnectionStateChanged>();
+        var callConnectedEvent = fixture.Create<CallConnected>();
+        var callDisconnectedEvent = fixture.Create<CallDisconnected>();
         var addParticipantSucceededEvent = fixture.Create<AddParticipantSucceeded>();
         var addParticipantFailedEvent = fixture.Create<AddParticipantFailed>();
         var callTransferAcceptedEvent = fixture.Create<CallTransferAccepted>();
@@ -34,7 +33,7 @@ public class EventDispatcherTests
         subject.OnCallConnected += (@event, contextId) =>
         {
             @event.Should().NotBeNull();
-            @event.Should().BeOfType<CallConnectedEvent>();
+            @event.Should().BeOfType<CallConnected>();
             @event.Should().BeEquivalentTo(callConnectedEvent);
             contextId.Should().BeSameAs(testId);
             contextId.Should().NotBeNullOrEmpty();
@@ -44,18 +43,8 @@ public class EventDispatcherTests
         subject.OnCallDisconnected += (@event, contextId) =>
         {
             @event.Should().NotBeNull();
-            @event.Should().BeOfType<CallDisconnectedEvent>();
+            @event.Should().BeOfType<CallDisconnected>();
             @event.Should().BeEquivalentTo(callDisconnectedEvent);
-            contextId.Should().BeSameAs(testId);
-            contextId.Should().NotBeNullOrEmpty();
-            return ValueTask.CompletedTask;
-        };
-
-        subject.OnCallConnectionStateChanged += (@event, contextId) =>
-        {
-            @event.Should().NotBeNull();
-            @event.Should().BeOfType<CallConnectionStateChanged>();
-            @event.Should().BeEquivalentTo(callConnectionStateChangedEvent);
             contextId.Should().BeSameAs(testId);
             contextId.Should().NotBeNullOrEmpty();
             return ValueTask.CompletedTask;
@@ -126,9 +115,8 @@ public class EventDispatcherTests
         };
 
         // act
-        subject.Dispatch(callConnectedEvent, typeof(CallConnectedEvent), testId);
-        subject.Dispatch(callDisconnectedEvent, typeof(CallDisconnectedEvent), testId);
-        subject.Dispatch(callConnectionStateChangedEvent, typeof(CallConnectionStateChanged), testId);
+        subject.Dispatch(callConnectedEvent, typeof(CallConnected), testId);
+        subject.Dispatch(callDisconnectedEvent, typeof(CallDisconnected), testId);
         subject.Dispatch(incomingCall, typeof(IncomingCall));
         subject.Dispatch(addParticipantSucceededEvent, typeof(AddParticipantSucceeded));
         subject.Dispatch(addParticipantFailedEvent, typeof(AddParticipantFailed));

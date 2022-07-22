@@ -16,17 +16,16 @@ public static class EventHandlerBuilderExtensions
 
         catalog
             .Register<IncomingCall>()
-            .Register<CallConnectedEvent>()
-            .Register<CallDisconnectedEvent>()
+            .Register<CallConnected>()
+            .Register<CallDisconnected>()
             .Register<CallTransferAccepted>()
             .Register<CallTransferFailed>()
             .Register<AddParticipantSucceeded>()
             .Register<AddParticipantFailed>()
             .Register<RemoveParticipantSucceeded>()
             .Register<RemoveParticipantFailed>()
-            .Register<ParticipantsUpdated>()
-            .Register<CallConnectionStateChanged>();
-
+            .Register<ParticipantsUpdated>();
+            
         eventHandlerBuilder.Services.AddSingleton<IEventCatalog<Calling>>(catalog);
 
         var dispatcher = new CallingServerEventDispatcher();

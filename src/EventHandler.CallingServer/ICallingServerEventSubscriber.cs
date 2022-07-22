@@ -8,8 +8,8 @@ namespace JasonShave.Azure.Communication.Service.EventHandler.CallingServer;
 public interface ICallingServerEventSubscriber
 {
     event Func<IncomingCall, string?, ValueTask>? OnIncomingCall;
-    event Func<CallConnectedEvent, string?, ValueTask>? OnCallConnected;
-    event Func<CallDisconnectedEvent, string?, ValueTask>? OnCallDisconnected;
+    event Func<CallConnected, string?, ValueTask>? OnCallConnected;
+    event Func<CallDisconnected, string?, ValueTask>? OnCallDisconnected;
     event Func<AddParticipantSucceeded, string?, ValueTask>? OnAddParticipantSucceeded;
     event Func<AddParticipantFailed, string?, ValueTask>? OnAddParticipantFailed;
     event Func<CallTransferAccepted, string?, ValueTask>? OnCallTransferAccepted;
@@ -17,5 +17,4 @@ public interface ICallingServerEventSubscriber
     event Func<RemoveParticipantSucceeded, string?, ValueTask>? OnRemoveParticipantSucceeded;
     event Func<RemoveParticipantFailed, string?, ValueTask>? OnRemoveParticipantFailed;
     event Func<ParticipantsUpdated, string?, ValueTask>? OnParticipantsUpdated;
-    event Func<CallConnectionStateChanged, string?, ValueTask>? OnCallConnectionStateChanged;
 }

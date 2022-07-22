@@ -8,8 +8,8 @@ namespace JasonShave.Azure.Communication.Service.EventHandler.CallingServer;
 internal class CallingServerEventDispatcher : IEventDispatcher<Calling>, ICallingServerEventSubscriber
 {
     public event Func<IncomingCall, string?, ValueTask>? OnIncomingCall;
-    public event Func<CallConnectedEvent, string?, ValueTask>? OnCallConnected;
-    public event Func<CallDisconnectedEvent, string?, ValueTask>? OnCallDisconnected;
+    public event Func<CallConnected, string?, ValueTask>? OnCallConnected;
+    public event Func<CallDisconnected, string?, ValueTask>? OnCallDisconnected;
     public event Func<AddParticipantSucceeded, string?, ValueTask>? OnAddParticipantSucceeded;
     public event Func<AddParticipantFailed, string?, ValueTask>? OnAddParticipantFailed;
     public event Func<CallTransferAccepted, string?, ValueTask>? OnCallTransferAccepted;
@@ -17,7 +17,6 @@ internal class CallingServerEventDispatcher : IEventDispatcher<Calling>, ICallin
     public event Func<RemoveParticipantSucceeded, string?, ValueTask>? OnRemoveParticipantSucceeded;
     public event Func<RemoveParticipantFailed, string?, ValueTask>? OnRemoveParticipantFailed;
     public event Func<ParticipantsUpdated, string?, ValueTask>? OnParticipantsUpdated;
-    public event Func<CallConnectionStateChanged, string?, ValueTask>? OnCallConnectionStateChanged;
 
     private readonly Dictionary<Type, Func<object, string?, ValueTask>> _eventDictionary;
 
@@ -30,20 +29,15 @@ internal class CallingServerEventDispatcher : IEventDispatcher<Calling>, ICallin
                 if (OnIncomingCall is null) return;
                 await OnIncomingCall.Invoke((IncomingCall)@event, contextId);
             },
-            [typeof(CallConnectedEvent)] = async (@event, contextId) =>
+            [typeof(CallConnected)] = async (@event, contextId) =>
             {
                 if (OnCallConnected is null) return;
-                await OnCallConnected.Invoke((CallConnectedEvent)@event, contextId);
+                await OnCallConnected.Invoke((CallConnected)@event, contextId);
             },
-            [typeof(CallDisconnectedEvent)] = async (@event, contextId) =>
+            [typeof(CallDisconnected)] = async (@event, contextId) =>
             {
                 if (OnCallDisconnected is null) return;
-                await OnCallDisconnected.Invoke((CallDisconnectedEvent)@event, contextId);
-            },
-            [typeof(CallConnectionStateChanged)] = async (@event, contextId) =>
-            {
-                if (OnCallConnectionStateChanged is null) return;
-                await OnCallConnectionStateChanged.Invoke((CallConnectionStateChanged)@event, contextId);
+                await OnCallDisconnected.Invoke((CallDisconnected)@event, contextId);
             },
             [typeof(AddParticipantSucceeded)] = async (@event, contextId) =>
             {
