@@ -41,7 +41,7 @@ public class EventConverterTests
     {
         // arrange
         var incomingCall =
-            "{\"to\": {\"rawId\": \"4:\u002B18005551212\",\"phoneNumber\": {\"value\": \"\u002B18005551212\"}},\"from\": {\"rawId\": \"4:\u002B14255551212\",\"phoneNumber\": {\"value\": \"\u002B14255551212\"}},\"hasIncomingVideo\": false,\"callerDisplayName\": \"\",\"incomingCallContext\": \"some_really_long_string\",\"correlationId\": \"94ec3b97-a505-491b-9576-e3bb3d9cd084\"}";
+            "{\"to\": {\"kind\": \"phoneNumber\",\"rawId\": \"4:\u002B18005551212\",\"phoneNumber\": {\"value\": \"\u002B18005551212\"}},\"from\": {\"kind\": \"phoneNumber\", \"rawId\": \"4:\u002B14255551212\",\"phoneNumber\": {\"value\": \"\u002B14255551212\"}},\"hasIncomingVideo\": false,\"callerDisplayName\": \"\",\"incomingCallContext\": \"some_really_long_string\",\"correlationId\": \"94ec3b97-a505-491b-9576-e3bb3d9cd084\"}";
         var subject = new JsonEventConverter(new JsonSerializerOptions()
         {
             PropertyNameCaseInsensitive = true
@@ -61,8 +61,10 @@ public class EventConverterTests
         // output
         _testOutputHelper.WriteLine($"From: {result.From.RawId}");
         _testOutputHelper.WriteLine($"From phone number: {result.From.PhoneNumber.Value}");
+        _testOutputHelper.WriteLine($"From kind: {result.From.Kind}");
         _testOutputHelper.WriteLine($"To: {result.To.RawId}");
         _testOutputHelper.WriteLine($"To phone number: {result.To.PhoneNumber.Value}");
+        _testOutputHelper.WriteLine($"To kind: {result.To.Kind}");
         _testOutputHelper.WriteLine($"Context: {result.IncomingCallContext}");
         _testOutputHelper.WriteLine($"CorrelationId: {result.CorrelationId}");
     }

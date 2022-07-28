@@ -9,11 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Update="Microsoft.CodeAnalysis.CSharp.Features" Version="4.2.0" />
+    <ProjectReference Include="..\EventHandler.Sdk.Common\EventHandler.Sdk.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\" />
+    <PackageReference Update="Microsoft.CodeAnalysis.CSharp.Features" Version="4.2.0" />
   </ItemGroup>
 
 </Project>

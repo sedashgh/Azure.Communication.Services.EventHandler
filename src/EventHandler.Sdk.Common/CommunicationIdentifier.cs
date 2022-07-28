@@ -1,14 +1,17 @@
 ﻿// Copyright (c) 2022 Jason Shave. All rights reserved.
 // Licensed under the MIT License.
 
-namespace JasonShave.Azure.Communication.Service.CallingServer.Sdk.Contracts.Common;
+using System.Text.Json.Serialization;
+
+namespace JasonShave.Azure.Communication.Service.EventHandler.Sdk.Common;
 
 [Serializable]
 public class CommunicationIdentifier
 {
-    public string RawId { get; set; }
-
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public CommunicationIdentifierKind Kind { get; set; }
+
+    public string RawId { get; set; }
 
     public CommunicationUserIdentifier CommunicationUser { get; set; }
 

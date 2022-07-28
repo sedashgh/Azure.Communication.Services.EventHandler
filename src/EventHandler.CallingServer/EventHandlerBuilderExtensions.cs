@@ -25,7 +25,7 @@ public static class EventHandlerBuilderExtensions
             .Register<RemoveParticipantSucceeded>()
             .Register<RemoveParticipantFailed>()
             .Register<ParticipantsUpdated>();
-            
+
         eventHandlerBuilder.Services.AddSingleton<IEventCatalog<Calling>>(catalog);
 
         var dispatcher = new CallingServerEventDispatcher();
