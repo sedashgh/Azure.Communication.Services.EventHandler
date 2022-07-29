@@ -3,4 +3,10 @@
 
 namespace JasonShave.Azure.Communication.Service.CallingServer.Sdk.Contracts.V2022_11_1_preview.Events;
 
-public record CallConnected(string CallConnectionId, string ServerCallId, string CorrelationId);
+public class CallConnected : BaseCallingEvent
+{
+    public CallConnected(string callConnectionId, string? serverCallId, string correlationId)
+        : base(callConnectionId, serverCallId, correlationId)
+    {
+    }
+}
