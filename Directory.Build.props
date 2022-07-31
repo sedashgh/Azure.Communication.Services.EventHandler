@@ -1,6 +1,6 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <AssemblyName>JasonShave.Azure.Communication.Service.$(MSBuildProjectName)</AssemblyName>
+        <AssemblyName>$(MSBuildProjectName)</AssemblyName>
         <RootNamespace>JasonShave.Azure.Communication.Service.$(MsBuildProjectName)</RootNamespace>
         <RunCodeAnalysis>false</RunCodeAnalysis>
         <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)rulesets\stylecop.ruleset</CodeAnalysisRuleSet>

@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EventHandler.Sdk.Common\EventHandler.Sdk.Common.csproj" />
+    <ProjectReference Include="..\..\src\EventHandler\EventHandler.csproj" />
   </ItemGroup>
 
   <ItemGroup>

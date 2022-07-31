@@ -1,40 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <Description>A library using a publish/subscribe pattern to easily handle different events being sent via HTTP web hook callbacks by Azure Communication Services primitives.</Description>
-    <Copyright>Jason Shave</Copyright>
-    <PackageProjectUrl>https://github.com/jasonshave/Azure.Communication.Services.EventHandler</PackageProjectUrl>
-    <Company>Jason Shave</Company>
-    <Authors>Jason Shave</Authors>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageIcon>icon.png</PackageIcon>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>azure;azure-communication-services;jasonshave;calling-server;interaction-controller</PackageTags>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+		<Description>A library using a publish/subscribe pattern to easily handle different events being sent via HTTP web hook callbacks by Azure Communication Services primitives.</Description>
+		<Copyright>Jason Shave</Copyright>
+		<PackageProjectUrl>https://github.com/jasonshave/Azure.Communication.Services.EventHandler</PackageProjectUrl>
+		<Company>Jason Shave</Company>
+		<Authors>Jason Shave</Authors>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageIcon>icon.png</PackageIcon>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>azure;azure-communication-services;jasonshave;calling-server;interaction-controller</PackageTags>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+	</PropertyGroup>
 
-  <ItemGroup>
-	  <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
-  </ItemGroup>
 	<ItemGroup>
-		<!-- Make assembly visible to test assembly -->
-		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-			<_Parameter1>$(AssemblyName).Tests</_Parameter1>
-		</AssemblyAttribute>
+	  <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
+	  <PackageReference Update="Microsoft.CodeAnalysis.CSharp.Features" Version="4.2.0" />
 
-		<!-- Make assembly usable for Moq, so Moq is able to instanciate objects of 'internal' types -->
-		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-			<_Parameter1>DynamicProxyGenAssembly2</_Parameter1>
-		</AssemblyAttribute>
 	</ItemGroup>
 
 	<ItemGroup>
-		<InternalsVisibleTo Include="JasonShave.Azure.Communication.Service.EventHandler.Tests" />
 		<None Include="..\..\.editorconfig" Link=".editorconfig" />
 		<None Include="..\..\README.md">
 		  <Pack>True</Pack>
@@ -42,6 +32,7 @@
 		</None>
 		<ProjectReference Include="..\CallingServer.Sdk.Contracts\CallingServer.Sdk.Contracts.csproj" />
 		<ProjectReference Include="..\EventHandler\EventHandler.csproj" />
+		<InternalsVisibleTo Include="CallingServer.Tests"/>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -49,9 +40,5 @@
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>
 	  </None>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <PackageReference Update="Microsoft.CodeAnalysis.CSharp.Features" Version="4.2.0" />
 	</ItemGroup>
 </Project>

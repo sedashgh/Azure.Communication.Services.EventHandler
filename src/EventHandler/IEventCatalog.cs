@@ -9,4 +9,6 @@ public interface IEventCatalog<TPrimitive>
     IEventCatalog<TPrimitive> Register<TEvent>();
 
     Type? Get(string eventName);
+
+    IEnumerable<Type> List();
 }

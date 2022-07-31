@@ -20,4 +20,6 @@ internal class EventCatalogService<TPrimitive> : IEventCatalog<TPrimitive>
         _eventCatalog.TryGetValue(eventName.Replace(_eventPrefix, ""), out var eventType);
         return eventType;
     }
+
+    public IEnumerable<Type> List() => _eventCatalog.Values.ToList();
 }

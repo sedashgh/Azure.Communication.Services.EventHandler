@@ -10,8 +10,8 @@ internal class CallingServerEventDispatcher : IEventDispatcher<Calling>, ICallin
     public event Func<IncomingCall, string?, ValueTask>? OnIncomingCall;
     public event Func<CallConnected, string?, ValueTask>? OnCallConnected;
     public event Func<CallDisconnected, string?, ValueTask>? OnCallDisconnected;
-    public event Func<AddParticipantSucceeded, string?, ValueTask>? OnAddParticipantSucceeded;
-    public event Func<AddParticipantFailed, string?, ValueTask>? OnAddParticipantFailed;
+    public event Func<AddParticipantsSucceeded, string?, ValueTask>? OnAddParticipantsSucceeded;
+    public event Func<AddParticipantsFailed, string?, ValueTask>? OnAddParticipantsFailed;
     public event Func<CallTransferAccepted, string?, ValueTask>? OnCallTransferAccepted;
     public event Func<CallTransferFailed, string?, ValueTask>? OnCallTransferFailed;
     public event Func<RemoveParticipantSucceeded, string?, ValueTask>? OnRemoveParticipantSucceeded;
@@ -39,15 +39,15 @@ internal class CallingServerEventDispatcher : IEventDispatcher<Calling>, ICallin
                 if (OnCallDisconnected is null) return;
                 await OnCallDisconnected.Invoke((CallDisconnected)@event, contextId);
             },
-            [typeof(AddParticipantSucceeded)] = async (@event, contextId) =>
+            [typeof(AddParticipantsSucceeded)] = async (@event, contextId) =>
             {
-                if (OnAddParticipantSucceeded is null) return;
-                await OnAddParticipantSucceeded.Invoke((AddParticipantSucceeded)@event, contextId);
+                if (OnAddParticipantsSucceeded is null) return;
+                await OnAddParticipantsSucceeded.Invoke((AddParticipantsSucceeded)@event, contextId);
             },
-            [typeof(AddParticipantFailed)] = async (@event, contextId) =>
+            [typeof(AddParticipantsFailed)] = async (@event, contextId) =>
             {
-                if (OnAddParticipantFailed is null) return;
-                await OnAddParticipantFailed.Invoke((AddParticipantFailed)@event, contextId);
+                if (OnAddParticipantsFailed is null) return;
+                await OnAddParticipantsFailed.Invoke((AddParticipantsFailed)@event, contextId);
             },
             [typeof(CallTransferAccepted)] = async (@event, contextId) =>
             {

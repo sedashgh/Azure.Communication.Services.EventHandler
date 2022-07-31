@@ -10,9 +10,9 @@ using Moq;
 
 namespace JasonShave.Azure.Communication.Service.EventHandler.Tests;
 
-public class CallingServerEventPublisherTests
+public class EventPublisherTests
 {
-    [Fact(DisplayName = "Publisher works")]
+    [Fact(DisplayName = "Interaction publisher works")]
     public void Should_Send()
     {
         // arrange

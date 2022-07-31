@@ -20,8 +20,8 @@ public static class EventHandlerBuilderExtensions
             .Register<CallDisconnected>()
             .Register<CallTransferAccepted>()
             .Register<CallTransferFailed>()
-            .Register<AddParticipantSucceeded>()
-            .Register<AddParticipantFailed>()
+            .Register<AddParticipantsSucceeded>()
+            .Register<AddParticipantsFailed>()
             .Register<RemoveParticipantSucceeded>()
             .Register<RemoveParticipantFailed>()
             .Register<ParticipantsUpdated>();

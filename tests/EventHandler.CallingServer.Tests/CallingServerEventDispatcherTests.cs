@@ -4,11 +4,10 @@
 using AutoFixture;
 using FluentAssertions;
 using JasonShave.Azure.Communication.Service.CallingServer.Sdk.Contracts.V2022_11_1_preview.Events;
-using JasonShave.Azure.Communication.Service.EventHandler.CallingServer;
 
-namespace JasonShave.Azure.Communication.Service.EventHandler.Tests;
+namespace JasonShave.Azure.Communication.Service.EventHandler.CallingServer.Tests;
 
-public class EventDispatcherTests
+public class CallingServerEventDispatcherTests
 {
     [Fact(DisplayName = "Dispatch should invoke event handler")]
     public void Should_Invoke_Handler()
@@ -18,8 +17,8 @@ public class EventDispatcherTests
         var fixture = new Fixture();
         var callConnectedEvent = fixture.Create<CallConnected>();
         var callDisconnectedEvent = fixture.Create<CallDisconnected>();
-        var addParticipantSucceededEvent = fixture.Create<AddParticipantSucceeded>();
-        var addParticipantFailedEvent = fixture.Create<AddParticipantFailed>();
+        var addParticipantSucceededEvent = fixture.Create<AddParticipantsSucceeded>();
+        var addParticipantFailedEvent = fixture.Create<AddParticipantsFailed>();
         var callTransferAcceptedEvent = fixture.Create<CallTransferAccepted>();
         var callTransferFailedEvent = fixture.Create<CallTransferFailed>();
         var removeParticipantSucceededEvent = fixture.Create<RemoveParticipantSucceeded>();
@@ -58,18 +57,18 @@ public class EventDispatcherTests
             return ValueTask.CompletedTask;
         };
 
-        subject.OnAddParticipantSucceeded += (@event, contextId) =>
+        subject.OnAddParticipantsSucceeded += (@event, contextId) =>
         {
             @event.Should().NotBeNull();
-            @event.Should().BeOfType<AddParticipantSucceeded>();
+            @event.Should().BeOfType<AddParticipantsSucceeded>();
             contextId.Should().BeNullOrEmpty();
             return ValueTask.CompletedTask;
         };
 
-        subject.OnAddParticipantFailed += (@event, contextId) =>
+        subject.OnAddParticipantsFailed += (@event, contextId) =>
         {
             @event.Should().NotBeNull();
-            @event.Should().BeOfType<AddParticipantFailed>();
+            @event.Should().BeOfType<AddParticipantsFailed>();
             contextId.Should().BeNullOrEmpty();
             return ValueTask.CompletedTask;
         };
@@ -118,8 +117,8 @@ public class EventDispatcherTests
         subject.Dispatch(callConnectedEvent, typeof(CallConnected), testId);
         subject.Dispatch(callDisconnectedEvent, typeof(CallDisconnected), testId);
         subject.Dispatch(incomingCall, typeof(IncomingCall));
-        subject.Dispatch(addParticipantSucceededEvent, typeof(AddParticipantSucceeded));
-        subject.Dispatch(addParticipantFailedEvent, typeof(AddParticipantFailed));
+        subject.Dispatch(addParticipantSucceededEvent, typeof(AddParticipantsSucceeded));
+        subject.Dispatch(addParticipantFailedEvent, typeof(AddParticipantsFailed));
         subject.Dispatch(removeParticipantSucceededEvent, typeof(RemoveParticipantSucceeded));
         subject.Dispatch(removeParticipantFailedEvent, typeof(RemoveParticipantFailed));
         subject.Dispatch(callTransferAcceptedEvent, typeof(CallTransferAccepted));

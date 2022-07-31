@@ -9,7 +9,7 @@ internal class JsonEventConverter : IEventConverter
 {
     private readonly JsonSerializerOptions _serializerOptions;
 
-    internal JsonEventConverter(JsonSerializerOptions serializerOptions)
+    public JsonEventConverter(JsonSerializerOptions serializerOptions)
     {
         _serializerOptions = serializerOptions;
     }
