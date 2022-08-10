@@ -21,11 +21,9 @@
 			<_Parameter1>DynamicProxyGenAssembly2</_Parameter1>
 		</AssemblyAttribute>
 	</ItemGroup>
-
-
 	<ItemGroup>
-		<InternalsVisibleTo Include="CallingServer.Tests"/>
-		<InternalsVisibleTo Include="EventHandler.CallingServer" />
+		<InternalsVisibleTo Include="CallAutomation.Tests"/>
+		<InternalsVisibleTo Include="EventHandler.CallAutomation" />
 		<InternalsVisibleTo Include="EventHandler.JobRouter" />
 	</ItemGroup>
 	

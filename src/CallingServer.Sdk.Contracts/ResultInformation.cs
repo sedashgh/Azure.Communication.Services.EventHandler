@@ -1,6 +1,0 @@
-﻿// Copyright (c) 2022 Jason Shave. All rights reserved.
-// Licensed under the MIT License.
-
-namespace JasonShave.Azure.Communication.Service.CallingServer.Sdk.Contracts;
-
-public record ResultInformation(int Code, int SubCode, string Message);

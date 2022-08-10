@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventHandler.CallingServer", "src\EventHandler.CallingServer\EventHandler.CallingServer.csproj", "{E840FCCE-0028-4247-B219-514A438DBC1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventHandler.CallAutomation", "src\EventHandler.CallAutomation\EventHandler.CallAutomation.csproj", "{E840FCCE-0028-4247-B219-514A438DBC1B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallingServer.Sdk.Contracts", "src\CallingServer.Sdk.Contracts\CallingServer.Sdk.Contracts.csproj", "{B258BD4A-2BF0-45D9-8756-D3315E8026F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallAutomation.Sdk.Contracts", "src\CallAutomation.Sdk.Contracts\CallAutomation.Sdk.Contracts.csproj", "{B258BD4A-2BF0-45D9-8756-D3315E8026F2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobRouter.Sdk.Contracts", "src\JobRouter.Sdk.Contracts\JobRouter.Sdk.Contracts.csproj", "{4DC6A9D5-D969-4747-BB64-7A8FA2FFFCE8}"
 EndProject
@@ -24,7 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventHandler.Sdk.Common", "src\EventHandler.Sdk.Common\EventHandler.Sdk.Common.csproj", "{B76FDA11-234A-413C-A6DE-5461B0B02140}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallingServer.Tests", "tests\EventHandler.CallingServer.Tests\CallingServer.Tests.csproj", "{96443056-0E86-4EE9-9946-32EB130BDCA3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallAutomation.Tests", "tests\EventHandler.CallAutomation.Tests\CallAutomation.Tests.csproj", "{96443056-0E86-4EE9-9946-32EB130BDCA3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventHandler.Tests.Common", "tests\EventHandler.Tests.Common\EventHandler.Tests.Common.csproj", "{DD913D01-1602-4663-8833-EF7DD0CEF85B}"
 EndProject

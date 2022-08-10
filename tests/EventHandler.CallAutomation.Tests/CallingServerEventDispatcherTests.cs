@@ -2,12 +2,15 @@
 // Licensed under the MIT License.
 
 using AutoFixture;
+using Azure.Communication;
+using Azure.Communication.CallingServer;
 using FluentAssertions;
-using JasonShave.Azure.Communication.Service.CallingServer.Sdk.Contracts.V2022_11_1_preview.Events;
+using JasonShave.Azure.Communication.Service.CallAutomation.Sdk.Contracts;
+using JasonShave.Azure.Communication.Service.EventHandler.CallAutomation;
 
-namespace JasonShave.Azure.Communication.Service.EventHandler.CallingServer.Tests;
+namespace JasonShave.Azure.Communication.Service.CallAutomation.Tests;
 
-public class CallingServerEventDispatcherTests
+public class CallAutomationEventDispatcherTests
 {
     [Fact(DisplayName = "Dispatch should invoke event handler")]
     public void Should_Invoke_Handler()
@@ -15,19 +18,23 @@ public class CallingServerEventDispatcherTests
         // arrange
         var testId = Guid.NewGuid().ToString();
         var fixture = new Fixture();
-        var callConnectedEvent = fixture.Create<CallConnected>();
-        var callDisconnectedEvent = fixture.Create<CallDisconnected>();
-        var addParticipantSucceededEvent = fixture.Create<AddParticipantsSucceeded>();
-        var addParticipantFailedEvent = fixture.Create<AddParticipantsFailed>();
-        var callTransferAcceptedEvent = fixture.Create<CallTransferAccepted>();
-        var callTransferFailedEvent = fixture.Create<CallTransferFailed>();
-        var removeParticipantSucceededEvent = fixture.Create<RemoveParticipantSucceeded>();
-        var removeParticipantFailedEvent = fixture.Create<RemoveParticipantFailed>();
-        var participantUpdatedEvent = fixture.Create<ParticipantsUpdated>();
-
         var incomingCall = fixture.Create<IncomingCall>();
 
-        var subject = new CallingServerEventDispatcher();
+        var callConnectionId = Guid.NewGuid().ToString();
+        var serverCallId = Guid.NewGuid().ToString();
+        var correlationId = Guid.NewGuid().ToString();
+        var participants = fixture.CreateMany<CommunicationUserIdentifier>();
+
+        var callConnectedEvent = CallAutomationModelFactory.CallConnected(callConnectionId, serverCallId, correlationId);
+
+        var callDisconnectedEvent = CallAutomationModelFactory.CallDisconnected(callConnectionId, serverCallId, correlationId);
+        var addParticipantSucceededEvent = CallAutomationModelFactory.AddParticipantsSucceeded(null, null, participants, callConnectionId, serverCallId, correlationId);
+        var addParticipantFailedEvent = CallAutomationModelFactory.AddParticipantsFailed(null, null, participants, callConnectionId, serverCallId, correlationId);
+        var callTransferAcceptedEvent = CallAutomationModelFactory.CallTransferAccepted(null, null, callConnectionId, serverCallId, correlationId);
+        var callTransferFailedEvent = CallAutomationModelFactory.CallTransferFailed(null, null, callConnectionId, serverCallId, correlationId);
+        var participantUpdatedEvent = CallAutomationModelFactory.ParticipantsUpdated(participants, callConnectionId, serverCallId, correlationId);
+
+        var subject = new CallAutomationEventDispatcher();
 
         subject.OnCallConnected += (@event, contextId) =>
         {
@@ -89,22 +96,6 @@ public class CallingServerEventDispatcherTests
             return ValueTask.CompletedTask;
         };
 
-        subject.OnRemoveParticipantSucceeded += (@event, contextId) =>
-        {
-            @event.Should().NotBeNull();
-            @event.Should().BeOfType<RemoveParticipantSucceeded>();
-            contextId.Should().BeNullOrEmpty();
-            return ValueTask.CompletedTask;
-        };
-
-        subject.OnRemoveParticipantFailed += (@event, contextId) =>
-        {
-            @event.Should().NotBeNull();
-            @event.Should().BeOfType<RemoveParticipantFailed>();
-            contextId.Should().BeNullOrEmpty();
-            return ValueTask.CompletedTask;
-        };
-
         subject.OnParticipantsUpdated += (@event, contextId) =>
         {
             @event.Should().NotBeNull();
@@ -119,8 +110,6 @@ public class CallingServerEventDispatcherTests
         subject.Dispatch(incomingCall, typeof(IncomingCall));
         subject.Dispatch(addParticipantSucceededEvent, typeof(AddParticipantsSucceeded));
         subject.Dispatch(addParticipantFailedEvent, typeof(AddParticipantsFailed));
-        subject.Dispatch(removeParticipantSucceededEvent, typeof(RemoveParticipantSucceeded));
-        subject.Dispatch(removeParticipantFailedEvent, typeof(RemoveParticipantFailed));
         subject.Dispatch(callTransferAcceptedEvent, typeof(CallTransferAccepted));
         subject.Dispatch(callTransferFailedEvent, typeof(CallTransferFailed));
         subject.Dispatch(participantUpdatedEvent, typeof(ParticipantsUpdated));
@@ -132,7 +121,7 @@ public class CallingServerEventDispatcherTests
         // arrange
         var fixture = new Fixture();
         var incomingCall = fixture.Create<IncomingCall>();
-        var subject = new CallingServerEventDispatcher();
+        var subject = new CallAutomationEventDispatcher();
 
         // act
         subject.OnIncomingCall += HandleIncomingCall;
@@ -157,7 +146,7 @@ public class CallingServerEventDispatcherTests
         // arrange
         var fixture = new Fixture();
         var incomingCall = fixture.Create<IncomingCall>();
-        var subject = new CallingServerEventDispatcher();
+        var subject = new CallAutomationEventDispatcher();
 
         // act
         subject.OnIncomingCall += HandleIncomingCall;

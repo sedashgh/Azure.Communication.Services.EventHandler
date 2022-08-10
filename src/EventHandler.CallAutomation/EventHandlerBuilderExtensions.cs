@@ -1,14 +1,15 @@
 ﻿// Copyright (c) 2022 Jason Shave. All rights reserved.
 // Licensed under the MIT License.
 
-using JasonShave.Azure.Communication.Service.CallingServer.Sdk.Contracts.V2022_11_1_preview.Events;
+using Azure.Communication.CallingServer;
+using JasonShave.Azure.Communication.Service.CallAutomation.Sdk.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace JasonShave.Azure.Communication.Service.EventHandler.CallingServer;
+namespace JasonShave.Azure.Communication.Service.EventHandler.CallAutomation;
 
 public static class EventHandlerBuilderExtensions
 {
-    public static EventHandlerBuilder AddCallingServerEventHandling(this EventHandlerBuilder eventHandlerBuilder)
+    public static EventHandlerBuilder AddCallAutomationEventHandling(this EventHandlerBuilder eventHandlerBuilder)
     {
         eventHandlerBuilder.Services.AddSingleton<IEventPublisher<Calling>, EventPublisher<Calling>>();
 
@@ -22,15 +23,13 @@ public static class EventHandlerBuilderExtensions
             .Register<CallTransferFailed>()
             .Register<AddParticipantsSucceeded>()
             .Register<AddParticipantsFailed>()
-            .Register<RemoveParticipantSucceeded>()
-            .Register<RemoveParticipantFailed>()
             .Register<ParticipantsUpdated>();
 
         eventHandlerBuilder.Services.AddSingleton<IEventCatalog<Calling>>(catalog);
 
-        var dispatcher = new CallingServerEventDispatcher();
+        var dispatcher = new CallAutomationEventDispatcher();
         eventHandlerBuilder.Services.AddSingleton<IEventDispatcher<Calling>>(dispatcher);
-        eventHandlerBuilder.Services.AddSingleton<ICallingServerEventSubscriber>(dispatcher);
+        eventHandlerBuilder.Services.AddSingleton<ICallAutomationEventSubscriber>(dispatcher);
 
         return eventHandlerBuilder;
     }

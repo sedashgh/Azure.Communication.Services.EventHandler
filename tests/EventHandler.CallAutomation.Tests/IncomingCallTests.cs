@@ -3,10 +3,11 @@
 
 using System.Text.Json;
 using FluentAssertions;
-using JasonShave.Azure.Communication.Service.CallingServer.Sdk.Contracts.V2022_11_1_preview.Events;
+using JasonShave.Azure.Communication.Service.CallAutomation.Sdk.Contracts;
+using JasonShave.Azure.Communication.Service.EventHandler;
 using Xunit.Abstractions;
 
-namespace JasonShave.Azure.Communication.Service.EventHandler.CallingServer.Tests;
+namespace JasonShave.Azure.Communication.Service.CallAutomation.Tests;
 
 public class IncomingCallTests
 {

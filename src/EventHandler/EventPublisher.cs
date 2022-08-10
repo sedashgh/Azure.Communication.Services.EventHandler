@@ -28,19 +28,15 @@ public class EventPublisher<TPrimitive> : IEventPublisher<TPrimitive>
 
     public void Publish(string data, string eventName, string contextId)
     {
-        _logger.LogDebug($"Interaction event publisher handling: {eventName}");
+        _logger.LogInformation($"Event publisher handling: {eventName} | ContextId: {contextId}");
         var eventType = _eventCatalog.Get(eventName);
         if (eventType is null)
-        {
-            throw new InvalidOperationException("Unable to determine the event type from the event catalog.");
-        }
+            throw new InvalidOperationException($"Unable to determine the event {eventName} from the event catalog. | ContextId: {contextId}");
 
         var convertedEvent = _eventConverter.Convert(data, eventType);
 
         if (convertedEvent is null)
-        {
-            throw new InvalidOperationException($"Unable to convert type {eventName}");
-        }
+            throw new InvalidOperationException($"Unable to convert type {eventName} | ContextId: {contextId}");
 
         _eventDispatcher.Dispatch(convertedEvent, eventType, contextId);
     }

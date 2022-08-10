@@ -1,11 +1,12 @@
 ﻿// Copyright (c) 2022 Jason Shave. All rights reserved.
 // Licensed under the MIT License.
 
-using JasonShave.Azure.Communication.Service.CallingServer.Sdk.Contracts.V2022_11_1_preview.Events;
+using Azure.Communication.CallingServer;
+using JasonShave.Azure.Communication.Service.CallAutomation.Sdk.Contracts;
 
-namespace JasonShave.Azure.Communication.Service.EventHandler.CallingServer;
+namespace JasonShave.Azure.Communication.Service.EventHandler.CallAutomation;
 
-internal class CallingServerEventDispatcher : IEventDispatcher<Calling>, ICallingServerEventSubscriber
+internal class CallAutomationEventDispatcher : IEventDispatcher<Calling>, ICallAutomationEventSubscriber
 {
     public event Func<IncomingCall, string?, ValueTask>? OnIncomingCall;
     public event Func<CallConnected, string?, ValueTask>? OnCallConnected;
@@ -14,13 +15,11 @@ internal class CallingServerEventDispatcher : IEventDispatcher<Calling>, ICallin
     public event Func<AddParticipantsFailed, string?, ValueTask>? OnAddParticipantsFailed;
     public event Func<CallTransferAccepted, string?, ValueTask>? OnCallTransferAccepted;
     public event Func<CallTransferFailed, string?, ValueTask>? OnCallTransferFailed;
-    public event Func<RemoveParticipantSucceeded, string?, ValueTask>? OnRemoveParticipantSucceeded;
-    public event Func<RemoveParticipantFailed, string?, ValueTask>? OnRemoveParticipantFailed;
     public event Func<ParticipantsUpdated, string?, ValueTask>? OnParticipantsUpdated;
 
     private readonly Dictionary<Type, Func<object, string?, ValueTask>> _eventDictionary;
 
-    public CallingServerEventDispatcher()
+    public CallAutomationEventDispatcher()
     {
         _eventDictionary = new Dictionary<Type, Func<object, string?, ValueTask>>
         {
@@ -59,21 +58,11 @@ internal class CallingServerEventDispatcher : IEventDispatcher<Calling>, ICallin
                 if (OnCallTransferFailed is null) return;
                 await OnCallTransferFailed.Invoke((CallTransferFailed)@event, contextId);
             },
-            [typeof(RemoveParticipantSucceeded)] = async (@event, contextId) =>
-            {
-                if (OnRemoveParticipantSucceeded is null) return;
-                await OnRemoveParticipantSucceeded.Invoke((RemoveParticipantSucceeded)@event, contextId);
-            },
-            [typeof(RemoveParticipantFailed)] = async (@event, contextId) =>
-            {
-                if (OnRemoveParticipantFailed is null) return;
-                await OnRemoveParticipantFailed.Invoke((RemoveParticipantFailed)@event, contextId);
-            },
             [typeof(ParticipantsUpdated)] = async (@event, contextId) =>
             {
                 if (OnParticipantsUpdated is null) return;
                 await OnParticipantsUpdated.Invoke((ParticipantsUpdated)@event, contextId);
-            }
+            },
         };
     }
 

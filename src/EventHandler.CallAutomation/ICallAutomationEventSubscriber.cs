@@ -1,11 +1,12 @@
 ﻿// Copyright (c) 2022 Jason Shave. All rights reserved.
 // Licensed under the MIT License.
 
-using JasonShave.Azure.Communication.Service.CallingServer.Sdk.Contracts.V2022_11_1_preview.Events;
+using Azure.Communication.CallingServer;
+using IncomingCall = JasonShave.Azure.Communication.Service.CallAutomation.Sdk.Contracts.IncomingCall;
 
-namespace JasonShave.Azure.Communication.Service.EventHandler.CallingServer;
+namespace JasonShave.Azure.Communication.Service.EventHandler.CallAutomation;
 
-public interface ICallingServerEventSubscriber
+public interface ICallAutomationEventSubscriber
 {
     /// <summary>
     /// Provides an <see cref="IncomingCall"/> event and <see cref="string"/> for the context ID.
@@ -42,15 +43,15 @@ public interface ICallingServerEventSubscriber
     /// </summary>
     event Func<CallTransferFailed, string?, ValueTask>? OnCallTransferFailed;
 
-    /// <summary>
-    /// Provides an <see cref="RemoveParticipantSucceeded"/> event and <see cref="string"/> for the context ID.
-    /// </summary>
-    event Func<RemoveParticipantSucceeded, string?, ValueTask>? OnRemoveParticipantSucceeded;
+    ///// <summary>
+    ///// Provides an <see cref="RemoveParticipantSucceeded"/> event and <see cref="string"/> for the context ID.
+    ///// </summary>
+    //event Func<RemoveParticipantSucceeded, string?, ValueTask>? OnRemoveParticipantSucceeded;
 
-    /// <summary>
-    /// Provides an <see cref="RemoveParticipantFailed"/> event and <see cref="string"/> for the context ID.
-    /// </summary>
-    event Func<RemoveParticipantFailed, string?, ValueTask>? OnRemoveParticipantFailed;
+    ///// <summary>
+    ///// Provides an <see cref="RemoveParticipantFailed"/> event and <see cref="string"/> for the context ID.
+    ///// </summary>
+    //event Func<RemoveParticipantFailed, string?, ValueTask>? OnRemoveParticipantFailed;
 
     /// <summary>
     /// Provides an <see cref="ParticipantsUpdated"/> event and <see cref="string"/> for the context ID.

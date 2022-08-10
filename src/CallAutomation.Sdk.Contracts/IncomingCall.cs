@@ -3,7 +3,7 @@
 
 using JasonShave.Azure.Communication.Service.EventHandler.Sdk.Common;
 
-namespace JasonShave.Azure.Communication.Service.CallingServer.Sdk.Contracts.V2022_11_1_preview.Events;
+namespace JasonShave.Azure.Communication.Service.CallAutomation.Sdk.Contracts;
 
 [Serializable]
 public class IncomingCall

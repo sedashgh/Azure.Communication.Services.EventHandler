@@ -23,7 +23,7 @@ A common task developers must undertake with an event-driven platform is to deal
     "time": "2022-06-24T15:12:41.5556858+00:00",
     "specversion": "1.0",
     "datacontenttype": "application/json",
-    "subject": "calling/callConnections/441f1200-fd54-422e-9566-a867d187dca7/callState"
+    "subject": "calling/callConnections/441f1200-fd54-422e-9566-a867d187dca7"
 }
 ```
 
@@ -49,14 +49,14 @@ foreach(var cloudEvent in cloudEvents)
 
 This conditional logic handling needs to be done by every customer for every possible event type which turns the focus of the developer away from their business problem and concerns them with the non-functional challenges.
 
-## CallingServer and/or JobRouter Configuration
+## Call Automation and/or Job Router Configuration
 
-The following NuGet packages are available depending on if you want to handle CallingServer events, JobRouter events, or both.
+The following NuGet packages are available depending on if you want to handle Call Automation events, JobRouter events, or both.
 
 | Package | Latest | Details
 |--|--|--|
-| EventHandler.CallingServer | [![Nuget](https://img.shields.io/nuget/v/JasonShave.Azure.Communication.Service.EventHandler.CallingServer.svg?style=flat)](https://www.nuget.org/packages/JasonShave.Azure.Communication.Service.EventHandler.CallingServer/)   | Used with ACS ServerCalling SDK |
-| EventHandler.JobRouter | [![Nuget](https://img.shields.io/nuget/v/JasonShave.Azure.Communication.Service.EventHandler.JobRouter.svg?style=flat)](https://www.nuget.org/packages/JasonShave.Azure.Communication.Service.EventHandler.JobRouter/) | Used with ACS JobRouter SDK |
+| EventHandler.CallAutomation | [![Nuget](https://img.shields.io/nuget/v/JasonShave.Azure.Communication.Service.EventHandler.CallAutomation.svg?style=flat)](https://www.nuget.org/packages/JasonShave.Azure.Communication.Service.EventHandler.CallAutomation/)   | Used with ACS Call Automation SDK |
+| EventHandler.JobRouter | [![Nuget](https://img.shields.io/nuget/v/JasonShave.Azure.Communication.Service.EventHandler.JobRouter.svg?style=flat)](https://www.nuget.org/packages/JasonShave.Azure.Communication.Service.EventHandler.JobRouter/) | Used with ACS Job Router SDK |
 
 For a typical .NET 6 web application, the following configuration can be made to wire up the publishers, event catalog, dispatcher, and allow you to subscribe to events from either platform.
 
@@ -66,8 +66,8 @@ For a typical .NET 6 web application, the following configuration can be made to
     var builder = WebApplication.CreateBuilder(args);
 
     builder.Services.AddEventHandlerServices() //<--adds common event handling services
-        .AddCallingServerEventHandling() //<--adds support for CallingServer SDK events
-        .AddJobRouterEventHandling(); //<--adds support for JobRouter SDK events
+        .AddCallAutomationEventHandling() //<--adds support for Call Automation SDK events
+        .AddJobRouterEventHandling(); //<--adds support for Job Router SDK events
     
     var app = builder.Build();
     app.Run();
@@ -91,7 +91,7 @@ app.MapPost("/api/jobRouter", (
     return Results.Ok();
 }).Produces(StatusCodes.Status200OK);
 
-// .NET 6 'minimal API' to handle mid-call web hook callbacks from CallingServer
+// .NET 6 'minimal API' to handle mid-call web hook callbacks from the Call Automation platform
 app.MapPost("/api/calls/{contextId}", (
     [FromBody] CloudEvent[] cloudEvent,
     [FromRoute] string contextId,
@@ -106,19 +106,19 @@ app.MapPost("/api/calls/{contextId}", (
 }).Produces(StatusCodes.Status200OK);
 ```
 
-## Subscribing to CallingServer and JobRouter events
+## Subscribing and handling Call Automation and Job Router events
 
-As mentioned above, the `CloudEvent` or `EventGridEvent` is pushed and the corresponding C# event is invoked and subscribed to. For the Calling Server SDK, incoming calls are delivered using Event Grid and mid-call events are delivered through web hook callbacks. Job Router uses Event Grid to deliver all events. The example below shows a .NET background service wiring up the event handler as follows:
+As mentioned above, the `CloudEvent` or `EventGridEvent` is pushed and the corresponding C# event is invoked and subscribed to. For the Call Automation SDK, incoming calls are delivered using Event Grid and mid-call events are delivered through web hook callbacks. Job Router uses Event Grid to deliver all events. The example below shows a .NET background service wiring up the event handler as follows:
 
 ```csharp
 public class MyService : BackgroundService
 {
     public MyService(
-        ICallingServerEventSubscriber callingServerSubscriber,
+        ICallAutomationEventSubscriber callAutomationEventSubscriber,
         IJobRouterEventSubscriber jobRouterSubscriber)
     {
-        // subscribe to Calling Server and Job Router events
-        callingServerSubscriber.OnCallConnected += HandleCallConnected;
+        // subscribe to Call Automation and Job Router events
+        callAutomationEventSubscriber.OnCallConnected += HandleCallConnected;
         jobRouterSubscriber.OnJobQueued += HandleJobQueued;
     }
     

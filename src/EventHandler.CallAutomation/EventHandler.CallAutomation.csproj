@@ -19,9 +19,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="Azure.Communication.CallingServer" Version="1.0.0-alpha.20220809.1" />
 	  <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
 	  <PackageReference Update="Microsoft.CodeAnalysis.CSharp.Features" Version="4.2.0" />
-
 	</ItemGroup>
 
 	<ItemGroup>
@@ -30,9 +30,9 @@
 		  <Pack>True</Pack>
 		  <PackagePath>\</PackagePath>
 		</None>
-		<ProjectReference Include="..\CallingServer.Sdk.Contracts\CallingServer.Sdk.Contracts.csproj" />
+		<ProjectReference Include="..\CallAutomation.Sdk.Contracts\CallAutomation.Sdk.Contracts.csproj" />
 		<ProjectReference Include="..\EventHandler\EventHandler.csproj" />
-		<InternalsVisibleTo Include="CallingServer.Tests"/>
+		<InternalsVisibleTo Include="CallAutomation.Tests" />
 	</ItemGroup>
 
 	<ItemGroup>
