@@ -41,7 +41,7 @@ foreach(var cloudEvent in cloudEvents)
     // conditional logic for every possible event type
     if (cloudEvent.Type == "Microsoft.Communication.CallConnected")
     {
-        var @event = JsonSerializer.Deserialize<CallConnected>(cloudEvent.Data);
+        var @event = CallAutomationEventParser.Parse(cloudEvent);
         // now you can invoke your action based on this event    
     }
 }

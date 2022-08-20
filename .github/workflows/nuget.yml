@@ -34,8 +34,8 @@ jobs:
       id: version
       uses: battila7/get-version-action@v2
 
-    - name: Package EventHandler.CallingServer Project
-      run: nuget pack src/EventHandler.CallingServer/ -Prop Configuration=Release -Version ${{ steps.version.outputs.version-without-v }} -IncludeReferencedProjects -OutputDirectory ${{ env.PACKAGE_OUTPUT }}
+    - name: Package EventHandler.CallAutomation Project
+      run: nuget pack src/EventHandler.CallAutomation/ -Prop Configuration=Release -Version ${{ steps.version.outputs.version-without-v }} -IncludeReferencedProjects -OutputDirectory ${{ env.PACKAGE_OUTPUT }}
 
     - name: Package EventHandler.JobRouter Project
       run: nuget pack src/EventHandler.JobRouter/ -Prop Configuration=Release -Version ${{ steps.version.outputs.version-without-v }} -IncludeReferencedProjects -OutputDirectory ${{ env.PACKAGE_OUTPUT }}
