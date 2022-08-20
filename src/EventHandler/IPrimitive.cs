@@ -5,4 +5,5 @@ namespace JasonShave.Azure.Communication.Service.EventHandler;
 
 public interface IPrimitive
 {
+    const string EventPrefix = "Microsoft.Communication.";
 }

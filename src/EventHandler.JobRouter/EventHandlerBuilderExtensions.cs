@@ -37,6 +37,7 @@ public static class EventHandlerBuilderExtensions
         var dispatcher = new JobRouterEventDispatcher();
         eventHandlerBuilder.Services.AddSingleton<IEventDispatcher<Router>>(dispatcher);
         eventHandlerBuilder.Services.AddSingleton<IJobRouterEventSubscriber>(dispatcher);
+        eventHandlerBuilder.Services.AddSingleton<IEventConverter<Router>, JobRouterEventConverter>();
 
         return eventHandlerBuilder;
     }

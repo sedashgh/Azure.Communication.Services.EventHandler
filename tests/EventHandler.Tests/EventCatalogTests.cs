@@ -45,5 +45,31 @@ namespace JasonShave.Azure.Communication.Service.EventHandler.Tests
             startEvent.Should().NotBeNull();
             startEvent.Should().BeAssignableTo<StartEvent>();
         }
+
+        [Fact(DisplayName = "Missing event throws")]
+        public void EventCatalogService_MissingType_Throws()
+        {
+            // arrange
+            var subject = new EventCatalogService<Testing>();
+
+            // act/assert
+            subject.Invoking(x => x.Get(nameof(StartEvent))).Should().Throw<ApplicationException>();
+        }
+
+        [Fact(DisplayName = "Event catalog lists events")]
+        public void EventCatalogService_List_ReturnsMany()
+        {
+            // arrange
+            var subject = new EventCatalogService<Testing>();
+            subject
+                .Register<StartEvent>()
+                .Register<StopEvent>();
+
+            // act
+            var result = subject.List();
+
+            // assert
+            result.Should().HaveCount(2);
+        }
     }
 }

@@ -1,6 +1,8 @@
 ﻿// Copyright (c) 2022 Jason Shave. All rights reserved.
 // Licensed under the MIT License.
 
+using Azure.Messaging;
+using Azure.Messaging.EventGrid;
 using Microsoft.Extensions.Logging;
 
 namespace JasonShave.Azure.Communication.Service.EventHandler;
@@ -10,34 +12,46 @@ public class EventPublisher<TPrimitive> : IEventPublisher<TPrimitive>
     where TPrimitive : IPrimitive
 {
     private readonly ILogger<EventPublisher<TPrimitive>> _logger;
-    private readonly IEventCatalog<TPrimitive> _eventCatalog;
     private readonly IEventDispatcher<TPrimitive> _eventDispatcher;
-    private readonly IEventConverter _eventConverter;
+    private readonly IEventConverter<TPrimitive> _eventConverter;
 
     public EventPublisher(
         ILogger<EventPublisher<TPrimitive>> logger,
-        IEventCatalog<TPrimitive> eventCatalog,
         IEventDispatcher<TPrimitive> eventDispatcher,
-        IEventConverter eventConverter)
+        IEventConverter<TPrimitive> eventConverter)
     {
         _logger = logger;
-        _eventCatalog = eventCatalog;
         _eventDispatcher = eventDispatcher;
         _eventConverter = eventConverter;
     }
 
-    public void Publish(string data, string eventName, string contextId)
+    public void Publish(string data, string eventName, string? contextId)
     {
-        _logger.LogInformation($"Event publisher handling: {eventName} | ContextId: {contextId}");
-        var eventType = _eventCatalog.Get(eventName);
-        if (eventType is null)
-            throw new InvalidOperationException($"Unable to determine the event {eventName} from the event catalog. | ContextId: {contextId}");
+        Handle(() => _eventConverter.Convert(data, eventName), contextId);
+    }
 
-        var convertedEvent = _eventConverter.Convert(data, eventType);
+    public void Publish(CloudEvent cloudEvent, string? contextId)
+    {
+        Handle(() => _eventConverter.Convert(cloudEvent), contextId);
+    }
 
-        if (convertedEvent is null)
-            throw new InvalidOperationException($"Unable to convert type {eventName} | ContextId: {contextId}");
+    public void Publish(EventGridEvent eventGridEvent, string? contextId)
+    {
+        Handle(() => _eventConverter.Convert(eventGridEvent.Data.ToString(), eventGridEvent.EventType), contextId);
+    }
 
-        _eventDispatcher.Dispatch(convertedEvent, eventType, contextId);
+    private void Handle(Func<object?> converterFunc, string? contextId)
+    {
+        try
+        {
+            var convertedEvent = converterFunc();
+            _logger.LogInformation($"Event publisher handling: {convertedEvent.GetType().Name} | ContextId: {contextId}");
+
+            _eventDispatcher.Dispatch(convertedEvent, contextId);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message, e);
+        }
     }
 }

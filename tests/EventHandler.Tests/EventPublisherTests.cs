@@ -3,7 +3,7 @@
 
 using System.Text.Json;
 using AutoFixture;
-using FluentAssertions;
+using Azure.Messaging;
 using JasonShave.Azure.Communication.Service.EventHandler.Tests.Common;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -13,25 +13,22 @@ namespace JasonShave.Azure.Communication.Service.EventHandler.Tests;
 public class EventPublisherTests
 {
     [Fact(DisplayName = "Interaction publisher works")]
-    public void Should_Send()
+    public void EventPublisher_JsonPayload_ShouldPublish()
     {
         // arrange
         var fixture = new Fixture();
         var startEvent = fixture.Create<StartEvent>();
         var startEventJson = JsonSerializer.Serialize(startEvent);
 
-        var mockEventCatalog = new Mock<IEventCatalog<Testing>>();
-        var mockEventConverter = new Mock<IEventConverter>();
+        var mockEventConverter = new Mock<IEventConverter<Testing>>();
         var mockEventDispatcher = new Mock<IEventDispatcher<Testing>>();
         var mockLogger = new Mock<ILogger<EventPublisher<Testing>>>();
 
-        mockEventCatalog.Setup(c => c.Get(It.IsAny<string>())).Returns(typeof(StartEvent));
-        mockEventConverter.Setup(c => c.Convert(It.IsAny<string>(), It.IsAny<Type>())).Returns(startEvent);
-        mockEventDispatcher.Setup(d => d.Dispatch(It.IsAny<object>(), It.IsAny<Type>(), It.IsAny<string>()));
+        mockEventConverter.Setup(c => c.Convert(It.IsAny<string>(), It.IsAny<String>())).Returns(startEvent);
+        mockEventDispatcher.Setup(d => d.Dispatch(It.IsAny<object>(), It.IsAny<string>()));
 
         var subject = new EventPublisher<Testing>(
             mockLogger.Object,
-            mockEventCatalog.Object,
             mockEventDispatcher.Object,
             mockEventConverter.Object);
 
@@ -39,51 +36,34 @@ public class EventPublisherTests
         subject.Publish(startEventJson, nameof(StartEvent), "test");
 
         // assert
-        mockEventCatalog.Verify(x => x.Get(It.IsAny<string>()), Times.Once);
-        mockEventConverter.Verify(x => x.Convert(It.IsAny<string>(), It.IsAny<Type>()), Times.Once);
-        mockEventDispatcher.Verify(x => x.Dispatch(It.IsAny<object>(), It.IsAny<Type>(), It.IsAny<string>()), Times.Once);
+        mockEventConverter.Verify(x => x.Convert(It.IsAny<string>(), It.IsAny<String>()), Times.Once);
+        mockEventDispatcher.Verify(x => x.Dispatch(It.IsAny<object>(), It.IsAny<string>()), Times.Once);
     }
 
-    [Fact(DisplayName = "No event in catalog throws")]
-    public void EventPublisher_MissingEvent_Throws()
+    [Fact(DisplayName = "A start event wrapped in a CloudEvent can be published")]
+    public void EventPublisher_CloudEvent_ShouldPublish()
     {
         // arrange
-        var mockEventCatalog = new Mock<IEventCatalog<Testing>>();
-        var mockEventConverter = new Mock<IEventConverter>();
+        var fixture = new Fixture();
+        var startEvent = fixture.Create<StartEvent>();
+        var cloudEvent = new CloudEvent("testSource", nameof(StartEvent), startEvent);
+
+        var mockEventConverter = new Mock<IEventConverter<Testing>>();
         var mockEventDispatcher = new Mock<IEventDispatcher<Testing>>();
         var mockLogger = new Mock<ILogger<EventPublisher<Testing>>>();
 
-        mockEventCatalog.Setup(c => c.Get(It.IsAny<string>())).Returns(It.IsAny<Type>());
+        mockEventConverter.Setup(c => c.Convert(It.IsAny<CloudEvent>())).Returns(startEvent);
+        mockEventDispatcher.Setup(d => d.Dispatch(It.IsAny<object>(), It.IsAny<string>()));
 
-        var subject = new EventPublisher<Testing>(
+        IEventPublisher<Testing> subject = new EventPublisher<Testing>(
             mockLogger.Object,
-            mockEventCatalog.Object,
             mockEventDispatcher.Object,
             mockEventConverter.Object);
 
-        // act/assert
-        subject.Invoking(x => x.Publish(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Should().Throw<InvalidOperationException>();
-    }
+        // act
+        subject.Publish(cloudEvent);
 
-    [Fact(DisplayName = "Invalid conversion throws")]
-    public void EventPublisher_NullConversion_Throws()
-    {
-        // arrange
-        var mockEventCatalog = new Mock<IEventCatalog<Testing>>();
-        var mockEventConverter = new Mock<IEventConverter>();
-        var mockEventDispatcher = new Mock<IEventDispatcher<Testing>>();
-        var mockLogger = new Mock<ILogger<EventPublisher<Testing>>>();
-
-        mockEventCatalog.Setup(c => c.Get(It.IsAny<string>())).Returns(typeof(StartEvent));
-        mockEventConverter.Setup(c => c.Convert(It.IsAny<string>(), It.IsAny<Type>())).Returns(It.IsAny<object>());
-
-        var subject = new EventPublisher<Testing>(
-            mockLogger.Object,
-            mockEventCatalog.Object,
-            mockEventDispatcher.Object,
-            mockEventConverter.Object);
-
-        // act/assert
-        subject.Invoking(x => x.Publish(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Should().Throw<InvalidOperationException>();
+        // assert
+        mockEventDispatcher.Verify(x => x.Dispatch(It.IsAny<object>(), It.IsAny<string>()), Times.Once);
     }
 }

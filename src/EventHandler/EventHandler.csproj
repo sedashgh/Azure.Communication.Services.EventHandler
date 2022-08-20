@@ -22,12 +22,13 @@
 		</AssemblyAttribute>
 	</ItemGroup>
 	<ItemGroup>
-		<InternalsVisibleTo Include="CallAutomation.Tests"/>
+		<InternalsVisibleTo Include="CallAutomation.Tests" />
 		<InternalsVisibleTo Include="EventHandler.CallAutomation" />
 		<InternalsVisibleTo Include="EventHandler.JobRouter" />
 	</ItemGroup>
 	
 	<ItemGroup>
+	  <PackageReference Include="Azure.Messaging.EventGrid" Version="4.11.0" />
 	  <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
 	  <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
 	</ItemGroup>

@@ -1,6 +1,9 @@
 ﻿// Copyright (c) 2022 Jason Shave. All rights reserved.
 // Licensed under the MIT License.
 
+using Azure.Messaging;
+using Azure.Messaging.EventGrid;
+
 namespace JasonShave.Azure.Communication.Service.EventHandler;
 
 public interface IEventPublisher<TPrimitive>
@@ -13,5 +16,20 @@ public interface IEventPublisher<TPrimitive>
     /// <param name="eventName"></param>
     /// <param name="contextId"></param>
     /// <exception cref="InvalidOperationException"></exception>
-    void Publish(string data, string eventName, string contextId = default!);
+    void Publish(string data, string eventName, string? contextId = default);
+
+    /// <summary>
+    /// Used to publish a <see cref="CloudEvent"/> typically received from a callback or when
+    /// this schema type is specified using Azure Event Grid.
+    /// </summary>
+    /// <param name="cloudEvent"></param>
+    /// <param name="contextId"></param>
+    void Publish(CloudEvent cloudEvent, string? contextId = default);
+
+    /// <summary>
+    /// Used to publish a <see cref="EventGridEvent"/> when receiving data from an Event Grid subscription.
+    /// </summary>
+    /// <param name="eventGridEvent"></param>
+    /// <param name="contextId"></param>
+    void Publish(EventGridEvent eventGridEvent, string? contextId = default);
 }

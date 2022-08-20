@@ -1,10 +1,11 @@
 ﻿// Copyright (c) 2022 Jason Shave. All rights reserved.
 // Licensed under the MIT License.
 
-using System.Text.Json;
 using FluentAssertions;
 using JasonShave.Azure.Communication.Service.CallAutomation.Sdk.Contracts;
 using JasonShave.Azure.Communication.Service.EventHandler;
+using JasonShave.Azure.Communication.Service.EventHandler.CallAutomation;
+using Moq;
 using Xunit.Abstractions;
 
 namespace JasonShave.Azure.Communication.Service.CallAutomation.Tests;
@@ -22,15 +23,16 @@ public class IncomingCallTests
     public void EventConverter_Should_DeserializeIncomingCall()
     {
         // arrange
+        var incomingCallNamespace = "Microsoft.Communication.IncomingCall";
         var incomingCall =
             "{\"to\": {\"kind\": \"phoneNumber\",\"rawId\": \"4:\u002B18005551212\",\"phoneNumber\": {\"value\": \"\u002B18005551212\"}},\"from\": {\"kind\": \"phoneNumber\", \"rawId\": \"4:\u002B14255551212\",\"phoneNumber\": {\"value\": \"\u002B14255551212\"}},\"hasIncomingVideo\": false,\"callerDisplayName\": \"\",\"incomingCallContext\": \"some_really_long_string\",\"correlationId\": \"94ec3b97-a505-491b-9576-e3bb3d9cd084\"}";
-        var subject = new JsonEventConverter(new JsonSerializerOptions()
-        {
-            PropertyNameCaseInsensitive = true
-        });
+        var mockEventCatalog = new Mock<IEventCatalog<Calling>>();
+        mockEventCatalog.Setup(x => x.Get(It.IsAny<Type>())).Returns(incomingCallNamespace);
+
+        var subject = new CallAutomationEventConverter(mockEventCatalog.Object, null);
 
         // act
-        var result = (IncomingCall)subject.Convert(incomingCall, typeof(IncomingCall));
+        var result = (IncomingCall)subject.Convert(incomingCall, incomingCallNamespace);
 
         // assert
         result.Should().NotBeNull();

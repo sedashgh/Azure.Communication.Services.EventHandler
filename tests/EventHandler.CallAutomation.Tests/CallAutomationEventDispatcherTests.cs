@@ -105,14 +105,14 @@ public class CallAutomationEventDispatcherTests
         };
 
         // act
-        subject.Dispatch(callConnectedEvent, typeof(CallConnected), testId);
-        subject.Dispatch(callDisconnectedEvent, typeof(CallDisconnected), testId);
-        subject.Dispatch(incomingCall, typeof(IncomingCall));
-        subject.Dispatch(addParticipantSucceededEvent, typeof(AddParticipantsSucceeded));
-        subject.Dispatch(addParticipantFailedEvent, typeof(AddParticipantsFailed));
-        subject.Dispatch(callTransferAcceptedEvent, typeof(CallTransferAccepted));
-        subject.Dispatch(callTransferFailedEvent, typeof(CallTransferFailed));
-        subject.Dispatch(participantUpdatedEvent, typeof(ParticipantsUpdated));
+        subject.Dispatch(callConnectedEvent, testId);
+        subject.Dispatch(callDisconnectedEvent, testId);
+        subject.Dispatch(incomingCall);
+        subject.Dispatch(addParticipantSucceededEvent);
+        subject.Dispatch(addParticipantFailedEvent);
+        subject.Dispatch(callTransferAcceptedEvent);
+        subject.Dispatch(callTransferFailedEvent);
+        subject.Dispatch(participantUpdatedEvent);
     }
 
     [Fact(DisplayName = "Null context should invoke")]
@@ -134,7 +134,7 @@ public class CallAutomationEventDispatcherTests
         }
 
         // assert
-        subject.Dispatch(incomingCall, typeof(IncomingCall));
+        subject.Dispatch(incomingCall);
 
         // clean up
         subject.OnIncomingCall -= HandleIncomingCall;
@@ -157,7 +157,7 @@ public class CallAutomationEventDispatcherTests
         }
 
         // assert
-        subject.Invoking(x => x.Dispatch(incomingCall, typeof(IncomingCall))).Should().NotThrow();
+        subject.Invoking(x => x.Dispatch(incomingCall)).Should().NotThrow();
 
         // clean up
         subject.OnIncomingCall -= HandleIncomingCall;

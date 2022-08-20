@@ -5,7 +5,7 @@ using JasonShave.Azure.Communication.Service.JobRouter.Sdk.Contracts.V2021_10_20
 
 namespace JasonShave.Azure.Communication.Service.EventHandler.JobRouter;
 
-internal class JobRouterEventDispatcher : IEventDispatcher<Router>, IJobRouterEventSubscriber
+internal sealed class JobRouterEventDispatcher : IEventDispatcher<Router>, IJobRouterEventSubscriber
 {
     public event Func<RouterJobCancelled, string?, ValueTask>? OnJobCancelled;
     public event Func<RouterJobClassificationFailed, string?, ValueTask>? OnJobClassificationFailed;
@@ -113,8 +113,8 @@ internal class JobRouterEventDispatcher : IEventDispatcher<Router>, IJobRouterEv
         };
     }
 
-    public void Dispatch(object @event, Type eventType, string contextId = default!)
+    public void Dispatch(object @event, string? contextId = default)
     {
-        _eventDictionary[eventType](@event, contextId);
+        _eventDictionary[@event.GetType()](@event, contextId);
     }
 }

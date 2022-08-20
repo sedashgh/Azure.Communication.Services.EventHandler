@@ -6,7 +6,7 @@ using JasonShave.Azure.Communication.Service.CallAutomation.Sdk.Contracts;
 
 namespace JasonShave.Azure.Communication.Service.EventHandler.CallAutomation;
 
-internal class CallAutomationEventDispatcher : IEventDispatcher<Calling>, ICallAutomationEventSubscriber
+internal sealed class CallAutomationEventDispatcher : IEventDispatcher<Calling>, ICallAutomationEventSubscriber
 {
     public event Func<IncomingCall, string?, ValueTask>? OnIncomingCall;
     public event Func<CallConnected, string?, ValueTask>? OnCallConnected;
@@ -26,48 +26,48 @@ internal class CallAutomationEventDispatcher : IEventDispatcher<Calling>, ICallA
             [typeof(IncomingCall)] = async (@event, contextId) =>
             {
                 if (OnIncomingCall is null) return;
-                await OnIncomingCall.Invoke((IncomingCall)@event, contextId);
+                await OnIncomingCall.Invoke((IncomingCall)@event, contextId).ConfigureAwait(false);
             },
             [typeof(CallConnected)] = async (@event, contextId) =>
             {
                 if (OnCallConnected is null) return;
-                await OnCallConnected.Invoke((CallConnected)@event, contextId);
+                await OnCallConnected.Invoke((CallConnected)@event, contextId).ConfigureAwait(false);
             },
             [typeof(CallDisconnected)] = async (@event, contextId) =>
             {
                 if (OnCallDisconnected is null) return;
-                await OnCallDisconnected.Invoke((CallDisconnected)@event, contextId);
+                await OnCallDisconnected.Invoke((CallDisconnected)@event, contextId).ConfigureAwait(false);
             },
             [typeof(AddParticipantsSucceeded)] = async (@event, contextId) =>
             {
                 if (OnAddParticipantsSucceeded is null) return;
-                await OnAddParticipantsSucceeded.Invoke((AddParticipantsSucceeded)@event, contextId);
+                await OnAddParticipantsSucceeded.Invoke((AddParticipantsSucceeded)@event, contextId).ConfigureAwait(false);
             },
             [typeof(AddParticipantsFailed)] = async (@event, contextId) =>
             {
                 if (OnAddParticipantsFailed is null) return;
-                await OnAddParticipantsFailed.Invoke((AddParticipantsFailed)@event, contextId);
+                await OnAddParticipantsFailed.Invoke((AddParticipantsFailed)@event, contextId).ConfigureAwait(false);
             },
             [typeof(CallTransferAccepted)] = async (@event, contextId) =>
             {
                 if (OnCallTransferAccepted is null) return;
-                await OnCallTransferAccepted.Invoke((CallTransferAccepted)@event, contextId);
+                await OnCallTransferAccepted.Invoke((CallTransferAccepted)@event, contextId).ConfigureAwait(false);
             },
             [typeof(CallTransferFailed)] = async (@event, contextId) =>
             {
                 if (OnCallTransferFailed is null) return;
-                await OnCallTransferFailed.Invoke((CallTransferFailed)@event, contextId);
+                await OnCallTransferFailed.Invoke((CallTransferFailed)@event, contextId).ConfigureAwait(false);
             },
             [typeof(ParticipantsUpdated)] = async (@event, contextId) =>
             {
                 if (OnParticipantsUpdated is null) return;
-                await OnParticipantsUpdated.Invoke((ParticipantsUpdated)@event, contextId);
+                await OnParticipantsUpdated.Invoke((ParticipantsUpdated)@event, contextId).ConfigureAwait(false);
             },
         };
     }
 
-    public void Dispatch(object @event, Type eventType, string contextId = default!)
+    public void Dispatch(object @event, string? contextId = default)
     {
-        _eventDictionary[eventType](@event, contextId);
+        _eventDictionary[@event.GetType()](@event, contextId);
     }
 }
