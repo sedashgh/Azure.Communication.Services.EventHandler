@@ -85,13 +85,13 @@ app.MapPost("/api/jobRouter", (
 {
     foreach (var eventGridEvent in eventGridEvents)
     {
-        publisher.Publish(eventGridEvent.Data.ToString(), eventGridEvent.EventType);
+        publisher.Publish(eventGridEvent);
     }
 
     return Results.Ok();
 }).Produces(StatusCodes.Status200OK);
 
-// .NET 6 'minimal API' to handle mid-call web hook callbacks from the Call Automation platform
+// .NET 6 'minimal API' to handle Call Automation mid-call web hook callbacks
 app.MapPost("/api/calls/{contextId}", (
     [FromBody] CloudEvent[] cloudEvent,
     [FromRoute] string contextId,
@@ -99,7 +99,7 @@ app.MapPost("/api/calls/{contextId}", (
 {
     foreach (var @event in cloudEvent)
     {
-        publisher.Publish(@event.Data.ToString(), @event.Type, contextId);
+        publisher.Publish(@event.Data, contextId);
     }
 
     return Results.Ok();

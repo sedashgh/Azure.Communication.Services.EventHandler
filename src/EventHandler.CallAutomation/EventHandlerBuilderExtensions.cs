@@ -12,7 +12,6 @@ public static class EventHandlerBuilderExtensions
     public static EventHandlerBuilder AddCallAutomationEventHandling(this EventHandlerBuilder eventHandlerBuilder)
     {
         var catalog = new EventCatalogService<Calling>();
-
         catalog
             .Register<IncomingCall>()
             .Register<CallConnected>()
@@ -25,13 +24,13 @@ public static class EventHandlerBuilderExtensions
             .Register<PlayCompleted>()
             .Register<PlayFailed>()
             .Register<CallRecordingStateChanged>();
-
         eventHandlerBuilder.Services.AddSingleton<IEventCatalog<Calling>>(catalog);
+
+        eventHandlerBuilder.Services.AddSingleton<IEventConverter<Calling>, CallAutomationEventConverter>();
 
         var dispatcher = new CallAutomationEventDispatcher();
         eventHandlerBuilder.Services.AddSingleton<IEventDispatcher<Calling>>(dispatcher);
         eventHandlerBuilder.Services.AddSingleton<ICallAutomationEventSubscriber>(dispatcher);
-        eventHandlerBuilder.Services.AddSingleton<IEventConverter<Calling>, CallAutomationEventConverter>();
 
         return eventHandlerBuilder;
     }
