@@ -43,18 +43,23 @@ public interface ICallAutomationEventSubscriber
     /// </summary>
     event Func<CallTransferFailed, string?, ValueTask>? OnCallTransferFailed;
 
-    ///// <summary>
-    ///// Provides an <see cref="RemoveParticipantSucceeded"/> event and <see cref="string"/> for the context ID.
-    ///// </summary>
-    //event Func<RemoveParticipantSucceeded, string?, ValueTask>? OnRemoveParticipantSucceeded;
-
-    ///// <summary>
-    ///// Provides an <see cref="RemoveParticipantFailed"/> event and <see cref="string"/> for the context ID.
-    ///// </summary>
-    //event Func<RemoveParticipantFailed, string?, ValueTask>? OnRemoveParticipantFailed;
-
     /// <summary>
     /// Provides an <see cref="ParticipantsUpdated"/> event and <see cref="string"/> for the context ID.
     /// </summary>
     event Func<ParticipantsUpdated, string?, ValueTask>? OnParticipantsUpdated;
+
+    /// <summary>
+    /// Provides an <see cref="PlayCompleted"/> event and <see cref="string"/> for the context ID.
+    /// </summary>
+    event Func<PlayCompleted, string?, ValueTask>? OnPlayCompleted;
+
+    /// <summary>
+    /// Provides an <see cref="PlayFailed"/> event and <see cref="string"/> for the context ID.
+    /// </summary>
+    event Func<PlayFailed, string?, ValueTask>? OnPlayFailed;
+
+    /// <summary>
+    /// Provides an <see cref="CallRecordingStateChanged"/> event and <see cref="string"/> for the context ID.
+    /// </summary>
+    event Func<CallRecordingStateChanged, string?, ValueTask>? OnCallRecordingStateChanged;
 }

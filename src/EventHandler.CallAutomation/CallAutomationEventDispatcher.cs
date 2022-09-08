@@ -16,6 +16,9 @@ internal sealed class CallAutomationEventDispatcher : IEventDispatcher<Calling>,
     public event Func<CallTransferAccepted, string?, ValueTask>? OnCallTransferAccepted;
     public event Func<CallTransferFailed, string?, ValueTask>? OnCallTransferFailed;
     public event Func<ParticipantsUpdated, string?, ValueTask>? OnParticipantsUpdated;
+    public event Func<PlayCompleted, string?, ValueTask>? OnPlayCompleted;
+    public event Func<PlayFailed, string?, ValueTask>? OnPlayFailed;
+    public event Func<CallRecordingStateChanged, string?, ValueTask>? OnCallRecordingStateChanged;
 
     private readonly Dictionary<Type, Func<object, string?, ValueTask>> _eventDictionary;
 
@@ -62,6 +65,21 @@ internal sealed class CallAutomationEventDispatcher : IEventDispatcher<Calling>,
             {
                 if (OnParticipantsUpdated is null) return;
                 await OnParticipantsUpdated.Invoke((ParticipantsUpdated)@event, contextId).ConfigureAwait(false);
+            },
+            [typeof(PlayCompleted)] = async (@event, contextId) =>
+            {
+                if (OnPlayCompleted is null) return;
+                await OnPlayCompleted.Invoke((PlayCompleted)@event, contextId).ConfigureAwait(false);
+            },
+            [typeof(PlayFailed)] = async (@event, contextId) =>
+            {
+                if (OnPlayFailed is null) return;
+                await OnPlayFailed.Invoke((PlayFailed)@event, contextId).ConfigureAwait(false);
+            },
+            [typeof(CallRecordingStateChanged)] = async (@event, contextId) =>
+            {
+                if (OnCallRecordingStateChanged is null) return;
+                await OnCallRecordingStateChanged.Invoke((CallRecordingStateChanged)@event, contextId).ConfigureAwait(false);
             },
         };
     }
