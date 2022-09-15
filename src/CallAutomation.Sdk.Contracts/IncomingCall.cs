@@ -6,7 +6,7 @@ using JasonShave.Azure.Communication.Service.EventHandler.Sdk.Common;
 namespace JasonShave.Azure.Communication.Service.CallAutomation.Sdk.Contracts;
 
 [Serializable]
-public class IncomingCall
+public sealed class IncomingCall
 {
     public CommunicationIdentifier To { get; set; } = default!;
 

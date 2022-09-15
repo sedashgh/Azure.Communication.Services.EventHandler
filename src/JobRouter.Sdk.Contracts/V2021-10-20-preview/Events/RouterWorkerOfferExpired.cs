@@ -4,7 +4,7 @@
 namespace JasonShave.Azure.Communication.Service.JobRouter.Sdk.Contracts.V2021_10_20_preview.Events
 {
     [Serializable]
-    public class RouterWorkerOfferExpired
+    public sealed class RouterWorkerOfferExpired
     {
         public string WorkerId { get; set; }
 

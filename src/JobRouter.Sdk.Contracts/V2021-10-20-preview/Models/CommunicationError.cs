@@ -4,7 +4,7 @@
 namespace JasonShave.Azure.Communication.Service.JobRouter.Sdk.Contracts.V2021_10_20_preview.Models
 {
     [Serializable]
-    public class CommunicationError
+    public sealed class CommunicationError
     {
         public string Code { get; set; }
 

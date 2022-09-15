@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 namespace JasonShave.Azure.Communication.Service.EventHandler;
 
 /// <inheritdoc />
-public class EventPublisher<TPrimitive> : IEventPublisher<TPrimitive>
+public sealed class EventPublisher<TPrimitive> : IEventPublisher<TPrimitive>
     where TPrimitive : IPrimitive
 {
     private readonly ILogger<EventPublisher<TPrimitive>> _logger;

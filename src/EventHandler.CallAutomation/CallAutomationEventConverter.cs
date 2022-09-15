@@ -2,15 +2,14 @@
 // Licensed under the MIT License.
 
 using Azure.Communication.CallingServer;
+using Azure.Messaging;
 using JasonShave.Azure.Communication.Service.CallAutomation.Sdk.Contracts;
 using System.Text.Json;
-using Azure.Messaging;
-using Azure.Messaging.EventGrid;
 
 namespace JasonShave.Azure.Communication.Service.EventHandler.CallAutomation;
 
 /// <inheritdoc />
-public class CallAutomationEventConverter : IEventConverter<Calling>
+public sealed class CallAutomationEventConverter : IEventConverter<Calling>
 {
     private readonly IEventCatalog<Calling> _eventCatalog;
     private readonly JsonSerializerOptions _jsonSerializerOptions;

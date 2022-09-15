@@ -30,9 +30,9 @@ public class CallAutomationEventDispatcherTests
         var callDisconnectedEvent = CallAutomationModelFactory.CallDisconnected(callConnectionId, serverCallId, correlationId);
         var addParticipantSucceededEvent = CallAutomationModelFactory.AddParticipantsSucceeded(null, null, participants, callConnectionId, serverCallId, correlationId);
         var addParticipantFailedEvent = CallAutomationModelFactory.AddParticipantsFailed(null, null, participants, callConnectionId, serverCallId, correlationId);
-        var callTransferAcceptedEvent = CallAutomationModelFactory.CallTransferAccepted(null, null, callConnectionId, serverCallId, correlationId);
-        var callTransferFailedEvent = CallAutomationModelFactory.CallTransferFailed(null, null, callConnectionId, serverCallId, correlationId);
-        var participantUpdatedEvent = CallAutomationModelFactory.ParticipantsUpdated(participants, callConnectionId, serverCallId, correlationId);
+        var callTransferAcceptedEvent = CallAutomationModelFactory.CallTransferAccepted(null, null, null, callConnectionId, serverCallId, correlationId);
+        var callTransferFailedEvent = CallAutomationModelFactory.CallTransferFailed(null, null, null, callConnectionId, serverCallId, correlationId);
+        var participantUpdatedEvent = CallAutomationModelFactory.ParticipantsUpdated(participants, null, null, null, callConnectionId, serverCallId, correlationId);
 
         var subject = new CallAutomationEventDispatcher();
 

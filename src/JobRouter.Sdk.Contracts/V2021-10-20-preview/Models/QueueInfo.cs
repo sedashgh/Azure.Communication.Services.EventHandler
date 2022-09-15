@@ -4,7 +4,7 @@
 namespace JasonShave.Azure.Communication.Service.JobRouter.Sdk.Contracts.V2021_10_20_preview.Models
 {
     [Serializable]
-    public class QueueInfo
+    public sealed class QueueInfo
     {
         public string Id { get; set; } = default!;
 

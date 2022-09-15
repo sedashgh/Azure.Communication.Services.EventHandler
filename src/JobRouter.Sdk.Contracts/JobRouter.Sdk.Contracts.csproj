@@ -4,8 +4,6 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyName>JasonShave.Azure.Communication.Service.$(MSBuildProjectName)</AssemblyName>
-    <RootNamespace>JasonShave.Azure.Communication.Service.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

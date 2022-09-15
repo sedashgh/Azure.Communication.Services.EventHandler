@@ -3,7 +3,7 @@
 
 namespace JasonShave.Azure.Communication.Service.JobRouter.Sdk.Contracts.V2021_10_20_preview.Models
 {
-    public class WorkerSelector
+    public sealed class WorkerSelector
     {
         public string Key { get; set; }
 

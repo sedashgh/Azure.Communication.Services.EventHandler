@@ -5,7 +5,7 @@ namespace JasonShave.Azure.Communication.Service.JobRouter.Sdk.Contracts.V2021_1
 {
     [Serializable]
 
-    public class RouterJobCancelled
+    public sealed class RouterJobCancelled
     {
         public string? Note { get; set; }
 

@@ -4,7 +4,7 @@
 namespace JasonShave.Azure.Communication.Service.JobRouter.Sdk.Contracts.V2021_10_20_preview.Events
 {
     [Serializable]
-    public class RouterJobExceptionTriggered
+    public sealed class RouterJobExceptionTriggered
     {
         public string RuleKey { get; set; }
 

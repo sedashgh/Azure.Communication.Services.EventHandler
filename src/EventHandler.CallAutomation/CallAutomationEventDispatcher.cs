@@ -18,6 +18,8 @@ internal sealed class CallAutomationEventDispatcher : IEventDispatcher<Calling>,
     public event Func<ParticipantsUpdated, string?, ValueTask>? OnParticipantsUpdated;
     public event Func<PlayCompleted, string?, ValueTask>? OnPlayCompleted;
     public event Func<PlayFailed, string?, ValueTask>? OnPlayFailed;
+    public event Func<RecognizeCompleted, string?, ValueTask> OnRecognizeCompleted;
+    public event Func<RecognizeFailed, string?, ValueTask> OnRecognizeFailed;
     public event Func<CallRecordingStateChanged, string?, ValueTask>? OnCallRecordingStateChanged;
 
     private readonly Dictionary<Type, Func<object, string?, ValueTask>> _eventDictionary;
@@ -75,6 +77,16 @@ internal sealed class CallAutomationEventDispatcher : IEventDispatcher<Calling>,
             {
                 if (OnPlayFailed is null) return;
                 await OnPlayFailed.Invoke((PlayFailed)@event, contextId).ConfigureAwait(false);
+            },
+            [typeof(RecognizeCompleted)] = async (@event, contextId) =>
+            {
+                if (OnRecognizeCompleted is null) return;
+                await OnRecognizeCompleted.Invoke((RecognizeCompleted)@event, contextId).ConfigureAwait(false);
+            },
+            [typeof(RecognizeFailed)] = async (@event, contextId) =>
+            {
+                if (OnRecognizeFailed is null) return;
+                await OnRecognizeFailed.Invoke((RecognizeFailed)@event, contextId).ConfigureAwait(false);
             },
             [typeof(CallRecordingStateChanged)] = async (@event, contextId) =>
             {

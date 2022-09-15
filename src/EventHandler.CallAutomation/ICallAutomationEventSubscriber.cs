@@ -59,6 +59,16 @@ public interface ICallAutomationEventSubscriber
     event Func<PlayFailed, string?, ValueTask>? OnPlayFailed;
 
     /// <summary>
+    /// Provides an <see cref="RecognizeCompleted"/> event and <see cref="string"/> for the context ID.
+    /// </summary>
+    event Func<RecognizeCompleted, string?, ValueTask> OnRecognizeCompleted;
+
+    /// <summary>
+    /// Provides an <see cref="RecognizeFailed"/> event and <see cref="string"/> for the context ID.
+    /// </summary>
+    event Func<RecognizeFailed, string?, ValueTask> OnRecognizeFailed;
+
+    /// <summary>
     /// Provides an <see cref="CallRecordingStateChanged"/> event and <see cref="string"/> for the context ID.
     /// </summary>
     event Func<CallRecordingStateChanged, string?, ValueTask>? OnCallRecordingStateChanged;

@@ -6,7 +6,7 @@ using JasonShave.Azure.Communication.Service.JobRouter.Sdk.Contracts.V2021_10_20
 namespace JasonShave.Azure.Communication.Service.JobRouter.Sdk.Contracts.V2021_10_20_preview.Events
 {
     [Serializable]
-    public class RouterJobReceived
+    public sealed class RouterJobReceived
     {
         public string JobId { get; set; }
 

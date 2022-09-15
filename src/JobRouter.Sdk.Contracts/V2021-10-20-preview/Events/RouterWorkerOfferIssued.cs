@@ -4,7 +4,7 @@
 namespace JasonShave.Azure.Communication.Service.JobRouter.Sdk.Contracts.V2021_10_20_preview.Events
 {
     [Serializable]
-    public class RouterWorkerOfferIssued
+    public sealed class RouterWorkerOfferIssued
     {
         public string WorkerId { get; set; }
 

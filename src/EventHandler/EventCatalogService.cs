@@ -3,7 +3,7 @@
 
 namespace JasonShave.Azure.Communication.Service.EventHandler;
 
-internal class EventCatalogService<TPrimitive> : IEventCatalog<TPrimitive>
+internal sealed class EventCatalogService<TPrimitive> : IEventCatalog<TPrimitive>
     where TPrimitive : IPrimitive
 {
     private readonly Dictionary<string, Type> _eventCatalogByName = new();

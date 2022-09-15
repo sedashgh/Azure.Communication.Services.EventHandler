@@ -19,7 +19,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Azure.Communication.CallingServer" Version="1.0.0-alpha.20220819.1" />
+	  <PackageReference Include="Azure.Communication.CallingServer" Version="1.0.0-alpha.20220914.1" />
 	  <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
 	  <PackageReference Update="Microsoft.CodeAnalysis.CSharp.Features" Version="4.2.0" />
 	</ItemGroup>

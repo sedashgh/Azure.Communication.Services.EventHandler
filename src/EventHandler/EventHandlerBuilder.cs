@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace JasonShave.Azure.Communication.Service.EventHandler;
 
-public class EventHandlerBuilder
+public sealed class EventHandlerBuilder
 {
     public IServiceCollection Services { get; }
 
