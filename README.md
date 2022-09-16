@@ -40,10 +40,9 @@ foreach(var cloudEvent in cloudEvents)
 {
     var @event = CallAutomationEventParser.Parse(cloudEvent);
     // conditional logic for every possible event type
-    if (cloudEvent.Type == "Microsoft.Communication.CallConnected")
-    {
-        var @event = CallAutomationEventParser.Parse(cloudEvent);
-        // now you can invoke your action based on this event    
+    if (@event is CallConnected callConnected)
+    {        
+        // now you can invoke your action based on this event being cast to the correct type
     }
 }
 ```
