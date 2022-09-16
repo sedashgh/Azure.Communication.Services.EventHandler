@@ -2,7 +2,7 @@
 
 [![.NET](https://github.com/jasonshave/Azure.Communication.Service/actions/workflows/dotnet.yml/badge.svg)](https://github.com/jasonshave/Azure.Communication.Service/actions/workflows/dotnet.yml)
 
-This repository contains libraries which act as a set of convenience layer services to the `Azure.Communication.Service.CallingServer` and `Azure.Communication.Service.JobRouter` libraries currently in preview.
+This repository contains libraries which act as a set of convenience layer services to the `Azure.Communication.Service.CallAutomation` and `Azure.Communication.Service.JobRouter` libraries currently in preview.
 
 ## Problem statement
 
@@ -13,7 +13,7 @@ A common task developers must undertake with an event-driven platform is to deal
 ```json
 {
     "id": "7dec6eed-129c-43f3-a2bf-134ac1978168",
-    "source": "calling/callConnections/441f1200-fd54-422e-9566-a867d187dca7/callState",
+    "source": "calling/callConnections/441f1200-fd54-422e-9566-a867d187dca7",
     "type": "Microsoft.Communication.CallConnected",
     "data": {
         "callConnectionId": "441f1200-fd54-422e-9566-a867d187dca7",
@@ -38,6 +38,7 @@ CloudEvent[] cloudEvents = JsonSerializer.Deserialize<CloudEvent[]>(requestBody)
 
 foreach(var cloudEvent in cloudEvents)
 {
+    var @event = CallAutomationEventParser.Parse(cloudEvent);
     // conditional logic for every possible event type
     if (cloudEvent.Type == "Microsoft.Communication.CallConnected")
     {

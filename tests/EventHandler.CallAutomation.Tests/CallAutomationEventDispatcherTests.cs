@@ -3,7 +3,7 @@
 
 using AutoFixture;
 using Azure.Communication;
-using Azure.Communication.CallingServer;
+using Azure.Communication.CallAutomation;
 using FluentAssertions;
 using JasonShave.Azure.Communication.Service.CallAutomation.Sdk.Contracts;
 using JasonShave.Azure.Communication.Service.EventHandler.CallAutomation;

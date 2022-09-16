@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 using System.Text.Json;
-using Azure.Communication.CallingServer;
+using Azure.Communication.CallAutomation;
 using Azure.Messaging;
 using FluentAssertions;
 using JasonShave.Azure.Communication.Service.EventHandler;

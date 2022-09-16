@@ -1,7 +1,7 @@
 ﻿// Copyright (c) 2022 Jason Shave. All rights reserved.
 // Licensed under the MIT License.
 
-using Azure.Communication.CallingServer;
+using Azure.Communication.CallAutomation;
 using Azure.Messaging;
 using FluentAssertions;
 
