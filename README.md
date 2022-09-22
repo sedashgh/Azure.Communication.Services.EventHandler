@@ -73,7 +73,7 @@ For a typical .NET 6 web application, the following configuration can be made to
     app.Run();
     ```
 
-## Publishing CloudEvents and EventGridEvents
+## Publishing CloudEvent and EventGridEvent messages
 
 Leveraging .NET's dependency injection framework, add the `IEventPublisher<Calling>` or `IEventPublisher<Router>` to push `Azure.Messaging.CloudEvent` and `Azure.Messaging.EventGrid` messages into the services where their types are automatically cast, deserialized, and the correct event handler is invoked.
 
@@ -81,29 +81,13 @@ Leveraging .NET's dependency injection framework, add the `IEventPublisher<Calli
 // .NET 6 'minimal API' to handle JobRouter Event Grid HTTP web hook subscription
 app.MapPost("/api/jobRouter", (
     [FromBody] EventGridEvent[] eventGridEvents,
-    [FromServices] IEventPublisher<Router> publisher) =>
-{
-    foreach (var eventGridEvent in eventGridEvents)
-    {
-        publisher.Publish(eventGridEvent);
-    }
-
-    return Results.Ok();
-}).Produces(StatusCodes.Status200OK);
+    IEventPublisher<Router> publisher) => publisher.Publish(eventGridEvents));
 
 // .NET 6 'minimal API' to handle Call Automation mid-call web hook callbacks
 app.MapPost("/api/calls/{contextId}", (
     [FromBody] CloudEvent[] cloudEvent,
     [FromRoute] string contextId,
-    [FromServices] IEventPublisher<Calling> publisher) =>
-{
-    foreach (var @event in cloudEvent)
-    {
-        publisher.Publish(@event.Data, contextId);
-    }
-
-    return Results.Ok();
-}).Produces(StatusCodes.Status200OK);
+    IEventPublisher<Calling> publisher) => publisher.Publish(@event.Data, contextId));
 ```
 
 ## Subscribing and handling Call Automation and Job Router events

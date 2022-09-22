@@ -30,14 +30,38 @@ public sealed class EventPublisher<TPrimitive> : IEventPublisher<TPrimitive>
         Handle(() => _eventConverter.Convert(data, eventName), contextId);
     }
 
+    public void Publish(string[] data, string eventName, string? contextId = default)
+    {
+        foreach (var d in data)
+        {
+            Publish(d, eventName, contextId);
+        }
+    }
+
     public void Publish(CloudEvent cloudEvent, string? contextId)
     {
         Handle(() => _eventConverter.Convert(cloudEvent), contextId);
     }
 
+    public void Publish(CloudEvent[] cloudEvents, string? contextId = default)
+    {
+        foreach (var cloudEvent in cloudEvents)
+        {
+            Publish(cloudEvent, contextId);
+        }
+    }
+
     public void Publish(EventGridEvent eventGridEvent, string? contextId)
     {
         Handle(() => _eventConverter.Convert(eventGridEvent.Data.ToString(), eventGridEvent.EventType), contextId);
+    }
+
+    public void Publish(EventGridEvent[] eventGridEvents, string? contextId = default)
+    {
+        foreach (var eventGridEvent in eventGridEvents)
+        {
+            Publish(eventGridEvent, contextId);
+        }
     }
 
     private void Handle(Func<object?> converterFunc, string? contextId)
