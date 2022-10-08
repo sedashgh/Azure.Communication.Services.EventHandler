@@ -34,6 +34,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Update="Microsoft.CodeAnalysis.CSharp.Features" Version="4.2.0" />
+	  <PackageReference Update="Microsoft.CodeAnalysis.CSharp.Features" Version="4.3.0" />
 	</ItemGroup>
 </Project>

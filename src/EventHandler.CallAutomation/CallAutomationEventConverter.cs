@@ -3,8 +3,8 @@
 
 using Azure.Communication.CallAutomation;
 using Azure.Messaging;
-using JasonShave.Azure.Communication.Service.CallAutomation.Sdk.Contracts;
 using System.Text.Json;
+using CallAutomation.Contracts;
 
 namespace JasonShave.Azure.Communication.Service.EventHandler.CallAutomation;
 

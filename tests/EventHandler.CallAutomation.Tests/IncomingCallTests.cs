@@ -1,8 +1,8 @@
 ﻿// Copyright (c) 2022 Jason Shave. All rights reserved.
 // Licensed under the MIT License.
 
+using CallAutomation.Contracts;
 using FluentAssertions;
-using JasonShave.Azure.Communication.Service.CallAutomation.Sdk.Contracts;
 using JasonShave.Azure.Communication.Service.EventHandler;
 using JasonShave.Azure.Communication.Service.EventHandler.CallAutomation;
 using Moq;

@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 
 using AutoFixture;
-using Azure.Communication;
 using Azure.Communication.CallAutomation;
+using CallAutomation.Contracts;
 using FluentAssertions;
-using JasonShave.Azure.Communication.Service.CallAutomation.Sdk.Contracts;
 using JasonShave.Azure.Communication.Service.EventHandler.CallAutomation;
+using CommunicationUserIdentifier = Azure.Communication.CommunicationUserIdentifier;
 
 namespace JasonShave.Azure.Communication.Service.CallAutomation.Tests;
 
@@ -28,11 +28,11 @@ public class CallAutomationEventDispatcherTests
         var callConnectedEvent = CallAutomationModelFactory.CallConnected(callConnectionId, serverCallId, correlationId);
 
         var callDisconnectedEvent = CallAutomationModelFactory.CallDisconnected(callConnectionId, serverCallId, correlationId);
-        var addParticipantSucceededEvent = CallAutomationModelFactory.AddParticipantsSucceeded(null, null, participants, callConnectionId, serverCallId, correlationId);
-        var addParticipantFailedEvent = CallAutomationModelFactory.AddParticipantsFailed(null, null, participants, callConnectionId, serverCallId, correlationId);
-        var callTransferAcceptedEvent = CallAutomationModelFactory.CallTransferAccepted(null, null, null, callConnectionId, serverCallId, correlationId);
-        var callTransferFailedEvent = CallAutomationModelFactory.CallTransferFailed(null, null, null, callConnectionId, serverCallId, correlationId);
-        var participantUpdatedEvent = CallAutomationModelFactory.ParticipantsUpdated(participants, null, null, null, callConnectionId, serverCallId, correlationId);
+        var addParticipantSucceededEvent = CallAutomationModelFactory.AddParticipantsSucceeded(callConnectionId, serverCallId, correlationId, null, null, participants);
+        var addParticipantFailedEvent = CallAutomationModelFactory.AddParticipantsFailed(callConnectionId, serverCallId, correlationId, null, null, participants);
+        var callTransferAcceptedEvent = CallAutomationModelFactory.CallTransferAccepted(callConnectionId, serverCallId, correlationId);
+        var callTransferFailedEvent = CallAutomationModelFactory.CallTransferFailed(callConnectionId, serverCallId, correlationId);
+        var participantUpdatedEvent = CallAutomationModelFactory.ParticipantsUpdated(callConnectionId, serverCallId, correlationId);
 
         var subject = new CallAutomationEventDispatcher();
 

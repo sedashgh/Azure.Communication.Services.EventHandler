@@ -3,7 +3,6 @@
 
 namespace JasonShave.Azure.Communication.Service.JobRouter.Sdk.Contracts.V2021_10_20_preview.Events
 {
-    [Serializable]
     public sealed class RouterWorkerOfferRevoked
     {
         public string OfferId { get; set; }

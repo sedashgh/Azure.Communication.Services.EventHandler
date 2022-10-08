@@ -1,14 +1,13 @@
 ﻿// Copyright (c) 2022 Jason Shave. All rights reserved.
 // Licensed under the MIT License.
 
-using System.Text.Json;
 using Azure.Communication.CallAutomation;
 using Azure.Messaging;
-using FluentAssertions;
 using JasonShave.Azure.Communication.Service.EventHandler;
 using JasonShave.Azure.Communication.Service.EventHandler.CallAutomation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Text.Json;
 
 namespace JasonShave.Azure.Communication.Service.CallAutomation.Tests;
 

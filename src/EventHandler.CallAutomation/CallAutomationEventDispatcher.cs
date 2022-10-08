@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 using Azure.Communication.CallAutomation;
-using JasonShave.Azure.Communication.Service.CallAutomation.Sdk.Contracts;
+using CallAutomation.Contracts;
 
 namespace JasonShave.Azure.Communication.Service.EventHandler.CallAutomation;
 
