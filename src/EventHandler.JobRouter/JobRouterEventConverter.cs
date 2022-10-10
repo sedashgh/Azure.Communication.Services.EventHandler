@@ -17,7 +17,10 @@ internal class JobRouterEventConverter : IEventConverter<Router>
         JsonSerializerOptions? serializerOptions = null)
     {
         _routerEventCatalog = routerEventCatalog;
-        _serializerOptions = serializerOptions ?? new JsonSerializerOptions();
+        _serializerOptions = serializerOptions ?? new JsonSerializerOptions()
+        {
+            PropertyNameCaseInsensitive = true
+        };
     }
 
     public object? Convert(string? stringPayload, string eventName)

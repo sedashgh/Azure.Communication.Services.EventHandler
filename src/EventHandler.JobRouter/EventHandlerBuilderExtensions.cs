@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2022 Jason Shave. All rights reserved.
 // Licensed under the MIT License.
 
+using System.Text.Json;
 using JasonShave.Azure.Communication.Service.JobRouter.Sdk.Contracts.V2021_10_20_preview.Events;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,10 +11,28 @@ public static class EventHandlerBuilderExtensions
 {
     public static EventHandlerBuilder AddJobRouterEventHandling(this EventHandlerBuilder eventHandlerBuilder)
     {
-        eventHandlerBuilder.Services.AddSingleton<IEventPublisher<Router>, EventPublisher<Router>>();
+        AddCommon(eventHandlerBuilder);
+
+        return eventHandlerBuilder;
+    }
+
+    public static EventHandlerBuilder AddJobRouterEventHandling(this EventHandlerBuilder eventHandlerBuilder, Action<JsonSerializerOptions> serializerOptions)
+    {
+        var jsonSerializerOptions = new JsonSerializerOptions();
+        serializerOptions(jsonSerializerOptions);
+
+        AddCommon(eventHandlerBuilder, jsonSerializerOptions);
+
+        return eventHandlerBuilder;
+    }
+
+    private static void AddCommon(EventHandlerBuilder eventHandlerBuilder, JsonSerializerOptions? jsonSerializerOptions = null)
+    {
+        var dispatcher = new JobRouterEventDispatcher();
+        eventHandlerBuilder.Services.AddSingleton<IEventDispatcher<Router>>(dispatcher);
+        eventHandlerBuilder.Services.AddSingleton<IJobRouterEventSubscriber>(dispatcher);
 
         var catalog = new EventCatalogService<Router>();
-
         catalog
             .Register<RouterJobCancelled>()
             .Register<RouterJobClassificationFailed>()
@@ -31,14 +50,15 @@ public static class EventHandlerBuilderExtensions
             .Register<RouterWorkerOfferExpired>()
             .Register<RouterWorkerOfferIssued>()
             .Register<RouterWorkerOfferRevoked>();
-
         eventHandlerBuilder.Services.AddSingleton<IEventCatalog<Router>>(catalog);
 
-        var dispatcher = new JobRouterEventDispatcher();
-        eventHandlerBuilder.Services.AddSingleton<IEventDispatcher<Router>>(dispatcher);
-        eventHandlerBuilder.Services.AddSingleton<IJobRouterEventSubscriber>(dispatcher);
-        eventHandlerBuilder.Services.AddSingleton<IEventConverter<Router>, JobRouterEventConverter>();
-
-        return eventHandlerBuilder;
+        if (jsonSerializerOptions is not null)
+        {
+            eventHandlerBuilder.Services.AddSingleton<IEventConverter<Router>>(new JobRouterEventConverter(catalog, jsonSerializerOptions));
+        }
+        else
+        {
+            eventHandlerBuilder.Services.AddSingleton<IEventConverter<Router>, JobRouterEventConverter>();
+        }
     }
 }
