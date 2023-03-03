@@ -38,16 +38,16 @@ public class IncomingCallTests
         result.Should().NotBeNull();
         result.From.Should().NotBeNull();
         result.IncomingCallContext.Should().NotBeNull();
-        result.From.PhoneNumber.Value.Should().NotBeNull();
-        result.To.PhoneNumber.Value.Should().NotBeNull();
+        result.From.RawId.Should().NotBeNull();
+        result.To.RawId.Should().NotBeNull();
         result.CorrelationId.Should().NotBeNull();
 
         // output
         _testOutputHelper.WriteLine($"From: {result.From.RawId}");
-        _testOutputHelper.WriteLine($"From phone number: {result.From.PhoneNumber.Value}");
+        _testOutputHelper.WriteLine($"From phone number: {result.From.RawId}");
         _testOutputHelper.WriteLine($"From kind: {result.From.Kind}");
         _testOutputHelper.WriteLine($"To: {result.To.RawId}");
-        _testOutputHelper.WriteLine($"To phone number: {result.To.PhoneNumber.Value}");
+        _testOutputHelper.WriteLine($"To phone number: {result.To.RawId}");
         _testOutputHelper.WriteLine($"To kind: {result.To.Kind}");
         _testOutputHelper.WriteLine($"Context: {result.IncomingCallContext}");
         _testOutputHelper.WriteLine($"CorrelationId: {result.CorrelationId}");

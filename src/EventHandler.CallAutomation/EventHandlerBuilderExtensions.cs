@@ -40,14 +40,14 @@ public static class EventHandlerBuilderExtensions
             .Register<CallDisconnected>()
             .Register<CallTransferAccepted>()
             .Register<CallTransferFailed>()
-            .Register<AddParticipantsSucceeded>()
-            .Register<AddParticipantsFailed>()
+            .Register<AddParticipantSucceeded>()
+            .Register<AddParticipantFailed>()
             .Register<ParticipantsUpdated>()
             .Register<PlayCompleted>()
             .Register<PlayFailed>()
             .Register<RecognizeCompleted>()
             .Register<RecognizeFailed>()
-            .Register<CallRecordingStateChanged>();
+            .Register<RecordingStateChanged>();
         eventHandlerBuilder.Services.AddSingleton<IEventCatalog<Calling>>(catalog);
 
         if (jsonSerializerOptions is not null)

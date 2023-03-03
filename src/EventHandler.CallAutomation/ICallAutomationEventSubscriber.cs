@@ -24,14 +24,14 @@ public interface ICallAutomationEventSubscriber
     event Func<CallDisconnected, string?, ValueTask>? OnCallDisconnected;
 
     /// <summary>
-    /// Provides an <see cref="AddParticipantsSucceeded"/> event and <see cref="string"/> for the context ID.
+    /// Provides an <see cref="AddParticipantSucceeded"/> event and <see cref="string"/> for the context ID.
     /// </summary>
-    event Func<AddParticipantsSucceeded, string?, ValueTask>? OnAddParticipantsSucceeded;
+    event Func<AddParticipantSucceeded, string?, ValueTask>? OnAddParticipantsSucceeded;
 
     /// <summary>
-    /// Provides an <see cref="AddParticipantsFailed"/> event and <see cref="string"/> for the context ID.
+    /// Provides an <see cref="AddParticipantFailed"/> event and <see cref="string"/> for the context ID.
     /// </summary>
-    event Func<AddParticipantsFailed, string?, ValueTask>? OnAddParticipantsFailed;
+    event Func<AddParticipantFailed, string?, ValueTask>? OnAddParticipantsFailed;
 
     /// <summary>
     /// Provides an <see cref="CallTransferAccepted"/> event and <see cref="string"/> for the context ID.
@@ -69,7 +69,7 @@ public interface ICallAutomationEventSubscriber
     event Func<RecognizeFailed, string?, ValueTask> OnRecognizeFailed;
 
     /// <summary>
-    /// Provides an <see cref="CallRecordingStateChanged"/> event and <see cref="string"/> for the context ID.
+    /// Provides an <see cref="RecordingStateChanged"/> event and <see cref="string"/> for the context ID.
     /// </summary>
-    event Func<CallRecordingStateChanged, string?, ValueTask>? OnCallRecordingStateChanged;
+    event Func<RecordingStateChanged, string?, ValueTask>? OnRecordingStateChanged;
 }

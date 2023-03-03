@@ -19,10 +19,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Azure.Communication.CallAutomation" Version="1.0.0-alpha.20221003.1" />
-	  <PackageReference Include="CallAutomation.Contracts" Version="1.0.6" />
+	  <PackageReference Include="Azure.Communication.CallAutomation" Version="1.0.0-alpha.20230303.1" />
+	  <PackageReference Include="CallAutomation.Contracts" Version="1.0.10" />
 	  <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
-	  <PackageReference Update="Microsoft.CodeAnalysis.CSharp.Features" Version="4.3.0" />
+	  <PackageReference Update="Microsoft.CodeAnalysis.CSharp.Features" Version="4.4.0" />
 	</ItemGroup>
 
 	<ItemGroup>

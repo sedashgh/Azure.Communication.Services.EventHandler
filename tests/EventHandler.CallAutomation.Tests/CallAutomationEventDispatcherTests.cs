@@ -23,13 +23,13 @@ public class CallAutomationEventDispatcherTests
         var callConnectionId = Guid.NewGuid().ToString();
         var serverCallId = Guid.NewGuid().ToString();
         var correlationId = Guid.NewGuid().ToString();
-        var participants = fixture.CreateMany<CommunicationUserIdentifier>();
+        var participant = fixture.Create<CommunicationUserIdentifier>();
 
         var callConnectedEvent = CallAutomationModelFactory.CallConnected(callConnectionId, serverCallId, correlationId);
 
         var callDisconnectedEvent = CallAutomationModelFactory.CallDisconnected(callConnectionId, serverCallId, correlationId);
-        var addParticipantSucceededEvent = CallAutomationModelFactory.AddParticipantsSucceeded(callConnectionId, serverCallId, correlationId, null, null, participants);
-        var addParticipantFailedEvent = CallAutomationModelFactory.AddParticipantsFailed(callConnectionId, serverCallId, correlationId, null, null, participants);
+        var addParticipantSucceededEvent = CallAutomationModelFactory.AddParticipantSucceeded(callConnectionId, serverCallId, correlationId, null, null, participant);
+        var addParticipantFailedEvent = CallAutomationModelFactory.AddParticipantFailed(callConnectionId, serverCallId, correlationId, null, null, participant);
         var callTransferAcceptedEvent = CallAutomationModelFactory.CallTransferAccepted(callConnectionId, serverCallId, correlationId);
         var callTransferFailedEvent = CallAutomationModelFactory.CallTransferFailed(callConnectionId, serverCallId, correlationId);
         var participantUpdatedEvent = CallAutomationModelFactory.ParticipantsUpdated(callConnectionId, serverCallId, correlationId);
@@ -67,7 +67,7 @@ public class CallAutomationEventDispatcherTests
         subject.OnAddParticipantsSucceeded += (@event, contextId) =>
         {
             @event.Should().NotBeNull();
-            @event.Should().BeOfType<AddParticipantsSucceeded>();
+            @event.Should().BeOfType<AddParticipantSucceeded>();
             contextId.Should().BeNullOrEmpty();
             return ValueTask.CompletedTask;
         };
@@ -75,7 +75,7 @@ public class CallAutomationEventDispatcherTests
         subject.OnAddParticipantsFailed += (@event, contextId) =>
         {
             @event.Should().NotBeNull();
-            @event.Should().BeOfType<AddParticipantsFailed>();
+            @event.Should().BeOfType<AddParticipantFailed>();
             contextId.Should().BeNullOrEmpty();
             return ValueTask.CompletedTask;
         };

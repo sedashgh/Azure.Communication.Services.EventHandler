@@ -11,8 +11,8 @@ internal sealed class CallAutomationEventDispatcher : IEventDispatcher<Calling>,
     public event Func<IncomingCall, string?, ValueTask>? OnIncomingCall;
     public event Func<CallConnected, string?, ValueTask>? OnCallConnected;
     public event Func<CallDisconnected, string?, ValueTask>? OnCallDisconnected;
-    public event Func<AddParticipantsSucceeded, string?, ValueTask>? OnAddParticipantsSucceeded;
-    public event Func<AddParticipantsFailed, string?, ValueTask>? OnAddParticipantsFailed;
+    public event Func<AddParticipantSucceeded, string?, ValueTask>? OnAddParticipantsSucceeded;
+    public event Func<AddParticipantFailed, string?, ValueTask>? OnAddParticipantsFailed;
     public event Func<CallTransferAccepted, string?, ValueTask>? OnCallTransferAccepted;
     public event Func<CallTransferFailed, string?, ValueTask>? OnCallTransferFailed;
     public event Func<ParticipantsUpdated, string?, ValueTask>? OnParticipantsUpdated;
@@ -20,7 +20,7 @@ internal sealed class CallAutomationEventDispatcher : IEventDispatcher<Calling>,
     public event Func<PlayFailed, string?, ValueTask>? OnPlayFailed;
     public event Func<RecognizeCompleted, string?, ValueTask> OnRecognizeCompleted;
     public event Func<RecognizeFailed, string?, ValueTask> OnRecognizeFailed;
-    public event Func<CallRecordingStateChanged, string?, ValueTask>? OnCallRecordingStateChanged;
+    public event Func<RecordingStateChanged, string?, ValueTask>? OnRecordingStateChanged;
 
     private readonly Dictionary<Type, Func<object, string?, ValueTask>> _eventDictionary;
 
@@ -43,15 +43,15 @@ internal sealed class CallAutomationEventDispatcher : IEventDispatcher<Calling>,
                 if (OnCallDisconnected is null) return;
                 await OnCallDisconnected.Invoke((CallDisconnected)@event, contextId).ConfigureAwait(false);
             },
-            [typeof(AddParticipantsSucceeded)] = async (@event, contextId) =>
+            [typeof(AddParticipantSucceeded)] = async (@event, contextId) =>
             {
                 if (OnAddParticipantsSucceeded is null) return;
-                await OnAddParticipantsSucceeded.Invoke((AddParticipantsSucceeded)@event, contextId).ConfigureAwait(false);
+                await OnAddParticipantsSucceeded.Invoke((AddParticipantSucceeded)@event, contextId).ConfigureAwait(false);
             },
-            [typeof(AddParticipantsFailed)] = async (@event, contextId) =>
+            [typeof(AddParticipantFailed)] = async (@event, contextId) =>
             {
                 if (OnAddParticipantsFailed is null) return;
-                await OnAddParticipantsFailed.Invoke((AddParticipantsFailed)@event, contextId).ConfigureAwait(false);
+                await OnAddParticipantsFailed.Invoke((AddParticipantFailed)@event, contextId).ConfigureAwait(false);
             },
             [typeof(CallTransferAccepted)] = async (@event, contextId) =>
             {
@@ -88,10 +88,10 @@ internal sealed class CallAutomationEventDispatcher : IEventDispatcher<Calling>,
                 if (OnRecognizeFailed is null) return;
                 await OnRecognizeFailed.Invoke((RecognizeFailed)@event, contextId).ConfigureAwait(false);
             },
-            [typeof(CallRecordingStateChanged)] = async (@event, contextId) =>
+            [typeof(RecordingStateChanged)] = async (@event, contextId) =>
             {
-                if (OnCallRecordingStateChanged is null) return;
-                await OnCallRecordingStateChanged.Invoke((CallRecordingStateChanged)@event, contextId).ConfigureAwait(false);
+                if (OnRecordingStateChanged is null) return;
+                await OnRecordingStateChanged.Invoke((RecordingStateChanged)@event, contextId).ConfigureAwait(false);
             },
         };
     }
