@@ -14,12 +14,12 @@
     <copyright>Copyright 2022</copyright>
     <version>1.0.0</version>
     <tags>Azure-Communication-Services EventHandler Jason-Shave JasonShave ACS CallAutomation Call Automation PSTN</tags>
+    <dependencies>
+      <dependency id="CallAutomation.Contracts" version="1.0.10"/>
+    </dependencies>
   </metadata>
-  <dependencies>
-    <dependency id="CallAutomation.Contracts" version="1.0.10"/>
-  </dependencies>
   <files>
-    <file src="icon.png" target=""/>
+    <file src="icon.jpg" target=""/>
     <file src="..\..\README.md" target=""/>
   </files>
 </package>

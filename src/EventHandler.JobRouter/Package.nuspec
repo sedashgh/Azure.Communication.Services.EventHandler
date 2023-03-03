@@ -16,7 +16,7 @@
     <tags>Azure-Communication-Services EventHandler Jason-Shave JasonShave ACS JobRouter Job Router</tags>
   </metadata>
   <files>
-    <file src="icon.png" target=""/>
+    <file src="icon.jpg" target=""/>
     <file src="..\..\README.md" target=""/>
   </files>
 </package>
