@@ -15,6 +15,7 @@ public interface IJobRouterEventSubscriber
     event Func<RouterJobExceptionTriggered, string?, ValueTask>? OnJobExceptionTriggered;
     event Func<RouterJobQueued, string?, ValueTask>? OnJobQueued;
     event Func<RouterJobReceived, string?, ValueTask>? OnJobReceived;
+    event Func<RouterJobUnassigned, string?, ValueTask>? OnJobUnassinged;
     event Func<RouterJobWorkerSelectorsExpired, string?, ValueTask>? OnJobWorkerSelectorsExpired;
     event Func<RouterWorkerDeregistered, string?, ValueTask>? OnWorkerDeregistered;
     event Func<RouterWorkerRegistered, string?, ValueTask>? OnWorkerRegistered;

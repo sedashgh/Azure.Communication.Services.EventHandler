@@ -15,6 +15,7 @@ internal sealed class JobRouterEventDispatcher : IEventDispatcher<Router>, IJobR
     public event Func<RouterJobExceptionTriggered, string?, ValueTask>? OnJobExceptionTriggered;
     public event Func<RouterJobQueued, string?, ValueTask>? OnJobQueued;
     public event Func<RouterJobReceived, string?, ValueTask>? OnJobReceived;
+    public event Func<RouterJobUnassigned, string?, ValueTask>? OnJobUnassinged;
     public event Func<RouterJobWorkerSelectorsExpired, string?, ValueTask>? OnJobWorkerSelectorsExpired;
     public event Func<RouterWorkerDeregistered, string?, ValueTask>? OnWorkerDeregistered;
     public event Func<RouterWorkerRegistered, string?, ValueTask>? OnWorkerRegistered;
@@ -69,6 +70,11 @@ internal sealed class JobRouterEventDispatcher : IEventDispatcher<Router>, IJobR
             {
                 if (OnJobReceived is null) return;
                 await OnJobReceived.Invoke((RouterJobReceived)@event, contextId);
+            },
+            [typeof(RouterJobUnassigned)] = async (@event, contextId) =>
+            {
+                if (OnJobUnassinged is null) return;
+                await OnJobUnassinged.Invoke((RouterJobUnassigned)@event, contextId);
             },
             [typeof(RouterJobWorkerSelectorsExpired)] = async (@event, contextId) =>
             {

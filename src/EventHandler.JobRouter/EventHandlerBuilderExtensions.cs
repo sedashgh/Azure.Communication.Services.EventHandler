@@ -42,6 +42,7 @@ public static class EventHandlerBuilderExtensions
             .Register<RouterJobExceptionTriggered>()
             .Register<RouterJobQueued>()
             .Register<RouterJobReceived>()
+            .Register<RouterJobUnassigned>()
             .Register<RouterJobWorkerSelectorsExpired>()
             .Register<RouterWorkerDeregistered>()
             .Register<RouterWorkerRegistered>()
