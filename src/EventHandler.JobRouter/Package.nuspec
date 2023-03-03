@@ -6,7 +6,7 @@
     <owners>Jason Shave</owners>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <license type="expression">MIT</license>
-    <icon>icon.png</icon>
+    <icon>icon.jpg</icon>
     <projectUrl>https://github.com/jasonshave/Azure.Communication.Services.EventHandler</projectUrl>
     <readme>README.md</readme>
     <description>A simple Event Handler library used with Azure Communication Services primitives for publishing/subscribing and handling Job Router events.</description>

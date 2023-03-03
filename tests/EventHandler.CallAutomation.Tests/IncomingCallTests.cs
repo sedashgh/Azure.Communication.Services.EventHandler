@@ -29,7 +29,7 @@ public class IncomingCallTests
         var mockEventCatalog = new Mock<IEventCatalog<Calling>>();
         mockEventCatalog.Setup(x => x.Get(It.IsAny<Type>())).Returns(incomingCallNamespace);
 
-        var subject = new CallAutomationEventConverter(mockEventCatalog.Object, null);
+        var subject = new CallAutomationEventConverter(mockEventCatalog.Object);
 
         // act
         var result = (IncomingCall)subject.Convert(incomingCall, incomingCallNamespace);
