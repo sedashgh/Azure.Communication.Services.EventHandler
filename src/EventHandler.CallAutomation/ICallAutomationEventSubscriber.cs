@@ -74,7 +74,7 @@ public interface ICallAutomationEventSubscriber
     event Func<RecordingStateChanged, string?, ValueTask>? OnRecordingStateChanged;
 
     /// <summary>
-    /// Provides an <see cref="PlayCanceld"/> event and <see cref="string"/> for the context ID.
+    /// Provides an <see cref="PlayCanceled"/> event and <see cref="string"/> for the context ID.
     /// </summary>
     event Func<PlayCanceled, string?, ValueTask>? OnPlayCanceled;
 
