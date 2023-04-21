@@ -72,4 +72,14 @@ public interface ICallAutomationEventSubscriber
     /// Provides an <see cref="RecordingStateChanged"/> event and <see cref="string"/> for the context ID.
     /// </summary>
     event Func<RecordingStateChanged, string?, ValueTask>? OnRecordingStateChanged;
+
+    /// <summary>
+    /// Provides an <see cref="PlayCanceld"/> event and <see cref="string"/> for the context ID.
+    /// </summary>
+    event Func<PlayCanceled, string?, ValueTask>? OnPlayCanceled;
+
+    /// <summary>
+    /// Provides an <see cref="ContinuousDtmfRecognitionToneReceived"/> event and <see cref="string"/> for the context ID.
+    /// </summary>
+    event Func<ContinuousDtmfRecognitionToneReceived, string?, ValueTask> OnContinuousDtmfRecognitionToneReceived;
 }

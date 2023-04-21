@@ -47,7 +47,9 @@ public static class EventHandlerBuilderExtensions
             .Register<PlayFailed>()
             .Register<RecognizeCompleted>()
             .Register<RecognizeFailed>()
-            .Register<RecordingStateChanged>();
+            .Register<RecordingStateChanged>()
+            .Register<PlayCanceled>()
+            .Register<ContinuousDtmfRecognitionToneReceived>();
         eventHandlerBuilder.Services.AddSingleton<IEventCatalog<Calling>>(catalog);
 
         if (jsonSerializerOptions is not null)

@@ -21,6 +21,8 @@ internal sealed class CallAutomationEventDispatcher : IEventDispatcher<Calling>,
     public event Func<RecognizeCompleted, string?, ValueTask> OnRecognizeCompleted;
     public event Func<RecognizeFailed, string?, ValueTask> OnRecognizeFailed;
     public event Func<RecordingStateChanged, string?, ValueTask>? OnRecordingStateChanged;
+    public event Func<PlayCanceled, string?, ValueTask>? OnPlayCanceled;
+    public event Func<ContinuousDtmfRecognitionToneReceived, string?, ValueTask> OnContinuousDtmfRecognitionToneReceived;
 
     private readonly Dictionary<Type, Func<object, string?, ValueTask>> _eventDictionary;
 
@@ -92,6 +94,16 @@ internal sealed class CallAutomationEventDispatcher : IEventDispatcher<Calling>,
             {
                 if (OnRecordingStateChanged is null) return;
                 await OnRecordingStateChanged.Invoke((RecordingStateChanged)@event, contextId).ConfigureAwait(false);
+            },
+            [typeof(PlayCanceled)] = async (@event, contextId) =>
+            {
+                if (OnPlayCanceled is null) return;
+                await OnPlayCanceled.Invoke((PlayCanceled)@event, contextId).ConfigureAwait(false);
+            },
+            [typeof(ContinuousDtmfRecognitionToneReceived)] = async (@event, contextId) =>
+            {
+                if (OnContinuousDtmfRecognitionToneReceived is null) return;
+                await OnContinuousDtmfRecognitionToneReceived.Invoke((ContinuousDtmfRecognitionToneReceived)@event, contextId).ConfigureAwait(false);
             },
         };
     }
